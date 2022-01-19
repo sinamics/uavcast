@@ -6,11 +6,11 @@ uavcast 5.x has been re-written from the ground-up compared to the previouse ver
 
 Latest build of this repository can be found at:
 
-https://hub.docker.com/repository/docker/sinamics/uavcast
+- https://hub.docker.com/repository/docker/sinamics/uavcast
 
 Install latest version:
 
-`curl -s http://install.uavmatrix.com/next/ | sudo bash`
+- `curl -s http://install.uavmatrix.com/next/ | sudo bash`
 
 ## Codebase
 
