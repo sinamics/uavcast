@@ -12,6 +12,10 @@ Install latest version:
 
 - `curl -s http://install.uavmatrix.com/next/ | sudo bash`
 
+## Documentation
+
+https://docs.uavmatrix.com/5.x/
+
 ## Codebase
 
 - [x] Backend nodejs (Typescript)
@@ -56,7 +60,3 @@ Example external publish:
 
 Example local build:
 `./compile_release.sh --version 5.0.0 --build_gcc --build_frontend --build_backend --docker_local`
-
-## Documentation
-
-https://docs.uavmatrix.com/5.x/
