@@ -71,6 +71,7 @@ WorkingDirectory=$APPROOT/bin/build
 Type=simple
 GuessMainPID=no
 ExecStart=$APPROOT/bin/build/uav_camera -start
+#ExecStop=$APPROOT/bin/build/uav_camera -stop
 KillMode=control-group
 SyslogIdentifier=uavcast-camera
 [Install]

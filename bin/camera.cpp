@@ -16,17 +16,6 @@
 //https://github.com/thaytan/gst-rpicamsrc
 // #include <raspicam/raspicam.h>
 
-//sudo apt install libopencv-dev
-// #include <opencv2/opencv.hpp>
-
-// #include <libv4l2.h>
-// #include "opencv2/opencv.hpp"
-// sudo apt-get install libv4l-dev
-// cd /usr/include/linux
-// sudo ln -s ../libv4l1-videodev.h videodev.h
-// #include <linux/videodev.h>
-// #include <linux/videodev2.h>
-
 int Camera::video_udp(int arg, char *argv[])
 {
 
