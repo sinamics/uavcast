@@ -15,7 +15,7 @@ COPY ["backend/package.json", \
 COPY ["backend/src", "./src"]
 
 RUN npm install
-
+RUN npm run lint
 RUN mkdir dist
 RUN npm run build
 
@@ -34,9 +34,9 @@ COPY [  "frontend/package.json", \
 COPY ["frontend/src", "./src"]
 COPY ["frontend/public", "./public"]
 
-RUN ls  -l
 RUN npm i node-gyp -g
 RUN npm install --legacy-peer-deps
+RUN npm run lint
 RUN npm run build
 
 
