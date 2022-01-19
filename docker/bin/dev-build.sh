@@ -41,7 +41,7 @@ Requires=network-online.target
 Wants=network-online.target
 After=network-online.target
 [Service]
-WorkingDirectory=$APPROOT
+WorkingDirectory=$APPROOT/bin/build
 Type=forking
 GuessMainPID=no
 ExecStart=$APPROOT/bin/build/uav_main -a
@@ -64,7 +64,7 @@ Requires=network-online.target
 Wants=network-online.target
 After=network-online.target
 [Service]
-WorkingDirectory=$APPROOT
+WorkingDirectory=$APPROOT/bin/build
 Type=simple
 GuessMainPID=no
 ExecStart=$APPROOT/bin/build/uav_camera -start

@@ -15,7 +15,7 @@ const CameraFooter = () => {
                 variables: {
                   path: '/',
                   // eslint-disable-next-line max-len
-                  cmd: 'sudo systemctl restart uavcast-camera && sleep 1s && journalctl -u uavcast-camera.service | tail'
+                  cmd: 'sudo systemctl restart uavcast-camera && sleep 1s && sudo journalctl -u uavcast-camera.service | tail'
                 }
               })
             }
@@ -33,7 +33,7 @@ const CameraFooter = () => {
                 variables: {
                   path: '/',
                   // eslint-disable-next-line max-len
-                  cmd: 'sudo systemctl stop uavcast-camera && sleep 1s && journalctl -u uavcast-camera.service | tail'
+                  cmd: 'sudo systemctl stop uavcast-camera && sleep 1s && sudo journalctl -u uavcast-camera.service | tail'
                 }
               })
             }

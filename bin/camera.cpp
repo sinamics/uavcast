@@ -34,7 +34,7 @@ int Camera::video_udp(int arg, char *argv[])
     GstCaps *filtercaps;
     // GstPad *pad;
     GstStateChangeReturn ret;
-    
+
     // init GStreamer
     gst_init(&arg, &argv);
     GMainLoop *loop = g_main_loop_new(NULL, FALSE);
@@ -127,14 +127,13 @@ int Camera::video_udp_parse_launch()
 
     EndpointRecords endpoints = db.get_endpoints();
 
-    // std::cout << camera.cameraType << '\n';
     std::string pipeline_str;
     std::string clients;
     char delimiter = 'x';
     Utils utils;
     std::vector<std::string> res = utils.split(camera.resolution, delimiter);
 
-    // std::cout << res << '\n';
+    // std::cout << camera.cameraType << '\n';
     //If custom pipeline, assign pipe and jump to gst_parse_launch
     if (camera.cameraType == "custom")
     {
@@ -166,8 +165,8 @@ int Camera::video_udp_parse_launch()
     std::cout << "format:"
               << "\n";
     std::cout << camera.format << "\n";
-   
-    
+
+
     // if (camera.format == "raspivid")
     // {
     //     pipeline_str =
@@ -223,8 +222,8 @@ int Camera::video_udp_parse_launch()
     }
 
 generate_pipeline:
-    std::cout << "playing pipeline " + camera.format << '\n';
     std::cout << "protocol " + camera.protocol << '\n';
+    std::cout << "playing pipeline " + camera.format << '\n';
     std::cout << pipeline_str << '\n';
     // std::cout << pipeline_str << "\n";
     GstElement *pipeline = nullptr;
