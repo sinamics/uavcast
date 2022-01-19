@@ -4,6 +4,12 @@ After several toughts and discussions with myself i finally came to the conclusi
 
 uavcast 5.x has been re-written from the ground-up compared to the previouse versions, and are still missing key features before it is usable.
 
+Latest build of this repository can be found at:
+https://hub.docker.com/repository/docker/sinamics/uavcast
+
+Install latest version:
+`curl -s http://install.uavmatrix.com/next/ | sudo bash`
+
 ## Codebase
 
 - [x] Backend nodejs (Typescript)
@@ -40,6 +46,15 @@ After closing VSCode, you may still have containers running. To close everything
 Do not make large sweeping changes. Open a discussion on GitHub for any large or architectural ideas.
 Ensure lint passes. `npm run lint` This command will ensure basic conformance to styles, applying as many automatic fixes as possible, including Prettier formatting.
 
+### Build docker locally
+
+use the `compile_release.sh` to genereate local docker image, or you can publish to your own container registery.
+Example external publish:
+`./compile_release.sh --version 5.0.0 --build_gcc --build_frontend --build_backend --docker_publish`
+
+Example local build:
+`./compile_release.sh --version 5.0.0 --build_gcc --build_frontend --build_backend --docker_local`
+
 ## Documentation
 
-(https://docs.uavmatrix.com/5.x/)[https://docs.uavmatrix.com/5.x/]
+https://docs.uavmatrix.com/5.x/
