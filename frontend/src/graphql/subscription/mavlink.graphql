@@ -1,0 +1,65 @@
+subscription mavlink {
+  mavlink {
+    message {
+      heartbeat {
+        armed
+        connected
+        type
+        autopilot
+        base_mode
+        custom_mode
+        system_status
+        mavlink_version
+        firmware
+        frame
+        numOfGcs {
+          type
+        }
+      }
+      vfr_hud {
+        airspeed
+        groundspeed
+        heading
+        throttle
+        alt
+        climb
+      }
+      power_status {
+        Vcc
+        Vservo
+        flags
+      }
+      failsafe {
+        gcs {
+          param_value
+        }
+        short {
+          param_value
+        }
+        long {
+          param_value
+        }
+      }
+      gps_raw_int {
+        fix_type
+        lat
+        lon
+        alt
+        vel
+        cog
+        satellites_visible
+      }
+    }
+  }
+}
+subscription cmdAck {
+  cmdAck {
+    command
+    result
+    message
+    errors {
+      path
+      message
+    }
+  }
+}

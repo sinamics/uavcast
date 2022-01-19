@@ -1,0 +1,14 @@
+query flightController {
+  flightController {
+    data {
+      id
+      controller
+      protocol
+      connectionType
+      internalAddress
+      baudRate
+      tcpPort
+      binFlightLog
+    }
+  }
+}

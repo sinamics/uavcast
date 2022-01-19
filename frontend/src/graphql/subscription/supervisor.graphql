@@ -1,0 +1,9 @@
+subscription supervisor {
+  supervisor {
+    message
+    errors {
+      path
+      message
+    }
+  }
+}

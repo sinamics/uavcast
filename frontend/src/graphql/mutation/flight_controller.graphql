@@ -1,0 +1,33 @@
+mutation updateFlightController($fc: FcProperties!) {
+  updateFlightController(fc: $fc) {
+    data {
+      id
+      controller
+      protocol
+      connectionType
+      internalAddress
+      baudRate
+      tcpPort
+      binFlightLog
+    }
+    errors {
+      path
+      message
+    }
+  }
+}
+
+mutation resetFlightControllerDatabase {
+  resetFlightControllerDatabase {
+    data {
+      id
+      controller
+      protocol
+      connectionType
+      internalAddress
+      baudRate
+      tcpPort
+      binFlightLog
+    }
+  }
+}

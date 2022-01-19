@@ -1,0 +1,15 @@
+mutation storeVpnValues($properties: VpnProperties!) {
+  storeVpnValues(properties: $properties) {
+    data {
+      id
+      enableVpn
+      serviceProvider
+      networkId
+      username
+      password
+    }
+  }
+}
+mutation uploadConfigFile($file: Upload!) {
+  uploadConfigFile(file: $file)
+}

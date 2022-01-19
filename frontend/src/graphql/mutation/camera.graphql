@@ -1,0 +1,63 @@
+mutation updateCamera($properties: CameraProperties!) {
+  updateCamera(properties: $properties) {
+    database {
+      id
+      cameraType
+      protocol
+      resolution
+      enableCamera
+      customPipeline
+      framesPrSecond
+      bitratePrSecond
+      contrast
+      rotation
+      brightness
+      whiteBalance
+      flipCamera
+    }
+    availableCams {
+      device
+      value
+      text
+      caps {
+        value
+        text
+        height
+        width
+        format
+      }
+    }
+  }
+}
+
+mutation resetCameraDatabase {
+  resetCameraDatabase {
+    database {
+      id
+      cameraType
+      protocol
+      resolution
+      enableCamera
+      customPipeline
+      framesPrSecond
+      bitratePrSecond
+      contrast
+      rotation
+      brightness
+      whiteBalance
+      flipCamera
+    }
+    availableCams {
+      device
+      value
+      text
+      caps {
+        value
+        text
+        height
+        width
+        format
+      }
+    }
+  }
+}

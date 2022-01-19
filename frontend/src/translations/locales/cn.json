@@ -1,0 +1,467 @@
+{
+  "headerLinks": {
+    "discord": "Discord",
+    "community": "Forum",
+    "documentation": "Documentation"
+  },
+  "sidebarLinks": {
+    "categories": {
+      "header": "控制面板",
+      "settings": {
+        "title": "设置",
+        "flightController": "控制器",
+        "groundControl": "地面站",
+        "cellModem": "通信模块",
+        "dynamicDns": "动态DNS",
+        "camera": "相机",
+        "vpn": "VPN"
+      },
+      "tools": {
+        "title": "工具",
+        "raspberry": "覆盆子",
+        "diagnostic": "Diagnostic",
+        "network": "Network",
+        "led": "Led"
+      },
+      "application": {
+        "title": "应用",
+        "settings": "设置",
+        "version": "版本"
+      }
+    }
+  },
+  "dashboard": {
+    "uavcast": {
+      "statusLeds": {
+        "information": "运行状态",
+        "telemetry": "数传:",
+        "video": "图传:",
+        "modem": "通信模块:",
+        "dns": "DNS:",
+        "vpn": "VPN:",
+        "autostart": "开机启动:"
+      },
+      "buttons": {
+        "startCasting": {
+          "title": "开始/停止传输",
+          "information": "开始图传数传",
+          "start": "开始",
+          "stop": "停止"
+        },
+        "autostart": {
+          "title": "开机启动",
+          "information": "gslink开机启动.",
+          "enable": "启用",
+          "disable": "关闭"
+        }
+      }
+    },
+    "statusCards": {
+      "gcs": {
+        "title": "地面站",
+        "text1": "目标地址",
+        "text2": "数传端口号:"
+      },
+      "modem": {
+        "title": "通信模块",
+        "text1": "启用:",
+        "text2": "APN:"
+      },
+      "camera": {
+        "title": "相机",
+        "text1": "启用:",
+        "text2": "APN:"
+      },
+      "dns": {
+        "title": "动态DNS",
+        "text1": "启用:",
+        "text2": "Alias:"
+      }
+    },
+    "montioring": {
+      "cpu": {
+        "title": "处理器",
+        "temperature": "温度 @"
+      },
+      "storage": {
+        "title": "存储",
+        "total": "总体",
+        "used": "已用",
+        "free": "空闲"
+      },
+      "memory": {
+        "title": "内存",
+        "total": "总体",
+        "used": "已用",
+        "free": "空闲"
+      },
+      "network": {
+        "title": "网络状态",
+        "subTitle": "每10秒刷新",
+        "interface": "接口",
+        "received": "接收",
+        "sent": "发送",
+        "rx": "接收速率(pr.sec)",
+        "tx": "发送速率(pr.sec)",
+        "lateancy": "延时(ms)"
+      }
+    }
+  },
+  "flightcontroller": {
+    "title": "控制器",
+    "subTitle": "控制器配置",
+    "fcType": "控制器类型",
+    "fcTypeDescription": "选择一个控制器，支持ardupilot和PX4",
+    "connection": "连接",
+    "connectionDescription": "选择连接方式",
+    "baud": "波特率",
+    "baudDescription": "设置波特率",
+    "protocol": "数传协议",
+    "protocolDescription": "选择数传协议",
+    "internal_address_header": "FC Internal Address",
+    "internal_address_description": "This is the internal address raspberry uses for communication with Flight Controller. <br /> Only change if you know what you are doing!",
+    "buttons": {
+      "start": "开始数传",
+      "stop": "停止数传",
+      "logfile": "日志"
+    },
+    "tips": {
+      "1": "gslink和控制器需要可靠共地，否则会影响串口通信.",
+      "2": "如果使用USB线连接遇到问题，请确保已从gslink中移除所有其他USB设备.某些USB设备可能会导致冲突."
+    },
+    "navio": {
+      "vehicle": "设备",
+      "launchOptions": "启动选项（可选）",
+      "launchOptionsDescription": "串口映射."
+    }
+  },
+  "groundControlStation": {
+    "title": "地面站",
+    "subTitle": "添加地面站IP地址和端口.",
+    "subTitle1": "<b>NOTE!</b> 添加地面站IP地址仅适用于用UDP传输数据和图像",
+    "buttons": {
+      "addDestinations": "添加地面站"
+    },
+    "destinationModule": {
+      "name": "名称",
+      "host": "主机",
+      "telemPort": "数传端口",
+      "videoPort": "图传端口",
+      "videoSwitch": "图传",
+      "telemSwitch": "数传",
+      "portCheck": "端口检查",
+      "removeModule": "删除"
+    }
+  },
+  "modem": {
+    "title": "通信模块",
+    "subTitle": "通信模块配置",
+    "enableText": "启用通信模块用来连接公网.",
+    "model": "通信模块",
+    "modelDescription": "选择合适的无线上网卡来连接LTE/4G网络",
+    "hilinkInterface": "hilink接口",
+    "hilinkInterfaceDescription": "设置hilink通信模块的接口，eth1或者eth0",
+    "manager": "通信模块管理",
+    "managerDescription": "配置通信模块",
+    "stickInterface": "stick接口",
+    "stickInterfaceDescription": "设置Stick调制解调器接口名.这通常是<code>wwan0</code>或<code>ppp0</code>.您可以通过按下面的network按钮看到接口名称",
+    "apn": "APN",
+    "apnDescription": "APN是GSM、GPRS、3G或4G移动网络与另一个计算机网络(通常是公共Internet)之间的网关的名称",
+    "internalAddress": "Internal Address",
+    "internalAddressDescription": "USB调制解调器内部地址.USB调制解调器通常得到<br /><code>cdc-wdm0</code>.如果需要，您可以指定另一个地址.",
+    "username": "Username",
+    "usernameDescription": "大多数运营商不需要任何用户名或密码，但有些可能.",
+    "password": "Password",
+    "passwordDescription": "大多数运营商不需要任何用户名或密码，但有些可能. ",
+    "pin": "PIN",
+    "pinDescription": "除非您禁用了Pin授权，否则您需要使用PIN码",
+    "buttons": {
+      "connect": "连接",
+      "disconnect": "断开",
+      "availableModems": "可用的调制解调器",
+      "network": "网络",
+      "modemInformation": "调制解调器信息",
+      "connectionStatus": "连接状态"
+    },
+    "tips": {
+      "title": "提示",
+      "1": "HiLink调制解调器的工作方式与以太网电缆相同.插入调制解调器后，gslink将立即联网.",
+      "2": "您可以在此处找到所有支持的调制解调器 <a href='https://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/'>https://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/</a>"
+    }
+  },
+  "dynamicDns": {
+    "title": "DNS",
+    "subTitle": "动态DNS配置",
+    "enableText": "启用动态DNS?",
+    "username": "账号",
+    "usernameDescription": "您的DNS用户名.",
+    "usernameHelpBlock": "请输入账号",
+    "password": "密码",
+    "passwordDescription": "您的DNS密码.",
+    "passwordHelpBlock": "请输入密码",
+    "alias": "Alias",
+    "aliasDescription": "Dns Alias是您新创建的地址",
+    "aliasHelpBlock": "请输入DNS Alias",
+    "dnsSystem": "DNS系统",
+    "dnsSystemDescription": "DNS系统由您的主机创建",
+    "dnsSystemHelpBlock": "请输入DNS系统",
+    "buttons": {
+      "connect": "连接",
+      "disconnect": "断开"
+    },
+    "tips": {
+      "title": "提示",
+      "1": "动态DNS是一种将Web URL链接到IP地址的方法.如果您想使用动态IP连接远程地面站，这很方便.",
+      "2": ""
+    }
+  },
+  "camera": {
+    "title": "相机",
+    "subTitle": "相机配置",
+    "cameraType": "相机类型",
+    "cameraHelpBlock": "选择相机类型",
+    "protocol": "传输协议",
+    "protocolDescription": "选择UDP或者TCP.",
+    "tcpHost": "TCP主机",
+    "tcpHostDescription": "添加TCP主机IP地址.这应该是本机的IP地址.",
+    "resolution": "分辨率.",
+    "resolutionDescription": "设置视频分辨率.",
+    "width": "宽度",
+    "height": "高度",
+    "bitrate": "码率",
+    "bitrateDescription": "Default : 2000000 or 2Mbits/s. Use bits per second, so 10Mbits/s would be 10000000. For H264, 1080p30 a high quality bitrate would be 15Mbits/s or more. Maximum bitrate is 25Mbits/s (25000000), but much over 17Mbits/s won't show noticeable improvement at 1080p30.",
+    "bitrateHelpBlock": "码率",
+    "rotation": "Rotation",
+    "rotationDescription": "Sets the rotation of the image in the viewfinder and resulting image. This can take any value from 0 upwards, but due to hardware constraints only 0, 90, 180, and 270 degree rotations are supported",
+    "rotationHelpBlock": "Rotation",
+    "contrast": "Contrast",
+    "contrastDescription": "Sets the contrast of the image. 0 is the default",
+    "contrastHelpBlock": "Contrast",
+    "brightness": "Brightness",
+    "brightnessDescription": "Sets the brightness of the image. 50 is the default. 0 is black, 100 is white",
+    "brightnessHelpBlock": "Brightness",
+    "autowhitebalance": "Automatic White Balance",
+    "autowhitebalanceDescription": "Default Value: Auto. Modes for which colour temperature ranges (K) are available have these settings in brackets.",
+    "autowhitebalanceHelpBlock": "White Balance",
+    "framesPrSecond": "帧率",
+    "framesPrSecondDescription": "Default value = 20. At present, the minimum frame rate allowed is 2fps, and the maximum is 30fps",
+    "framesPrSecondHelpBlock": "FPS",
+    "cameraFlip": "图像翻转",
+    "cameraFlipDescription": "选择图像方向.水平或垂直翻转.",
+    "cameraFlipHelpBlock": "Orientation",
+    "httplivestreamHeader": "HTTP live stream",
+    "httplivestreamDescription": "Recommended settings for In-Browser live stream<br />FPS => 10 - 15<br />Resolution => 960x540<br />",
+    "httplivestreamLink": "Goto VideoStream Page",
+    "buttons": {
+      "start": "打开相机",
+      "stop": "关闭相机",
+      "logFile": "日志"
+    },
+    "tips": {
+      "title": "提示",
+      "1": "选择<b>自定义通道</b>并添加此代码以生成<b>测试视频流</b>.可以用于无相机情况下的测试，注意更改IP和端口以匹配您的设置。<br /> <code>gst-launch-1.0 videotestsrc ! x264enc ! video/x-h264, stream-format=byte-stream ! rtph264pay ! udpsink host=192.168.1.100 port=5600</code>",
+      "2": "Mission planner和QGroundControl会自动检测端口5600上的视频流",
+      "3": "在Windows计算机上接收UDP视频流，请安装gstreamer并使用此通道.请记住更改端口以匹配您的设置.<br /><code>gst-launch-1.0 -v udpsrc port=5600 caps='application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264' ! rtpjitterbuffer ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false</code>",
+      "4": "在Windows计算机上接收TCP视频流(仅限PiCam），请安装gstreamer并使用此通道.请记住更改端口和主机以匹配您的设置.<br /> <code>gst-launch-1.0 -v tcpclientsrc host='Pi-IP' port=5600 ! gdpdepay ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false</code>"
+    }
+  },
+  "vpn": {
+    "title": "VPN",
+    "subTitle": "虚拟专用网",
+    "enableText": "启用VPN?",
+    "services": "服务",
+    "servicesDescription": "从下拉菜单中选择.",
+    "configuration": "配置",
+    "configurationDescription": "您的openvpn配置文件.请参阅openVPN帮助部分，了解如何生成/下载此文件",
+    "openVpnfileUploadText": "在此放置您的openvpn文件",
+    "openVpnDeleteFile": "删除文件",
+    "buttons": {
+      "connect": "连接",
+      "disconnect": "断开",
+      "viewVpnInterface": "查看VPN接口",
+      "logfile": "日志",
+      "interfaces": "接口",
+      "ZTconnectionInfo": "ZeroTier Con Info",
+      "ZTlistPeers": "ZeroTier list peers"
+    },
+    "tips": {
+      "title": "提示",
+      "1": "国内用户适用蒲公英VPN，国际用户适用ZeroTier VPN.",
+      "2": ""
+    }
+  },
+  "settings": {
+    "license": {
+      "title": "应用许可",
+      "subTitle": "许可证配置",
+      "licenseKey": "注册码",
+      "changeKey": "更改",
+      "licenseStatus": "许可证状态",
+      "allowedDevices": "许可的设备",
+      "remainingDevices": "保留的设备",
+      "freeUpSlots": "释放插槽",
+      "currentDevice": "(当前)",
+      "unregisterDevice": "注销",
+      "registeredUser": "注册名称",
+      "activationDate": "激活日期",
+      "expirationDate": "截止日期",
+      "raspberryVersion": "版本",
+      "orderId": "序列号",
+      "supportText": "如果您需要任何进一步的信息，请随时与我们联系",
+      "buttons": {
+        "validate": "验证",
+        "cancel": "取消"
+      }
+    },
+    "applicationVersion": {
+      "title": "软件版本",
+      "subTitle": "软件信息",
+      "currentVersion": "当前版本",
+      "changeLog": "更新日志",
+      "application": "应用",
+      "rollbackVersion": "还原以前版本",
+      "rollbackText": "还原到",
+      "newVersionAvailable": "新版本可用",
+      "upgradeSuccess": "安装完成后，请刷新界面",
+      "newversionExist": "您已经拥有最新版本",
+      "buttons": {
+        "refreshBrowser": "刷新浏览器",
+        "downgradeNow": "立即还原!",
+        "checkForUpdates": "检查更新",
+        "updateNow": "立即更新!"
+      }
+    },
+    "applicationSettings": {
+      "title": "设置",
+      "darkTheme": "黑色主题",
+      "darkThemeDescription": "Change between Light or Dark scheme",
+      "serverMessages": "服务器消息",
+      "serverMessagesDescription": "Get real time messages from the server, such as undervoltage, CPU throttling. It will be highlighted in the header section",
+      "serverPort": "服务器端口",
+      "serverPortDescription": "Change the default server port. Standard port 80. <br />Do not change if you dont know what you are doing!",
+      "serverPortHelpBLock": "默认端口80",
+      "applicationLanguage": "语言",
+      "applicationLanguageDescription": "想要贡献? 读 <a target='_blank' href='https://github.com/UAVmatrix/uavcast-pro-translations'>这里</a>",
+      "applicationLanguageHelpBlock": "设置语言",
+      "backupTitle": "Backup Database",
+      "backupDescription": "Backup all of your configurations.",
+      "resetLogfilesTitle": "Erase Logfiles",
+      "resetLogfilesDescription": "Logfiles will accumulate over time and it could be usefull to erase them if you troubleshooting an issue.",
+      "resetDatabaseTitle": "Reset Database",
+      "resetDatabaseDescription": "This will not erase userdata such as license, but all configurations will be lost.",
+      "restoreTitle": "Restore Database",
+      "restoreDescription": "Restore database from an earlier backup. (.zip) <br /> NOTE! All current config will be overwritten.",
+      "restore": "Backup all of your configurations.",
+      "buttons": {
+        "resetLogfiles": "Erase Files",
+        "resetDatabase": "Reset Database",
+        "backup": "Backup Database",
+        "restore": "Restore Database",
+        "changePort": "Change"
+      }
+    }
+  },
+  "raspberry": {
+    "diagnostic": {
+      "title": "树莓派",
+      "rebootNotification": {
+        "title": "确认重启？",
+        "content": "确认你已存储所有设置",
+        "cancel": "取消",
+        "approve": "立即重启"
+      },
+      "shutdownNotification": {
+        "title": "确认关机？",
+        "content": "确认你已经存储所有设置",
+        "cancel": "取消",
+        "approve": "立即关机"
+      },
+      "buttons": {
+        "reboot": "重启",
+        "shutdown": "关机",
+        "usbDevices": "USB 存储",
+        "kernelMessages": "内核消息",
+        "network": "网络",
+        "speedTest": "网速测试",
+        "process": "流程",
+        "sendCommand": "发送命令"
+      },
+      "customTerminal": {
+        "title": "定制终端",
+        "helpText": "example, type <code>ls</code> to list all files in the main directory"
+      },
+      "tips": {
+        "title": "故障排除技巧",
+        "1": "如果您遇到任何问题，请下载日志文件，然后与应用程序所有者联系"
+      }
+    },
+    "network": {
+      "hostname": {
+        "title": "Hostname",
+        "description": "A hostname is the label assigned to your RPI. Its used to distinguish one device from another on a network. You can access your RPI using the hostname instead of IP address. Default name is <a target='_blank' rel='noopener noreferrer' href='http://raspberrypi/'>raspberrypi</a>"
+      },
+      "interface": {
+        "title": "Interfaces",
+        "description": "You will find all active interfaces below. Box with green outline is your default connection to the outer world.<br />Do not change any values while in flight, this might disconnect you from the vehicle.",
+        "ipaddress": "IP Address",
+        "netmask": "Netmask",
+        "gateway": "Gateway",
+        "ipv6": "IPv6",
+        "buttons": {
+          "save": "Save"
+        }
+      },
+      "route": {
+        "title": "Default network route",
+        "pre-description": "Raspberry Pi is currently using gateway",
+        "post-description": "to access the World Wide Web.",
+        "description": "You can specify another default interface from the dropdown bellow. Only physical devices can be selected, not VPN or other bridged interface.<br />Raspberry will still use other interfaces, but priority the one you select as first option."
+      },
+      "wifi": {
+        "title": "WiFi Network",
+        "description": "Disconnect wifi adapter temporarily. It will re-connect during next startup.",
+        "scantext": "Scan for WiFi networks.",
+        "connecttext": "Press the network name you want to connect to.",
+        "buttons": {
+          "disconnect": "Disconnect WiFi",
+          "scannow": "Scan Now"
+        },
+        "table": {
+          "ssid": "SSID",
+          "signal": "Signal",
+          "channel": "Channel"
+        },
+        "modal": {
+          "title": "Warning!",
+          "description": "You are about to disconnect WiFI interface.<br />Make sure you are connected by other means if you want to stay connected.<br /> Are you sure you want to proceed?",
+          "accepttext": "Proceed"
+        }
+      }
+    },
+    "led": {
+      "title": "LED 控制",
+      "statusLedTitle": "板载状态LED",
+      "statusLedSubTitle": "Select a status to enable the onboard status (green) LED",
+      "statusLedHelpBlock": "Select a tigger status",
+      "powerLedTitle": "OnBoard Power LED",
+      "powerLedSubTitle": "Select a status to enable the onboard power (red) LED. <br /><b>Note!</b> Not all boards is equiped with power LED.",
+      "powerLedHelpBlock": "Select a tigger status"
+    }
+  },
+  "uavcast": {
+    "title": "Review LogFiles",
+    "troubleshootingText": "If you need any assistance or have a issue you want to address, then download application logfiles and submit them to",
+    "buttons": {
+      "uavcast": "UAVcast",
+      "dynDns": "DynDNS",
+      "video": "Video",
+      "telemetry": "Telemetry",
+      "navio": "Navio",
+      "downloadLogfiles": "Download Logfiles"
+    },
+    "tips": {
+      "title": "Troubleshooting Tips",
+      "1": "If you encounter any problems then please Download log files and post them at"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+name: ci
+on:
+  create:
+    tags:
+      - '*'
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: foss
+      - name: install cppunit
+        run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev
+      - name: make binaries
+        run: make -C bin/
+      # Update references
+      - name: Git Sumbodule Update
+        run: |
+          git submodule update --init --recursive
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - # So now you can use Actions' own caching!
+        name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: docker/Dockerfile.publish
+          # platforms: linux/arm/v7,linux/arm64
+          platforms: linux/arm/v7
+          push: true
+          tags: sinamics/uavcast:${{ env.RELEASE_VERSION }}

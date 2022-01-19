@@ -1,0 +1,65 @@
+query getAvailableVersions($application: String!) {
+  getAvailableVersions(application: $application) {
+    count
+    results {
+      id
+      name
+      tag_status
+      last_updated
+      full_size
+    }
+    error
+  }
+}
+query getUavcastInformation {
+  getUavcastInformation {
+    message {
+      supervisor {
+        repo
+        isRunning
+        remoteVersion
+        localVersion
+        hasLatest
+        newVersionExsist
+      }
+      uavcast {
+        repo
+        isRunning
+        remoteVersion
+        localVersion
+        hasLatest
+        newVersionExsist
+      }
+    }
+    errors {
+      path
+      message
+    }
+  }
+}
+query getSupervisorInformation {
+  getSupervisorInformation {
+    message {
+      supervisor {
+        repo
+        isRunning
+        remoteVersion
+        localVersion
+        hasLatest
+        newVersionExsist
+      }
+      uavcast {
+        repo
+        isRunning
+        remoteVersion
+        localVersion
+        hasLatest
+        newVersionExsist
+      }
+    }
+    errors {
+      path
+      message
+    }
+  }
+}

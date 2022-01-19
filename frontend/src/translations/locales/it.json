@@ -1,0 +1,467 @@
+{
+  "headerLinks": {
+    "discord": "Discord",
+    "community": "Forum",
+    "documentation": "Documentazione"
+  },
+  "sidebarLinks": {
+    "categories": {
+      "header": "Dashboard",
+      "settings": {
+        "title": "Impostazioni",
+        "flightController": "Controllore di Volo",
+        "groundControl": "Ground Control",
+        "cellModem": "Modulo Cellulare",
+        "dynamicDns": "DNS dinamico",
+        "camera": "Camera",
+        "vpn": "VPN"
+      },
+      "tools": {
+        "title": "Strumenti",
+        "raspberry": "Raspberry",
+        "diagnostic": "Diagnostic",
+        "network": "Network",
+        "led": "Led"
+      },
+      "application": {
+        "title": "Applicazione",
+        "settings": "Impostazioni",
+        "version": "Versione"
+      }
+    }
+  },
+  "dashboard": {
+    "uavcast": {
+      "statusLeds": {
+        "information": "Monitora il funzionamento o meno di ogni applicazione. Verifica la configurazione o i file di log di eventuali problemi",
+        "telemetry": "Telemetria:",
+        "video": "Video:",
+        "modem": "Modem:",
+        "dns": "DNS:",
+        "vpn": "VPN:",
+        "autostart": "Avvio Automatico:"
+      },
+      "buttons": {
+        "startCasting": {
+          "title": "Avvia / Stop flusso",
+          "information": "Questo avvierà tutte le applicazioni selezionate nell'ordine preimpostato",
+          "start": "Avvia Casting",
+          "stop": "Ferma Casting"
+        },
+        "autostart": {
+          "title": "Abilita avvio automatico",
+          "information": "UAVcast si avvierà automaticamente insieme al sistema operativo.",
+          "enable": "Abilita avvio automatico",
+          "disable": "Disabilita avvio automatico"
+        }
+      }
+    },
+    "statusCards": {
+      "gcs": {
+        "title": "Stazione base (GCS)",
+        "text1": "obbiettivo #1",
+        "text2": "Porta Telemetria:"
+      },
+      "modem": {
+        "title": "Modem",
+        "text1": "Attivo:",
+        "text2": "APN:"
+      },
+      "camera": {
+        "title": "Camera",
+        "text1": "Attivo:",
+        "text2": "Tipo:"
+      },
+      "dns": {
+        "title": "DNS Dinamico",
+        "text1": "Attivo:",
+        "text2": "Alias:"
+      }
+    },
+    "montioring": {
+      "cpu": {
+        "title": "Processore",
+        "temperature": "Temperatura @"
+      },
+      "storage": {
+        "title": "Archiviazione",
+        "total": "Totale",
+        "used": "Usata",
+        "free": "Libera"
+      },
+      "memory": {
+        "title": "Memoria",
+        "total": "Totale",
+        "used": "Usata",
+        "free": "Libera"
+      },
+      "network": {
+        "title": "Statistiche di Rete",
+        "subTitle": "Aggiornate ogni 10sec",
+        "interface": "Interfaccia",
+        "received": "Ricevuti",
+        "sent": "Inviati",
+        "rx": "Rx (pr.sec)",
+        "tx": "Tx (pr.sec)",
+        "lateancy": "Latenza (millisecondi)"
+      }
+    }
+  },
+  "flightcontroller": {
+    "title": "Controllore di Volo",
+    "subTitle": "Configurazione controllore di volo",
+    "fcType": "Tipo FC",
+    "fcTypeDescription": "Selezione un controller. Sono supportate tutte le versioni di ardupilot compreso PX4.",
+    "connection": "Connessione",
+    "connectionDescription": "Seleziona la modalità di connessione",
+    "baud": "Baud",
+    "baudDescription": "Imposta baud rate",
+    "protocol": "Protocollo",
+    "protocolDescription": "Seleziona il protocollo di connessione",
+    "internal_address_header": "FC Internal Address",
+    "internal_address_description": "This is the internal address raspberry uses for communication with Flight Controller. <br /> Only change if you know what you are doing!",
+    "buttons": {
+      "start": "Avvia Telemetria",
+      "stop": "Arresta Telemetria",
+      "logfile": "LogFile"
+    },
+    "tips": {
+      "1": " é molto importante che il Raspberry Pi e il flight controller condividano lo stesso negativo nel caso tu abbia connesso il flight controller al GPIO del rasberry, infatti la comunicazione seriale dipende da quello.",
+      "2": "Se stai riscontrando problemi con la connessione via USB,assicurati di aver rimosso tutti gli altri device USB inutili. Alcuni accessori USB possono causare conflitto."
+    },
+    "navio": {
+      "vehicle": "Veicolo",
+      "launchOptions": "Opzioni di lancio (Facolatativo)",
+      "launchOptionsDescription": "Mappatura fra switch e porte seriali."
+    }
+  },
+  "groundControlStation": {
+    "title": "Ground Control Station",
+    "subTitle": "Aggiungi l'ip della stazione di controllo e la relativa porta.",
+    "subTitle1": "<b>ATTENZIONE!</b> Questa funzione funziona solamente se hai selezionato il protocollo UDP per la telemetria o il video",
+    "buttons": {
+      "addDestinations": "Aggiungi Destinazione"
+    },
+    "destinationModule": {
+      "name": "nome",
+      "host": "Host",
+      "telemPort": "Porta Telemetria",
+      "videoPort": "Porta Video",
+      "videoSwitch": "Video",
+      "telemSwitch": "Telemetria",
+      "portCheck": "Controllo porta",
+      "removeModule": "Rimuovi"
+    }
+  },
+  "modem": {
+    "title": "Modem",
+    "subTitle": "Configurazione Modem",
+    "enableText": "Abilitare modem cellulare? <br /> <b>Il Gestore modem</b> serve per stabilire una connessione mobile tramite sim. Qui puoi trovare tutti i modem/chiavette supportate",
+    "model": "Modello",
+    "modelDescription": "Seleziona fra Stick o HiLink<br /> Esempio: <code>E3276H</code> (Ending character)<br /> i modem HiLink usano un software proprietario e autonomo per la connessione alle reti 4G/LTE",
+    "hilinkInterface": "Interfaccia",
+    "hilinkInterfaceDescription": "Imposta il nome dell'interfaccia HiLink. Normalmente l'interfaccia è <code>eth1</code> per il RPI 2/3 mentre <code>eth0</code> per il RPI 0<br />. Un LED si illuminerà di verde se l'interfaccia sta funzionando correttamente.",
+    "manager": "Modello",
+    "managerDescription": "Selezionare se si desidera utilizzare Network Manager o Modem Manager per gestire la connessione della cella. I modem si comportano in modo differente, quindi testare entrambe le opzioni in caso di problemi. Si consiglia di riavviare RPI se si modifica questa opzione.",
+    "stickInterface": "Interfaccia",
+    "stickInterfaceDescription": "Imposta l'interfaccia del modem Stick. Normalmente è <code>wwan0</code> oppure <code>ppp0</code>. Puoi visualizzare il nome dell'interfaccia premendo il bottone qui sotto.<br /> Un led diventerà verde se l'interfaccia sta funzionando correttamente.",
+    "apn": "APN",
+    "apnDescription": "Un Access Point Name è il nome di un gateway tra una rete mobile GSM, GPRS, 3G o 4G e un'altra rete di computer",
+    "internalAddress": "Indirizzo Interno",
+    "internalAddressDescription": " Indirizzo interno del modem USB. Normalmente il codice dei modem USB è <br /><code>cdc-wdm0</code>. puoi comunque indicare un indirizzo differente se necessario.",
+    "username": "Username",
+    "usernameDescription": "La maggiorparte degli operatori non richiedono un nome utente, ma alcuni potrebbero.",
+    "password": "Password",
+    "passwordDescription": "La maggiorparte degli operatori non richiedono una password, ma alcuni potrebbero. ",
+    "pin": "PIN",
+    "pinDescription": "Inserisci il PIN della sim, se non è abilitato lascia in bianco",
+    "buttons": {
+      "connect": "Connetti",
+      "disconnect": "Disconnetti",
+      "availableModems": "Modem disponibili",
+      "network": "Rete",
+      "modemInformation": "Informazione modem",
+      "connectionStatus": "Stato connessione"
+    },
+    "tips": {
+      "title": "Risoluzione problemi modem",
+      "1": "I modem HiLink agiscono allo stesso modo di una connessione via Ethernet. Il raspberry pi sarà connesso ad internet non appena inserici il modem nella porta usb",
+      "2": "Puoi trovare qui la lista dei modem supportati <a href='https://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/'>https://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/</a>"
+    }
+  },
+  "dynamicDns": {
+    "title": "DNS",
+    "subTitle": "Configurazione DNS dinamico",
+    "enableText": "Abilitare DNS dinamico?",
+    "username": "Nome Utente",
+    "usernameDescription": "Il tuo username del servizio DNS dinamico.",
+    "usernameHelpBlock": "Inserisci un nome utente",
+    "password": "Password",
+    "passwordDescription": "Password account servizio DNS dinamico.",
+    "passwordHelpBlock": "Inserisci la password",
+    "alias": "Alias/Host",
+    "aliasDescription": "L'alias non è altro che l'indirizzo web sccelto",
+    "aliasHelpBlock": "inserisci l'alias",
+    "dnsSystem": "Provider DNS dinamico",
+    "dnsSystemDescription": "l'host viene creato dal Provider di DNS dinamico da te scelto",
+    "dnsSystemHelpBlock": "Inserisci l'host dinamico",
+    "buttons": {
+      "connect": "Connetti",
+      "disconnect": "Disconnetti"
+    },
+    "tips": {
+      "title": "Risoluzione Problemi",
+      "1": "Il DNS Dinamico (DDNS) è un servizio che permette di assegnare un dominio ad un terminale con un IP dimanico, che cambia ogni volta che si riavvia quel dispositivo.",
+      "2": "Puoi scegliere fra alcuni fornitori fra cui <a href='https://www.noip.com/'>https://www.noip.com</a>, <a href='https://www.duckdns.org/'>https://www.duckdns.org/</a>"
+    }
+  },
+  "camera": {
+    "title": "Camera",
+    "subTitle": "Configurazione camera",
+    "cameraType": "Tipo webcam",
+    "cameraHelpBlock": "Selezione in tipo di webcam",
+    "protocol": "Protocollo",
+    "protocolDescription": "Seleziona UDP o TCP.",
+    "tcpHost": "Host TCP",
+    "tcpHostDescription": " Aggiungi l'ip dell'host TCP. Questo è l'ip pubblico del raspberry.",
+    "resolution": "Risoluzione video.",
+    "resolutionDescription": "Una risoluzione più alta consuerma più banda e quindi più giga. ad esempio, una risoluzione HD(1280x720) ha bisogno almeno di 10 mega in upload",
+    "width": "Larghezza",
+    "height": "Altezza",
+    "bitrate": "Bitrate",
+    "bitrateDescription": "Predefinito : 2000000 o 2Mbits/s. Utilizzare bit al secondo, quindi 10 Mbit/s sarebbe 10000000. Per H264, 1080p30 un bitrate di alta qualità sarebbe 15 Mbit/s o più. Il bitrate massimo è di 25 Mbit/s (25000000), ma oltre i 17 Mbit/s non mostrerà miglioramenti in risoluzione 1080.",
+    "bitrateHelpBlock": "Seleziona Bitrate",
+    "rotation": "Rotazione",
+    "rotationDescription": "Imposta la rotazione dell'immagine nell'obbiettivo e l'immagine risultante. Questo può assumere qualsiasi valore da 0 in su, ma a causa di limiti hardware sono supportate solo rotazioni di 0, 90, 180 e 270 gradi",
+    "rotationHelpBlock": "Rotazione",
+    "contrast": "Contrasto",
+    "contrastDescription": "Imposta il contrasto dell'immagine. 0 è predefinito",
+    "contrastHelpBlock": "Contrasto",
+    "brightness": "Luminosità",
+    "brightnessDescription": "Imposta la luminosità dell'immagine.Di default è 50. 0 è nero 100 è totalmente bianca",
+    "brightnessHelpBlock": "Luminosità",
+    "autowhitebalance": "Aggiunstamento punto di bianco automatico",
+    "autowhitebalanceDescription": "Default Value: Auto. Modes for which colour temperature ranges (K) are available have these settings in brackets.",
+    "autowhitebalanceHelpBlock": "Blianciamento Bianco",
+    "framesPrSecond": "Frame al secondo",
+    "framesPrSecondDescription": "Valore Predefinito = 20. Attualmente il valore minimo è 2fps, mentre il massimo è 30fps",
+    "framesPrSecondHelpBlock": "FPS",
+    "cameraFlip": "Specchia fotocamera",
+    "cameraFlipDescription": " Seleziona l'orientamento del video.",
+    "cameraFlipHelpBlock": "Orientamento",
+    "httplivestreamHeader": "HTTP live stream",
+    "httplivestreamDescription": "Recommended settings for In-Browser live stream<br />FPS => 10 - 15<br />Resolution => 960x540<br />",
+    "httplivestreamLink": "Goto VideoStream Page",
+    "buttons": {
+      "start": "Avvia webcam",
+      "stop": "arresta webcam",
+      "logFile": "LogFile"
+    },
+    "tips": {
+      "title": "consigli",
+      "1": "Seleziona <b>stringa personalizzata</b> e aggiungi questa linea di codice per generare un<b>test video</b>.Puoi farlo anche senza webcam collegata. Cambia l'ip e la porta e inserisci quella corretta<br /> <code>gst-launch-1.0 videotestsrc ! x264enc ! video/x-h264, stream-format=byte-stream ! rtph264pay ! udpsink host=192.168.1.100 port=5600</code>",
+      "2": "<b>Mission planner</b> e <b>QGroundControl</b> rileveranno come porta standard la <code>5600</code>",
+      "3": "Per ricevere il segnale video UPD su un PC Windows installa gstreamer e usa questo esempio con i parametri forniti. Ricordati di inserire i parametri corrispondenti alla porta da te scelta.<br /><code>gst-launch-1.0 -v udpsrc port=5600 caps='application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264' ! rtpjitterbuffer ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false</code>",
+      "4": "Per ricevere il segnale video TCP su un PC Windows installa gstreamer e usa questo esempio con i parametri forniti. Ricordati di inserire i parametri corrispondenti alla porta da te scelta.<br /> <code>gst-launch-1.0 -v tcpclientsrc host='Pi-IP' port=5600 ! gdpdepay ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false</code>"
+    }
+  },
+  "vpn": {
+    "title": "VPN",
+    "subTitle": "Virtual Private Network",
+    "enableText": "Abilitare VPN?",
+    "services": "Servizi",
+    "servicesDescription": "Seleziona dal menù a cascata.",
+    "configuration": "Configurazione",
+    "configurationDescription": "La tua configurazione di <b>openvpn</b>.<br /> Dai un occhiata alla documentazione su come generare/scaricare questo file.",
+    "openVpnfileUploadText": "Trascina qui il tuo file di configurazione openvpn",
+    "openVpnDeleteFile": "Elimina File",
+    "buttons": {
+      "connect": "Connetti",
+      "disconnect": "Disconnetti",
+      "viewVpnInterface": "Visualizza Interfaccia VPN",
+      "logfile": "File di LOG",
+      "interfaces": "Interfacce",
+      "ZTconnectionInfo": "Informazioni Conn. ZeroTier",
+      "ZTlistPeers": "Lista peers ZeroTier"
+    },
+    "tips": {
+      "title": "Consigli",
+      "1": "Consigliamo vivamente di utlizzare una VPN ZeroTier. Sono molto facili da configurare e adatte a sim che non supportano l'ip pubblico. ZeroTier proverà a stabilire una connessione diretta, questo ridurrà la latenza(ping).",
+      "2": " Google fornisce una soluzione semplice per configurare openvpn. Leggi qui<a href='https://openvpn.net/index.php/access-server/on-google-cloud.html'>https://openvpn.net/index.php/access-server/on-google-cloud.html</a>"
+    }
+  },
+  "settings": {
+    "license": {
+      "title": "Licenza Applicazione",
+      "subTitle": "Dettagli Licenza",
+      "licenseKey": "License key",
+      "changeKey": "cambia",
+      "licenseStatus": "Stato Licenza",
+      "allowedDevices": "Dipositivi ammessi",
+      "remainingDevices": "Dispositivi rimasti",
+      "freeUpSlots": "Libera Slot",
+      "currentDevice": "(attuali)",
+      "unregisterDevice": "sgancia",
+      "registeredUser": "Nome Registrato",
+      "activationDate": "Data di attivazione",
+      "expirationDate": "Data di scandenza",
+      "raspberryVersion": "Versione Raspberry",
+      "orderId": "ID Ordine",
+      "supportText": "Nel caso di dubbi contattaci",
+      "buttons": {
+        "validate": "Valida",
+        "cancel": "Annulla"
+      }
+    },
+    "applicationVersion": {
+      "title": "Versione Applicazione",
+      "subTitle": "Panoramica Applicazione",
+      "currentVersion": "Versione Corrente",
+      "changeLog": "Lista Novità",
+      "application": "Applicazione",
+      "rollbackVersion": "Torna a versione precedente",
+      "rollbackText": "Ritorna alla versione:",
+      "newVersionAvailable": "Nuova versione disponibile",
+      "upgradeSuccess": "Installazione completa, perfavore aggiorna la pagina.",
+      "newversionExist": "Hai già l'ultima versione",
+      "buttons": {
+        "refreshBrowser": "Aggiorna Browser",
+        "downgradeNow": "Effettua Downgrade",
+        "checkForUpdates": "Cerca Aggiornamenti",
+        "updateNow": "Aggiorna Ora!"
+      }
+    },
+    "applicationSettings": {
+      "title": "Impostazioni",
+      "darkTheme": "Tema scuro",
+      "darkThemeDescription": "Change between Light or Dark scheme",
+      "serverMessages": "Messaggi Server",
+      "serverMessagesDescription": "Get real time messages from the server, such as undervoltage, CPU throttling. It will be highlighted in the header section",
+      "serverPort": "Porta Server",
+      "serverPortDescription": "Change the default server port. Standard port 80. <br />Do not change if you dont know what you are doing!",
+      "serverPortHelpBLock": "Porta predefinita 80",
+      "applicationLanguage": "Lingua Applicazione",
+      "applicationLanguageDescription": "Vuoi Contribuire? Leggi <a target='_blank' href='https://github.com/UAVmatrix/uavcast-pro-translations'>qui</a>",
+      "applicationLanguageHelpBlock": "Imposta la lingua predefinita",
+      "backupTitle": "Backup Database",
+      "backupDescription": "Backup all of your configurations.",
+      "resetLogfilesTitle": "Erase Logfiles",
+      "resetLogfilesDescription": "Logfiles will accumulate over time and it could be usefull to erase them if you troubleshooting an issue.",
+      "resetDatabaseTitle": "Reset Database",
+      "resetDatabaseDescription": "This will not erase userdata such as license, but all configurations will be lost.",
+      "restoreTitle": "Restore Database",
+      "restoreDescription": "Restore database from an earlier backup. (.zip) <br /> NOTE! All current config will be overwritten.",
+      "restore": "Backup all of your configurations.",
+      "buttons": {
+        "resetLogfiles": "Erase Files",
+        "resetDatabase": "Reset Database",
+        "backup": "Backup Database",
+        "restore": "Restore Database",
+        "changePort": "Change"
+      }
+    }
+  },
+  "raspberry": {
+    "diagnostic": {
+      "title": "Raspberry",
+      "rebootNotification": {
+        "title": "Vuoi riavviare il Raspberry PI",
+        "content": "Assicurati di aver salvato tutto!",
+        "cancel": "Annulla",
+        "approve": "Riavvia Ora"
+      },
+      "shutdownNotification": {
+        "title": "Vuoi spegnere il Raspberry PI?",
+        "content": "Assicurati di aver salvato tutto!",
+        "cancel": "Annulla",
+        "approve": "Spegni ora"
+      },
+      "buttons": {
+        "reboot": "Riavvia",
+        "shutdown": "Spegnimento",
+        "usbDevices": "Dispositivi USB",
+        "kernelMessages": "Messaggi Kernel",
+        "network": "Rete",
+        "speedTest": "SpeedTest",
+        "process": "Processi",
+        "sendCommand": "Invia Comando"
+      },
+      "customTerminal": {
+        "title": "Comandi Personalizzati",
+        "helpText": "esempio, digita <code>ls</code> per vedere tutte le cartelle presenti nella directory"
+      },
+      "tips": {
+        "title": "Risoluzione Problemi",
+        "1": "Se hai problemi scarica il log e contatta lo sviluppatore"
+      }
+    },
+    "network": {
+      "hostname": {
+        "title": "Hostname",
+        "description": "A hostname is the label assigned to your RPI. Its used to distinguish one device from another on a network. You can access your RPI using the hostname instead of IP address. Default name is <a target='_blank' rel='noopener noreferrer' href='http://raspberrypi/'>raspberrypi</a>"
+      },
+      "interface": {
+        "title": "Interfaces",
+        "description": "You will find all active interfaces below. Box with green outline is your default connection to the outer world.<br />Do not change any values while in flight, this might disconnect you from the vehicle.",
+        "ipaddress": "IP Address",
+        "netmask": "Netmask",
+        "gateway": "Gateway",
+        "ipv6": "IPv6",
+        "buttons": {
+          "save": "Save"
+        }
+      },
+      "route": {
+        "title": "Default network route",
+        "pre-description": "Raspberry Pi is currently using gateway",
+        "post-description": "to access the World Wide Web.",
+        "description": "You can specify another default interface from the dropdown bellow. Only physical devices can be selected, not VPN or other bridged interface.<br />Raspberry will still use other interfaces, but priority the one you select as first option."
+      },
+      "wifi": {
+        "title": "WiFi Network",
+        "description": "Disconnect wifi adapter temporarily. It will re-connect during next startup.",
+        "scantext": "Scan for WiFi networks.",
+        "connecttext": "Press the network name you want to connect to.",
+        "buttons": {
+          "disconnect": "Disconnect WiFi",
+          "scannow": "Scan Now"
+        },
+        "table": {
+          "ssid": "SSID",
+          "signal": "Signal",
+          "channel": "Channel"
+        },
+        "modal": {
+          "title": "Warning!",
+          "description": "You are about to disconnect WiFI interface.<br />Make sure you are connected by other means if you want to stay connected.<br /> Are you sure you want to proceed?",
+          "accepttext": "Proceed"
+        }
+      }
+    },
+    "led": {
+      "title": "Controllo LED",
+      "statusLedTitle": "Stato LED",
+      "statusLedSubTitle": "Selezionare uno stato per abilitare il LED di stato (verde) di bordo",
+      "statusLedHelpBlock": "Select a tigger status",
+      "powerLedTitle": "Led di bordo (Power)",
+      "powerLedSubTitle": "Seleziona uno stato per abilitare il led di accensione(rosso) <br /><b>Attenzione!</b> Solo il RPI 2/3 ne sono equipaggiate.",
+      "powerLedHelpBlock": "Selezione un azione per abilitare il LED di bordo"
+    }
+  },
+  "uavcast": {
+    "title": "Visione Log",
+    "troubleshootingText": "Nel caso in cui avessi bisogno di assistenza per qualsiasi motivo consulta ",
+    "buttons": {
+      "uavcast": "UAVcast",
+      "dynDns": "DynDNS",
+      "video": "Video",
+      "telemetry": "Telemetria",
+      "navio": "Navio",
+      "downloadLogfiles": "Scarica Logfiles"
+    },
+    "tips": {
+      "title": "Risoluzione Problemi",
+      "1": "Nel caso di problemi con UAVCast perfavore scarica il log del terminale e postalo su"
+    }
+  }
+}

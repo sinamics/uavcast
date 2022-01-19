@@ -1,0 +1,19 @@
+query modemData {
+  modemData {
+    message {
+      modemType
+      modemInformation
+      modemInterface
+      enableModem
+      internalAddress
+      pinCode
+      username
+      password
+    }
+  }
+}
+query nic {
+  nic {
+    interfaces
+  }
+}

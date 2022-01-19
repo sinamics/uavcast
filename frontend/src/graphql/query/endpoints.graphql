@@ -1,0 +1,14 @@
+query getEndpoints {
+  getEndpoints {
+      data {
+        id
+        telemEnable
+        moduleActive
+        name
+        endpointIPaddress
+        telemetryPort
+        videoPort
+        videoEnable
+      }
+  }
+}

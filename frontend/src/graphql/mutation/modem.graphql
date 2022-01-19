@@ -1,0 +1,8 @@
+mutation storeModemValues($properties: ModemProperties!) {
+  storeModemValues(properties: $properties) {
+    message {
+      modemType
+      modemInformation
+    }
+  }
+}

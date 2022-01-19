@@ -1,0 +1,65 @@
+# query getLoggData {
+#   getLoggData {
+#     logs {
+#       datetime
+#       value
+#       group
+#     }
+#   }
+# }
+
+query getFileNames {
+  getFileNames {
+    files
+  }
+}
+
+query getFileData($filename: String!) {
+  getFileData(filename: $filename) {
+    data
+  }
+}
+
+query getTempLog($properties: LogProperties!) {
+  getTempLog(properties: $properties) {
+    file {
+      message
+      timestamp
+    }
+  }
+}
+
+query getNetworkLog($properties: LogProperties!) {
+  getNetworkLog(properties: $properties) {
+    file {
+      message {
+        iface
+        rx_bytes
+        tx_bytes
+        rx_sec
+        tx_sec
+      }
+      timestamp
+    }
+  }
+}
+
+query getCpuLog($properties: LogProperties!) {
+  getCpuLog(properties: $properties) {
+    file {
+      timestamp
+      message
+    }
+  }
+}
+query getLoggerParameters {
+  getLoggerParameters {
+    logs {
+      id
+      cellSignal
+      satellites
+      altitude
+      resolution
+    }
+  }
+}

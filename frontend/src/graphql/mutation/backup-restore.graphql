@@ -1,0 +1,3 @@
+mutation uploadDatabaseFile($file: Upload!) {
+  uploadDatabaseFile(file: $file)
+}

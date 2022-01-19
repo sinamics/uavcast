@@ -1,0 +1,18 @@
+.switch-green {
+  background: #0c9c3e !important;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 10px, #89ff00 0px 1px 1px;
+}
+.switch-red {
+  background-color: #e60d0d !important;
+}
+.switch-yellow-blink {
+  -webkit-animation: blinkYellow 1s infinite;
+  -moz-animation: blinkYellow 1s infinite;
+  -ms-animation: blinkYellow 1s infinite;
+  -o-animation: blinkYellow 1s infinite;
+  animation: blinkYellow 1s infinite;
+}
+
+.switch-off {
+  background-color: #bcc5d0;
+}

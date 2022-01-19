@@ -1,0 +1,467 @@
+{
+  "headerLinks": {
+    "discord": "Discord",
+    "community": "Community",
+    "documentation": "Documentatie"
+  },
+  "sidebarLinks": {
+    "categories": {
+      "header": "Dashboard",
+      "settings": {
+        "title": "Instellingen",
+        "flightController": "Flight Controller",
+        "groundControl": "Ground Control",
+        "cellModem": "4G LTE modem",
+        "dynamicDns": "Dynamic DNS",
+        "camera": "Camera",
+        "vpn": "VPN"
+      },
+      "tools": {
+        "title": "Hulpmiddelen",
+        "raspberry": "Raspberry",
+        "diagnostic": "Diagnostic",
+        "network": "Network",
+        "led": "Led"
+      },
+      "application": {
+        "title": "Applicatie",
+        "settings": "Instellingen",
+        "version": "Versie"
+      }
+    }
+  },
+  "dashboard": {
+    "uavcast": {
+      "statusLeds": {
+        "information": "Status indicatie van afzonderlijke processen. Controleer de configuratie of logiles bij problemen",
+        "telemetry": "Telemetrie:",
+        "video": "Video:",
+        "modem": "Modem:",
+        "dns": "DNS:",
+        "vpn": "VPN:",
+        "autostart": "Autostart:"
+      },
+      "buttons": {
+        "startCasting": {
+          "title": "Start / Stop casten",
+          "information": "Autostart start automatisch alle applicaties in de juiste volgorde zodra de raspberry wordt gestart.",
+          "start": "Start cast",
+          "stop": "Stop cast"
+        },
+        "autostart": {
+          "title": "Autostart inschakelen",
+          "information": "UAVcast start vanzelf zodra de raspberry opstart.",
+          "enable": "Auto inschakelen",
+          "disable": "Auto uitschakelen"
+        }
+      }
+    },
+    "statusCards": {
+      "gcs": {
+        "title": "Ground Control Station",
+        "text1": "Target #1",
+        "text2": "Telemetrie poort:"
+      },
+      "modem": {
+        "title": "Modem",
+        "text1": "Actief:",
+        "text2": "APN:"
+      },
+      "camera": {
+        "title": "Camera",
+        "text1": "Actief:",
+        "text2": "Type:"
+      },
+      "dns": {
+        "title": "Raspberry Dynamic DNS",
+        "text1": "Actief:",
+        "text2": "Alias:"
+      }
+    },
+    "montioring": {
+      "cpu": {
+        "title": "CPU",
+        "temperature": "Temperatuur @"
+      },
+      "storage": {
+        "title": "Opslag",
+        "total": "Totaal",
+        "used": "Gebruikt",
+        "free": "Vrij"
+      },
+      "memory": {
+        "title": "Geheugen",
+        "total": "Totaal",
+        "used": "Gebruikt",
+        "free": "Vrij"
+      },
+      "network": {
+        "title": "Netwerk Status",
+        "subTitle": "Wordt elke 10sec geupdate",
+        "interface": "Interface",
+        "received": "Ontvangen",
+        "sent": "Verzonden",
+        "rx": "Rx (pr.sec)",
+        "tx": "Tx (pr.sec)",
+        "lateancy": "Latency (ms)"
+      }
+    }
+  },
+  "flightcontroller": {
+    "title": "Flight Controller",
+    "subTitle": "Flight Controller configuratie",
+    "fcType": "FC type",
+    "fcTypeDescription": "Kies een Flight controller type, alle Ardupilot en Px4 typen worden ondersteunt.",
+    "connection": "Connectie",
+    "connectionDescription": "Selecteer een connectie methode",
+    "baud": "Baud",
+    "baudDescription": "Selecteer baudrate",
+    "protocol": "Protocol",
+    "protocolDescription": "Selecteer connectie protocol",
+    "internal_address_header": "FC Internal Address",
+    "internal_address_description": "This is the internal address raspberry uses for communication with Flight Controller. <br /> Only change if you know what you are doing!",
+    "buttons": {
+      "start": "Start Telemetrie",
+      "stop": "Stop Telemetrie",
+      "logfile": "LogFile"
+    },
+    "tips": {
+      "1": "Het is van belang dat zowel de raspberry en de Flightcontroller aangesloten zijn op dezelfde min/GND als de Flightcontroller aangesloten is op de raspberry via GPIO",
+      "2": "Als er problemen zijn bij gebruik van een USB kabel, zorg dan dat overige USB apparaten van de raspberry verwijderd zijn om conflicten te voorkomen."
+    },
+    "navio": {
+      "vehicle": "Voertuig",
+      "launchOptions": "Lanceer optie (Optioneel)",
+      "launchOptionsDescription": "Mapping van switches en seriele poorten."
+    }
+  },
+  "groundControlStation": {
+    "title": "Ground Control Station",
+    "subTitle": "GCS toevoegen, IP address en poort.",
+    "subTitle1": "<b>Pas op!</b> GCS Ip addressen worden alleen gebruikt als UDP voor telemetry of video geselecteerd is!",
+    "buttons": {
+      "addDestinations": "Bestemming toevoegen"
+    },
+    "destinationModule": {
+      "name": "naam",
+      "host": "Host",
+      "telemPort": "telemetrie poort",
+      "videoPort": "Video poort",
+      "videoSwitch": "Video",
+      "telemSwitch": "Telemetrie",
+      "portCheck": "Controleer poort",
+      "removeModule": "Verwijderen"
+    }
+  },
+  "modem": {
+    "title": "Modem",
+    "subTitle": "Modem configuratie",
+    "enableText": "4G / LTE modem inschakelen? <br /> <b>Modem Manager</b> wordt gebruikt om de verbinding op te zetten. Alle ondersteunde apparaten kun je hier vinden",
+    "model": "Model",
+    "modelDescription": "Kies tussen Stick of HiLink<br /> Voorbeeld: <code>E3276H</code> (Laatste letter)<br /> HiLink modems gebruiken embedded software om met LTE / 4G te verbinden",
+    "hilinkInterface": "Interface",
+    "hilinkInterfaceDescription": "Stel hier de hilink modem interface in. normaal is dit <code>eth1</code> voor raspberry 2/3 of <code>eth0</code> voor raspberry zero.<br /> LED brand groen of blauw als het modem succesvol verbonden is.",
+    "manager": "Model",
+    "managerDescription": "Selecteer of Network Manager of Modem Manager gebruikt moet worden om de 4G / LTE verbinding tot stand te brengen. Niet alle Modems gedragen zich hetzelfde, test beide opties als er problemen zijn. Het is aan te raden om de raspberry te herstarten na het verandere van deze optie.",
+    "stickInterface": "Interface",
+    "stickInterfaceDescription": "Stel de modem interface naam in. Dit is meestal <code>wwan0</code> of <code>ppp0</code>. De interface naam kan je vinden door op de netwerk knop hieronder te drukken.<br /> De LED bovenaan de pagina zal groen branden bij een succesvolle connectie.",
+    "apn": "APN",
+    "apnDescription": "De APN of Access Point Name is de naam van de gateway tussen het GSM, GPRS, 3G of 4G mobiele netwerk en het operator netwerk, het correcte adres vind je op de webpagina van de LTE/4G provider",
+    "internalAddress": "Intern adres",
+    "internalAddressDescription": " Het interne adres van het USB modem. Bij USB modems is dit meestal <br /><code>cdc-wdm0</code>. voer een ander adres in als dit afwijkt.",
+    "username": "Gebruikersnaam",
+    "usernameDescription": "De meeste providers vragen geen gebruikersnaam, echter sommige wel",
+    "password": "Wachtwoord",
+    "passwordDescription": "De meeste providers vragen geen wachtwoord, echter sommige wel",
+    "pin": "sim-PIN",
+    "pinDescription": "De sim-pincode mits deze aan staat",
+    "buttons": {
+      "connect": "verbind",
+      "disconnect": "Verbreek verbinding",
+      "availableModems": "Aangesloten modems",
+      "network": "Netwerk",
+      "modemInformation": "Modem informatie",
+      "connectionStatus": "Verbinding status"
+    },
+    "tips": {
+      "title": "Probleem oplossing / tips",
+      "1": "Hilink modems gedragen zich als een Ethernet kabel. De raspberry zal online gaan zodra het modem wordt ingestoken.",
+      "2": "Een lijst met ondersteunde modems kan hier gevonden worden: <a href='https://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/'>https://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/</a>"
+    }
+  },
+  "dynamicDns": {
+    "title": "DNS",
+    "subTitle": "Dynamic DNS configuratie",
+    "enableText": "Dynamic DNS inschakelen?",
+    "username": "Gebruikersnaam",
+    "usernameDescription": "DNS host gebruikersnaam.",
+    "usernameHelpBlock": "Selecteer een gebruikersnaam",
+    "password": "Wachtwoord",
+    "passwordDescription": "DNS host account wachtwoord.",
+    "passwordHelpBlock": "Vul het bijbehorende wachtwoord in",
+    "alias": "Alias",
+    "aliasDescription": "Dns Alias is het nieuw aangemaakte adres",
+    "aliasHelpBlock": "Vul hier het DNS alias in",
+    "dnsSystem": "DNS systeem",
+    "dnsSystemDescription": "DNS systeem wordt gecreerd door de host",
+    "dnsSystemHelpBlock": "Vul een DNS systeem in",
+    "buttons": {
+      "connect": "Verbind",
+      "disconnect": "Verbreek"
+    },
+    "tips": {
+      "title": "Probleem oplossing / tips",
+      "1": "DDNS of DynamicDNS is de manier om naar een web url of IP address te linken. Dit is handig bij het verbinden met een partner die een dynamisch IP adres heeft.",
+      "2": "Gebruik bijvoorbeeld de volgende gratis services: <a href='https://www.noip.com/'>https://www.noip.com</a>, <a href='https://www.duckdns.org/'>https://www.duckdns.org/</a>"
+    }
+  },
+  "camera": {
+    "title": "Camera",
+    "subTitle": "Camera configuratie",
+    "cameraType": "Camera type",
+    "cameraHelpBlock": "Selecteer camera type",
+    "protocol": "Protocol",
+    "protocolDescription": "Selecteer UDP or TCP.",
+    "tcpHost": "TCP host",
+    "tcpHostDescription": " Voeg TPC host IP adres toe, dit is het IP adres van de raspberry.",
+    "resolution": "Resolutie.",
+    "resolutionDescription": "Selecteer video resolutie.",
+    "width": "Breedte",
+    "height": "Hoogte",
+    "bitrate": "Bitrate",
+    "bitrateDescription": "Default : 2000000 or 2Mbits/s. Use bits per second, so 10Mbits/s would be 10000000. For H264, 1080p30 a high quality bitrate would be 15Mbits/s or more. Maximum bitrate is 25Mbits/s (25000000), but much over 17Mbits/s won't show noticeable improvement at 1080p30.",
+    "bitrateHelpBlock": "Bitrate",
+    "rotation": "Rotation",
+    "rotationDescription": "Sets the rotation of the image in the viewfinder and resulting image. This can take any value from 0 upwards, but due to hardware constraints only 0, 90, 180, and 270 degree rotations are supported",
+    "rotationHelpBlock": "Rotation",
+    "contrast": "Contrast",
+    "contrastDescription": "Sets the contrast of the image. 0 is the default",
+    "contrastHelpBlock": "Contrast",
+    "brightness": "Brightness",
+    "brightnessDescription": "Sets the brightness of the image. 50 is the default. 0 is black, 100 is white",
+    "brightnessHelpBlock": "Brightness",
+    "autowhitebalance": "Automatic White Balance",
+    "autowhitebalanceDescription": "Default Value: Auto. Modes for which colour temperature ranges (K) are available have these settings in brackets.",
+    "autowhitebalanceHelpBlock": "White Balance",
+    "framesPrSecond": "Frames per seconde",
+    "framesPrSecondDescription": "Default value = 20. At present, the minimum frame rate allowed is 2fps, and the maximum is 30fps",
+    "framesPrSecondHelpBlock": "FPS",
+    "cameraFlip": "Camera omkeren",
+    "cameraFlipDescription": " Selecteer de camera orientatie, Horizontaal of verticaal gedraait.",
+    "cameraFlipHelpBlock": "Orientation",
+    "httplivestreamHeader": "HTTP live stream",
+    "httplivestreamDescription": "Recommended settings for In-Browser live stream<br />FPS => 10 - 15<br />Resolution => 960x540<br />",
+    "httplivestreamLink": "Goto VideoStream Page",
+    "buttons": {
+      "start": "Start camera",
+      "stop": "Stop camera",
+      "logFile": "Logfile"
+    },
+    "tips": {
+      "title": "Tips",
+      "1": "Selecteer <b>custom pipeline</b> en voeg deze code in om een <b>test video stream</b>. te openen, dit is handig om te testen zonder camera. Verander het IP adres en poortnummer zodat ze overeenkomen met je instellingen<br /> <code>gst-launch-1.0 videotestsrc ! x264enc ! video/x-h264, stream-format=byte-stream ! rtph264pay ! udpsink host=192.168.1.100 port=5600</code>",
+      "2": "<b>Mission planner</b> en <b>QGroundControl</b> detecteren automatisch een video stream op poort <code>5600</code>",
+      "3": "Om een <b>UDP</b> video stream te openen op een Windows computer, installeer gstreamer and gebruik deze pipeline. Vergeet niet om de poort gelijk te zetten aan je instellingen.<br /><code>gst-launch-1.0 -v udpsrc port=5600 caps='application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264' ! rtpjitterbuffer ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false</code>",
+      "4": "Om een <b>TCP</b> video stream te openen op een Windows computer (Allen voor PiCam), installeer gstreamer and gebruik deze pipeline. Vergeet niet om de poort gelijk te zetten aan je instellingen.<br /> <code>gst-launch-1.0 -v tcpclientsrc host='Pi-IP' port=5600 ! gdpdepay ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false</code>"
+    }
+  },
+  "vpn": {
+    "title": "VPN",
+    "subTitle": "Virtual Private Network",
+    "enableText": "VPN inschakelen?",
+    "services": "Provider",
+    "servicesDescription": "Selecteer in het dropdown menu.",
+    "configuration": "Configuratie",
+    "configurationDescription": "De <b>openvpn</b> configuratie bestand.<br /> Bekijk de VPN help sectie hoe deze file te downloaden / genereren",
+    "openVpnfileUploadText": "Upload hier je OVPN configuratie bestand",
+    "openVpnDeleteFile": "Verwijder bestand",
+    "buttons": {
+      "connect": "Verbind",
+      "disconnect": "Verbreek verbinding",
+      "viewVpnInterface": "Bekijk VPN Interface",
+      "logfile": "Logfile",
+      "interfaces": "Interfaces",
+      "ZTconnectionInfo": "ZeroTier connectie info",
+      "ZTlistPeers": "ZeroTier peers lijst"
+    },
+    "tips": {
+      "title": "Tips",
+      "1": "Het is aan te raden om ZeroTier VPN te gebruiken. Deze is eenvoudig in te stellen en gebruikt NAT travesal. ZeroTier zet een directe connectie op zonder tussenkomst van een externe server. dit verminderd de latency.",
+      "2": "Google biedt een service aan voor het eenvoudig opzetten van een VPN server, voor meer informatie: <a href='https://openvpn.net/index.php/access-server/on-google-cloud.html'>https://openvpn.net/index.php/access-server/on-google-cloud.html</a>"
+    }
+  },
+  "settings": {
+    "license": {
+      "title": "UAV-cast licentie",
+      "subTitle": "Licentie gebruik overzicht",
+      "licenseKey": "Licentie code",
+      "changeKey": "Verander licentie",
+      "licenseStatus": "Licensie status",
+      "allowedDevices": "Toegestane apparaten",
+      "remainingDevices": "Overige apparaten",
+      "freeUpSlots": "Maak slots vrij",
+      "currentDevice": "(huidige)",
+      "unregisterDevice": "verwijder registratie",
+      "registeredUser": "Geregistreerde naam",
+      "activationDate": "Activatie datum",
+      "expirationDate": "Verval Datum",
+      "raspberryVersion": "Raspberry Versie",
+      "orderId": "Order ID",
+      "supportText": "Please feel free to contact us if you need any further information",
+      "buttons": {
+        "validate": "Valideer",
+        "cancel": "Cancel"
+      }
+    },
+    "applicationVersion": {
+      "title": "Applicatie versie",
+      "subTitle": "Applicatie overzicht",
+      "currentVersion": "Huidige versie",
+      "changeLog": "Changelog",
+      "application": "Applicatie",
+      "rollbackVersion": "Downgrade naar oudere versie",
+      "rollbackText": "Downgrade naar",
+      "newVersionAvailable": "Nieuwe versie beschikbaar",
+      "upgradeSuccess": "Installatie compleet, vernieuw de pagina.",
+      "newversionExist": "Dit is de meest recente software versie",
+      "buttons": {
+        "refreshBrowser": "Vernieuw browser",
+        "downgradeNow": "downgrade nu!",
+        "checkForUpdates": "Check voor updates",
+        "updateNow": "Update nu!"
+      }
+    },
+    "applicationSettings": {
+      "title": "settings",
+      "darkTheme": "Donker thema",
+      "darkThemeDescription": "Change between Light or Dark scheme",
+      "serverMessages": "Server berichten",
+      "serverMessagesDescription": "Get real time messages from the server, such as undervoltage, CPU throttling. It will be highlighted in the header section",
+      "serverPort": "Server poort",
+      "serverPortDescription": "Change the default server port. Standard port 80. <br />Do not change if you dont know what you are doing!",
+      "serverPortHelpBLock": "Standaard poort 80",
+      "applicationLanguage": "Application Language",
+      "applicationLanguageDescription": "Bijdragen? lees: <a target='_blank' href='https://github.com/UAVmatrix/uavcast-pro-translations'>here</a>",
+      "applicationLanguageHelpBlock": "Standaardtaal selecteren",
+      "backupTitle": "Backup Database",
+      "backupDescription": "Backup all of your configurations.",
+      "resetLogfilesTitle": "Erase Logfiles",
+      "resetLogfilesDescription": "Logfiles will accumulate over time and it could be usefull to erase them if you troubleshooting an issue.",
+      "resetDatabaseTitle": "Reset Database",
+      "resetDatabaseDescription": "This will not erase userdata such as license, but all configurations will be lost.",
+      "restoreTitle": "Restore Database",
+      "restoreDescription": "Restore database from an earlier backup. (.zip) <br /> NOTE! All current config will be overwritten.",
+      "restore": "Backup all of your configurations.",
+      "buttons": {
+        "resetLogfiles": "Erase Files",
+        "resetDatabase": "Reset Database",
+        "backup": "Backup Database",
+        "restore": "Restore Database",
+        "changePort": "Change"
+      }
+    }
+  },
+  "raspberry": {
+    "diagnostic": {
+      "title": "Raspberry",
+      "rebootNotification": {
+        "title": "Raspberry rebooten",
+        "content": "Zorg dat alle instellingen zijn opgeslagen!",
+        "cancel": "Stop",
+        "approve": "Reboot"
+      },
+      "shutdownNotification": {
+        "title": "Raspberry afsluiten?",
+        "content": "Zorg dat alle instellingen zijn opgeslagen!",
+        "cancel": "Stop",
+        "approve": "Afsluiten"
+      },
+      "buttons": {
+        "reboot": "Reboot",
+        "shutdown": "Afsluiten",
+        "usbDevices": "USB apparaten",
+        "kernelMessages": "Berichten van kernel",
+        "network": "Netwerk",
+        "speedTest": "Snelheidstest",
+        "process": "Processen",
+        "sendCommand": "Stuur commando"
+      },
+      "customTerminal": {
+        "title": "Raspberry terminal",
+        "helpText": "voorbeeld, typ <code>ls</code> om alle bestanden in de hoofdmap te bekijken"
+      },
+      "tips": {
+        "title": "Troubleshooting tips",
+        "1": "Download logfiles en contacteer software eigenaar als er zich problemen voordoen"
+      }
+    },
+    "network": {
+      "hostname": {
+        "title": "Hostname",
+        "description": "A hostname is the label assigned to your RPI. Its used to distinguish one device from another on a network. You can access your RPI using the hostname instead of IP address. Default name is <a target='_blank' rel='noopener noreferrer' href='http://raspberrypi/'>raspberrypi</a>"
+      },
+      "interface": {
+        "title": "Interfaces",
+        "description": "You will find all active interfaces below. Box with green outline is your default connection to the outer world.<br />Do not change any values while in flight, this might disconnect you from the vehicle.",
+        "ipaddress": "IP Address",
+        "netmask": "Netmask",
+        "gateway": "Gateway",
+        "ipv6": "IPv6",
+        "buttons": {
+          "save": "Save"
+        }
+      },
+      "route": {
+        "title": "Default network route",
+        "pre-description": "Raspberry Pi is currently using gateway",
+        "post-description": "to access the World Wide Web.",
+        "description": "You can specify another default interface from the dropdown bellow. Only physical devices can be selected, not VPN or other bridged interface.<br />Raspberry will still use other interfaces, but priority the one you select as first option."
+      },
+      "wifi": {
+        "title": "WiFi Network",
+        "description": "Disconnect wifi adapter temporarily. It will re-connect during next startup.",
+        "scantext": "Scan for WiFi networks.",
+        "connecttext": "Press the network name you want to connect to.",
+        "buttons": {
+          "disconnect": "Disconnect WiFi",
+          "scannow": "Scan Now"
+        },
+        "table": {
+          "ssid": "SSID",
+          "signal": "Signal",
+          "channel": "Channel"
+        },
+        "modal": {
+          "title": "Warning!",
+          "description": "You are about to disconnect WiFI interface.<br />Make sure you are connected by other means if you want to stay connected.<br /> Are you sure you want to proceed?",
+          "accepttext": "Proceed"
+        }
+      }
+    },
+    "led": {
+      "title": "LED Control",
+      "statusLedTitle": "OnBoard Status LED",
+      "statusLedSubTitle": "Select a status to enable the onboard status (green) LED",
+      "statusLedHelpBlock": "Select a tigger status",
+      "powerLedTitle": "OnBoard Power LED",
+      "powerLedSubTitle": "Select a status to enable the onboard power (red) LED. <br /><b>Note!</b> Not all boards is equiped with power LED.",
+      "powerLedHelpBlock": "Select a tigger status"
+    }
+  },
+  "uavcast": {
+    "title": "Review LogFiles",
+    "troubleshootingText": "If you need any assistance or have a issue you want to address, then download application logfiles and submit them to",
+    "buttons": {
+      "uavcast": "UAVcast",
+      "dynDns": "DynDNS",
+      "video": "Video",
+      "telemetry": "Telemetrie",
+      "navio": "Navio",
+      "downloadLogfiles": "Download alle logfiles"
+    },
+    "tips": {
+      "title": "Probleemoplossing, tips",
+      "1": "Download log files en post ze hier als er zich problemen voordoen"
+    }
+  }
+}

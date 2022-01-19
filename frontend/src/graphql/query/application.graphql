@@ -1,0 +1,7 @@
+query getApplication {
+  getApplication {
+    properties {
+      webPort
+    }
+  }
+}

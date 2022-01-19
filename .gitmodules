@@ -1,0 +1,3 @@
+[submodule "/frontend/src/translations/locales"]
+path = frontend/src/translations/locales
+url = https://sinamics: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@github.com/UAVmatrix/uavcast-pro-translations.git

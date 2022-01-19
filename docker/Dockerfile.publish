@@ -1,0 +1,99 @@
+FROM node:14.4.0 as backend
+ARG USERNAME=uavcast
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+WORKDIR /backend
+
+# backend
+COPY ["backend/package.json", \
+      "backend/ormconfig.js", \
+      "backend/.eslintignore", \
+      "backend/ormconfig.js", \
+      "backend/tsconfig.json", "./"]
+
+COPY ["backend/src", "./src"]
+
+RUN npm install
+
+RUN mkdir dist
+RUN npm run build
+
+# frontend
+FROM node:14.4.0 as frontend
+
+WORKDIR /frontend
+
+# install app dependencies
+COPY [  "frontend/package.json", \
+        "frontend/.env", \
+        "frontend/.eslintignore", \
+        "frontend/codegen.yml", \
+        "frontend/tsconfig.json", "./"]
+
+COPY ["frontend/src", "./src"]
+COPY ["frontend/public", "./public"]
+
+RUN ls  -l
+RUN npm i node-gyp -g
+RUN npm install --legacy-peer-deps
+RUN npm run build
+
+
+## make app
+FROM sinamics/debian-uavcast-base:latest as main
+LABEL maintainer="Bernt Christian Egeland / uavmatrix.com"
+
+WORKDIR /app/uavcast
+
+ARG USERNAME=uavcast
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    #
+    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+COPY --from=backend /backend ./backend
+COPY --from=frontend /frontend/build ./frontend/build
+
+COPY ["install", "./install"]
+COPY ["bin", "./bin"]
+COPY ["docker", "./docker"]
+
+# systemctl3
+COPY init/systemctl3.py /bin/systemctl
+COPY init/systemctl3.py /bin/systemctl3.py
+COPY init/journalctl3.py /bin/journalctl
+
+RUN chmod +x -R ./docker/bin \
+                ./bin/build \
+                ./bin/mavlink \
+                ./bin/python \
+                /bin/systemctl \
+                /bin/systemctl3.py \
+                /bin/journalctl
+
+RUN sudo touch /var/run/docker.sock
+RUN sudo chmod 666 /var/run/docker.sock
+
+# #changes the ownership of /var/run/docker.sock
+RUN sudo chown uavcast:docker /var/run/docker.sock
+
+#gives uavcast user permissions to access /var/run/docker.sock
+RUN sudo usermod -a -G docker root
+
+ENV NODE_ENV=production
+
+RUN ["/app/uavcast/docker/bin/./prod-build.sh"]
+
+# Make sure we set the webport stored in the database, if user uses another port than standard 80
+# ENTRYPOINT ["/bin/systemctl"]
+
+ENTRYPOINT ["/app/uavcast/docker/bin/entrypoint.sh"]
+CMD ["/bin/systemctl"]
+

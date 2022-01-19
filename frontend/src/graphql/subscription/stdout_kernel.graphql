@@ -1,0 +1,9 @@
+subscription stdout {
+  stdout {
+    message
+    errors {
+      path
+      message
+    }
+  }
+}

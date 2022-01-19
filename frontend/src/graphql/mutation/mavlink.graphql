@@ -1,0 +1,3 @@
+mutation sendMavCommand($type: String!, $value: String!) {
+  sendMavCommand(type: $type, value: $value)
+}

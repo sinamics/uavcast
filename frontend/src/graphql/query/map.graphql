@@ -1,0 +1,5 @@
+query map {
+  map {
+    mavCockpitDisable
+  }
+}

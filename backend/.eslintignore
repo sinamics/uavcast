@@ -1,0 +1,9 @@
+node_modules/*
+dist/*
+src/mavlink/v2.0/dialects
+src/mavlink/v2.0/processor.js
+src/mavlink/v2.0/mavCommand/*
+src/mavlink/lib/*
+src/migration
+
+ormconfig.js

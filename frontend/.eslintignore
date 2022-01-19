@@ -1,0 +1,5 @@
+src/utils/apolloClient.tsx
+src/graphql/*
+node_modules/*
+build/*
+public/*

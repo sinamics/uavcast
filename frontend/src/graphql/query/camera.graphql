@@ -1,0 +1,31 @@
+query cameraData {
+  cameraData {
+    database {
+      id
+      cameraType
+      protocol
+      resolution
+      enableCamera
+      customPipeline
+      framesPrSecond
+      bitratePrSecond
+      contrast
+      rotation
+      brightness
+      whiteBalance
+      flipCamera
+    }
+    availableCams {
+      device
+      value
+      text
+      caps {
+        value
+        text
+        height
+        width
+        format
+      }
+    }
+  }
+}

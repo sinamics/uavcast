@@ -1,0 +1,30 @@
+version: '3'
+services:
+  dev:
+    container_name: uavcast-dev
+    user: uavcast
+    privileged: true
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    restart: always
+    # network_mode: 'host'
+    volumes:
+      - .:/app/uavcast:cached
+      - uavdata:/app/uavcast/data
+      - /var/lib/zerotier-one:/var/lib/zerotier-one:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /dev:/dev:ro
+    ports:
+      - '3000:3000'
+    # environment:
+    #   - REACT_APP_UAVCAST_VER="5.0.0-rc10"
+    # depends_on:
+    #   - supervisor
+    entrypoint:
+      - '/bin/systemctl'
+    # command: /bin/sh -c "while sleep 1000; do :; done"
+    tty: true
+    stdin_open: true
+volumes:
+  uavdata:

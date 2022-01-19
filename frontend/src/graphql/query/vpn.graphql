@@ -1,0 +1,25 @@
+query vpnData {
+  vpnData {
+    data {
+      id
+      enableVpn
+      serviceProvider
+      networkId
+      username
+      password
+    }
+  }
+}
+
+query zerotierNetworks {
+  zerotierNetworks {
+    networks {
+      assignedAddresses
+      name
+      nwid
+      portDeviceName
+      status
+      type
+    }
+  }
+}

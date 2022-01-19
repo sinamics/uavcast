@@ -1,0 +1,13 @@
+subscription status {
+  status {
+    mavproxy
+    has_camera
+    video
+    modem
+    uavcast_systemd_active
+    uavcast_systemd_enabled
+    vpn
+    undervoltage
+    arch
+  }
+}

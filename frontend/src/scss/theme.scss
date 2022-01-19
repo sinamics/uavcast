@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+
+// Light theme logo
+$navbar-brand-logo: url('../../images/header/LogoLightTheme.png') !default;
+
+// Dark theme logo
+$navbar-brand-minimized-logo: url('../../images/header/LogoLightTheme.png') !default;
+html {
+  --primaryFont: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  /* --primaryFont: 'Poppins', sans-serif; */
+
+  --primaryTheme: #fff;
+
+  --primaryBg: #fff;
+
+  --primaryText: #212121;
+
+  --primaryTextMuted: rgba(116, 116, 116, 0.986);
+
+  --primarySiderbar: #334864;
+
+  --primaryCardHeader: #f8f9fa;
+
+  --primaryCardBody: #fbfbfb;
+
+  --primaryBorderBg: #efefef;
+
+  --primaryLogo: url('../images/header/LogoLightTheme.png');
+}
+html[data-theme='dark'] {
+  --primaryTheme: #383838;
+  --primaryBg: #131314;
+  --primarySiderbar: #191919;
+  --primaryCardHeader: #2c2b2b;
+  --primaryCardBody: #2c2b2b;
+  --primaryText: rgba(235, 235, 235, 0.986);
+  --primaryTextMuted: rgba(116, 116, 116, 0.986);
+  --primaryBorderBg: #292929;
+  --primaryLogo: url('../images/header/LogoDarkTheme.png');
+
+  // change card, dimmable, message background, only when dark mode
+  :is(.theme.ui.card, .ui.segment.dimmed.dimmable, .ui.message.theme) {
+    background-color: var(--primaryBg) !important;
+  }
+}
+
+/* :is(h1, h2, h3, h4, h5, h6, p) {
+  color: var(--primaryText);
+} */
+
+// text color theme
+:is(.themeText, .ui.header, .description, .ui.table *, .divider.text, .divider) {
+  color: var(--primaryText) !important;
+}
+:is(.themeSubText) {
+  color: var(--primaryTextMuted) !important;
+}
+// theme background
+:is(.themeBg) {
+  background-color: var(--primaryBg) !important;
+}
+
+// Sidebar theme
+:is(.sidebar-nav, .sidebar-minimizer, .app-header, .navbar-brand) {
+  background-color: var(--primarySiderbar) !important;
+}
+
+// Header theme
+:is(.app-header, .navbar-brand) {
+  background-color: var(--primaryTheme) !important;
+}
+
+:is(.cardHeader, .ui.button.dropdown) {
+  background-color: var(--primaryCardHeader) !important;
+}
+:is(.ui.basic.table) {
+  border-color: #f8f9fa !important;
+}
+
+:is(.description, .sub.header, .hand.point) {
+  color: var(--primaryTextMuted) !important;
+}
+:is(.CodeMirror, .react-codemirror2) {
+  font-family: Arial, monospace;
+  font-size: 15px;
+  height: 100% !important;
+}
+.navbar-brand {
+  background-image: var(--primaryLogo) !important;
+}
+
+.table-darkmode tbody tr td {
+  color: var(--primaryText);
+}
+
+:is(.main) {
+  background-color: var(--primaryBg);
+}
+
+.aplication-newversion-notification {
+  background-color: var(--primaryBorderBg) !important;
+}
+
+// removed modal.scss from core in /node_modules/bootstrap/scss/modal.scss!!!!
+
+// .ui.active.modal {
+//   margin: 0 auto !important;
+//   top: auto !important;
+//   left: auto !important;
+//   transform-origin: center !important;
+//   transition: all ease 0.5s;
+// }

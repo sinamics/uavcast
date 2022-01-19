@@ -1,0 +1,25 @@
+# mutation connectSupervisor {
+#   connectSupervisor
+# }
+
+mutation updateUavcastContainer($version: String!) {
+  updateUavcastContainer(version: $version) {
+    message
+    errors {
+      message
+      path
+    }
+  }
+}
+mutation updateSupervisorContainer($version: String!) {
+  updateSupervisorContainer(version: $version) {
+    message
+    errors {
+      message
+      path
+    }
+  }
+}
+mutation supervisorCommands($type: String!, $command: String) {
+  supervisorCommands(type: $type, command: $command)
+}

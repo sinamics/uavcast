@@ -1,0 +1,20 @@
+mutation removeLogfile($filename: String!) {
+  removeLogfile(filename: $filename)
+}
+mutation removeAllLogfiles {
+  removeAllLogfiles
+}
+mutation pruneLogFiles($service: String!) {
+  pruneLogFiles(service: $service)
+}
+mutation setLoggerParameters($parameters: LogParameters!) {
+  setLoggerParameters(parameters: $parameters) {
+    logs {
+      id
+      cellSignal
+      satellites
+      altitude
+      resolution
+    }
+  }
+}

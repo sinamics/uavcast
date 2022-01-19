@@ -1,0 +1,8 @@
+mutation updateApplication($properties: ApplicationProperties!) {
+  updateApplication(properties: $properties) {
+    properties {
+      id
+      webPort
+    }
+  }
+}

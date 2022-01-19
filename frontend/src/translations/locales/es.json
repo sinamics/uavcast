@@ -1,0 +1,467 @@
+{
+  "headerLinks": {
+    "discord": "Discord",
+    "community": "Forum",
+    "documentation": "Documentation"
+  },
+  "sidebarLinks": {
+    "categories": {
+      "header": "Panel de control",
+      "settings": {
+        "title": "Configuración",
+        "flightController": "Controladora de vuelo",
+        "groundControl": "Estación Terrestre de Control",
+        "cellModem": "Cell Modem",
+        "dynamicDns": "DNS Dinámico",
+        "camera": "Cámara",
+        "vpn": "VPN"
+      },
+      "tools": {
+        "title": "Herramientas",
+        "raspberry": "Raspberry",
+        "diagnostic": "Diagnostic",
+        "network": "Network",
+        "led": "Led"
+      },
+      "application": {
+        "title": "Aplicación",
+        "settings": "Configuración",
+        "version": "Versión"
+      }
+    }
+  },
+  "dashboard": {
+    "uavcast": {
+      "statusLeds": {
+        "information": "Monitorización de la ejecución de las aplicaciones. Valida tu configuración o los archivos de registro si encuentras cualquier problema.",
+        "telemetry": "Telemetría:",
+        "video": "Vídeo:",
+        "modem": "Módem:",
+        "dns": "DNS:",
+        "vpn": "VPN:",
+        "autostart": "Inicio Automático:"
+      },
+      "buttons": {
+        "startCasting": {
+          "title": "Iniciar / Detener Emisión",
+          "information": "Esta opción iniciará todas las aplicaciones que hayas habilitado en el orden correcto.",
+          "start": "Iniciar Emisión",
+          "stop": "Detener Emisión"
+        },
+        "autostart": {
+          "title": "Habilitar Inicio Automático (IA)",
+          "information": "UAVcast se iniciará automáticamente cuando la Raspberry se reinicie.",
+          "enable": "Habilitar IA",
+          "disable": "Deshabilitar IA"
+        }
+      }
+    },
+    "statusCards": {
+      "gcs": {
+        "title": "Estación Terrestre de Control",
+        "text1": "Target #1",
+        "text2": "Puerto de Telemetría:"
+      },
+      "modem": {
+        "title": "Módem",
+        "text1": "Estado:",
+        "text2": "APN:"
+      },
+      "camera": {
+        "title": "Cámara",
+        "text1": "Estado:",
+        "text2": "Tipo:"
+      },
+      "dns": {
+        "title": "DNS Dinámico de la Raspberry",
+        "text1": "Estado:",
+        "text2": "Alias:"
+      }
+    },
+    "montioring": {
+      "cpu": {
+        "title": "CPU",
+        "temperature": "Temperatura @"
+      },
+      "storage": {
+        "title": "Almacenamiento",
+        "total": "Total",
+        "used": "Usado",
+        "free": "Disponible"
+      },
+      "memory": {
+        "title": "Memoria",
+        "total": "Total",
+        "used": "Usado",
+        "free": "Disponible"
+      },
+      "network": {
+        "title": "Estadísticas de Red",
+        "subTitle": "Actualizado cada 10seg",
+        "interface": "Interfaz",
+        "received": "Recibido",
+        "sent": "Enviado",
+        "rx": "Rx (pr.seg)",
+        "tx": "Tx (pr.seg)",
+        "lateancy": "Latencia (ms)"
+      }
+    }
+  },
+  "flightcontroller": {
+    "title": "Controladora de Vuelo",
+    "subTitle": "Configuración de la Controladora de Vuelo",
+    "fcType": "Tipo de CV",
+    "fcTypeDescription": "Escoge una controladora de vuelo. Todas las versiones de ArduPilot y Px4 estan soportadas.",
+    "connection": "Conexión",
+    "connectionDescription": "Seleccionar método de conexión",
+    "baud": "Velocidad de transmisión",
+    "baudDescription": "Escoge la velocidad de transmisión",
+    "protocol": "Protocolo",
+    "protocolDescription": "Selecciona protocolo de conexión",
+    "internal_address_header": "FC Internal Address",
+    "internal_address_description": "This is the internal address raspberry uses for communication with Flight Controller. <br /> Only change if you know what you are doing!",
+    "buttons": {
+      "start": "Iniciar conexión",
+      "stop": "Detener conexión",
+      "logfile": "Archivo de registro"
+    },
+    "tips": {
+      "1": "Es muy importante que tanto la RPI como la CV compartan el mismo punto de tierra eléctrico si se ha conectado tu CV a la RPI mediante GPIO. La comunicación serial depende de ello.",
+      "2": "Si experimentas problemas utilizando el cable USB, asegurate que has desconectado todos los otros dispositivos USB de tu RPI. Algunos dispositivos USB pueden crear conflictos."
+    },
+    "navio": {
+      "vehicle": "Vehículo",
+      "launchOptions": "Launching options (Optional)",
+      "launchOptionsDescription": "Mapping between switches and serial ports."
+    }
+  },
+  "groundControlStation": {
+    "title": "Estación Terreste de Control",
+    "subTitle": "Añade la IP de la Estación Terrestre de Control y el Puerto.",
+    "subTitle1": "<b>NOTE!</b> La dirección IP solo es necesaria si se selecciona el protocolo UDP para la emisión de Telemetría o Vídeo",
+    "buttons": {
+      "addDestinations": "Añadir destinatario"
+    },
+    "destinationModule": {
+      "name": "Nombre",
+      "host": "Anfitrión",
+      "telemPort": "Puerto de Telem.",
+      "videoPort": "Puerto de Vídeo",
+      "videoSwitch": "Vídeo",
+      "telemSwitch": "Telemetría",
+      "portCheck": "Verificación del Puerto",
+      "removeModule": "Eliminar"
+    }
+  },
+  "modem": {
+    "title": "Módem",
+    "subTitle": "Administrador del Módem",
+    "enableText": " ¿Habilitar Módem? <br /> Con el <b>Administrador del Módem</b> podrás establecer una conexión con tu operadora móvil. Puedes encontrar todos los dispositivos con soporte",
+    "model": "Modelo",
+    "modelDescription": "Escoge entre Stick o HiLink<br /> Example: <code>E3276H</code> (Carácter final)<br /> Los modems HiLink utilizan software incrustado para conectarse a redes LTE / 4G.",
+    "hilinkInterface": "Interfaz",
+    "hilinkInterfaceDescription": "Establece el nombre de interfaz del módem HiLink. Normalmente se corresponde con <code>eth1</code> para la RPI 2/3 y con <code>eth0</code> para la Pi0w.<br /> El LED se iluminará de color verde sila interfaz tiene acceso a internet.",
+    "manager": "Modelo",
+    "managerDescription": "Selecciona si quieres usar el Administrador de Red o el Administrador del Módem para configurar la conexión móvil. Los módems pueden comportarse de manera distina así que es recomendable probar ambas opciones si aparecen problemas. Es recomendable reiniciar la RPI si cambia entre opciones.",
+    "stickInterface": "Interface",
+    "stickInterfaceDescription": "Establece un nombre de interfaz para el Stick Modem. Normalmente suele ser <code>wwan0</code> o <code>ppp0</code>. Puedes ver el nombre de interfaz presionando el botón de red de más abajo.<br /> El LED se volverá verde si la interfaz tiene buena conexión a internet.",
+    "apn": "APN",
+    "apnDescription": "El Access Point Name es el nombre de la puerta de enlace entre una conexión móvil GSM, GPRS, 3G or 4G y otra red de ordenadores, frecuentemente la red de internet pública",
+    "internalAddress": "Internal Address",
+    "internalAddressDescription": " Dirección interna del módem USB. Estos módems normalmente utilizan <br /><code>cdc-wdm0</code>. Puedes especificar otra dirección si es necesario.",
+    "username": "Usuario",
+    "usernameDescription": "La mayoria de los operadores no requieren usuario, pero algunos sí.",
+    "password": "Contraseña",
+    "passwordDescription": "La mayoría de los operadores no requieren contraseña, pero algunos sí. ",
+    "pin": "PIN",
+    "pinDescription": "Tu código pin, si no has deshabilitado la autorización por pin anteriormente",
+    "buttons": {
+      "connect": "Conectar",
+      "disconnect": "Desconectar",
+      "availableModems": "Módems disponibles",
+      "network": "Red",
+      "modemInformation": "Información del módem",
+      "connectionStatus": "Estado de la conexión"
+    },
+    "tips": {
+      "title": "Consejos para Solucionar Problemas",
+      "1": "Los módems HiLink funcionaran de la misma manera que un cable Ethernet. RPI estará online tan pronto como se conecte el módem.",
+      "2": "Puedes encontrar todos los módems con soporte aquí <a href='https://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/'>https://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/</a>"
+    }
+  },
+  "dynamicDns": {
+    "title": "DNS",
+    "subTitle": "Configuración DNS Dinámico",
+    "enableText": "¿Habilitar DNS Dinámico?",
+    "username": "Usuario",
+    "usernameDescription": "Tu nombre de usuario del DNS local.",
+    "usernameHelpBlock": "Por favor introduzca un usuario",
+    "password": "Contraseña",
+    "passwordDescription": "Tu contraseña del DNS local.",
+    "passwordHelpBlock": "Por favor introduzca una contraseña",
+    "alias": "Alias",
+    "aliasDescription": "El Alias de la DNS es tu nueva dirección",
+    "aliasHelpBlock": "Por favor introduce un alias para la DNS",
+    "dnsSystem": "Sistema DNS",
+    "dnsSystemDescription": "Un Sistema DNS ha sido creado por tu servidor",
+    "dnsSystemHelpBlock": "Por favor introduce un Sistema DNS",
+    "buttons": {
+      "connect": "Conectar",
+      "disconnect": "Desconectar"
+    },
+    "tips": {
+      "title": "Consejos para Solucionar Problemas",
+      "1": "Utilizar DDNS o DynamicDNS es una manera de asignar una url a una dirección IP. Es conveniente si se desea conectar un socio remoto con una IP dinámica.",
+      "2": "Podéis utilizar algun distribuidor gratuito como <a href='https://www.noip.com/'>https://www.noip.com</a>, <a href='https://www.duckdns.org/'>https://www.duckdns.org/</a>"
+    }
+  },
+  "camera": {
+    "title": "Cámara",
+    "subTitle": "Configuración de la Cámara",
+    "cameraType": "Tipo de Cámara",
+    "cameraHelpBlock": "Selecciona el tipo de cámara",
+    "protocol": "Protocolo",
+    "protocolDescription": "Selecciona UDP o TCP.",
+    "tcpHost": "TCP Host",
+    "tcpHostDescription": " Añade la dirección IP para el Anfitrión TCP. Suele corresponderse con la IP de la RPI.",
+    "resolution": "Resolución.",
+    "resolutionDescription": "Selecciona la resolución de vídeo.",
+    "width": "Anchura",
+    "height": "Altura",
+    "bitrate": "Bitrate",
+    "bitrateDescription": "Default : 2000000 or 2Mbits/s. Use bits per second, so 10Mbits/s would be 10000000. For H264, 1080p30 a high quality bitrate would be 15Mbits/s or more. Maximum bitrate is 25Mbits/s (25000000), but much over 17Mbits/s won't show noticeable improvement at 1080p30.",
+    "bitrateHelpBlock": "Bitrate",
+    "rotation": "Rotation",
+    "rotationDescription": "Sets the rotation of the image in the viewfinder and resulting image. This can take any value from 0 upwards, but due to hardware constraints only 0, 90, 180, and 270 degree rotations are supported",
+    "rotationHelpBlock": "Rotation",
+    "contrast": "Contrast",
+    "contrastDescription": "Sets the contrast of the image. 0 is the default",
+    "contrastHelpBlock": "Contrast",
+    "brightness": "Brightness",
+    "brightnessDescription": "Sets the brightness of the image. 50 is the default. 0 is black, 100 is white",
+    "brightnessHelpBlock": "Brightness",
+    "autowhitebalance": "Automatic White Balance",
+    "autowhitebalanceDescription": "Default Value: Auto. Modes for which colour temperature ranges (K) are available have these settings in brackets.",
+    "autowhitebalanceHelpBlock": "White Balance",
+    "framesPrSecond": "Frames Pr.segundo",
+    "framesPrSecondDescription": "Default value = 20. At present, the minimum frame rate allowed is 2fps, and the maximum is 30fps",
+    "framesPrSecondHelpBlock": "FPS",
+    "cameraFlip": "Camera Flip",
+    "cameraFlipDescription": " Select the image orientation. Horizontal or vertical flip.",
+    "cameraFlipHelpBlock": "Orientation",
+    "httplivestreamHeader": "HTTP live stream",
+    "httplivestreamDescription": "Recommended settings for In-Browser live stream<br />FPS => 10 - 15<br />Resolution => 960x540<br />",
+    "httplivestreamLink": "Goto VideoStream Page",
+    "buttons": {
+      "start": "Iniciar Camára",
+      "stop": "Detener Camára",
+      "logFile": "Archivo de registro"
+    },
+    "tips": {
+      "title": "Tips",
+      "1": "Selecciona <b>tubería personalizada</b> y añade este código para generar una <b>emisión de vídeo de prueba/b>. Es bueno probarlo sin tener ninguna cámara conectada. Debes cambiar la dirección IP y el Puerto para que se corresponda con tu configuración <br /> <code>gst-launch-1.0 videotestsrc ! x264enc ! video/x-h264, stream-format=byte-stream ! rtph264pay ! udpsink host=192.168.1.100 port=5600</code>",
+      "2": "<b>Mission planner</b> and <b>QGroundControl</b> detectarán automáticamente la emisión de vídeo en el puerto <code>5600</code>",
+      "3": "Para recibir <b>UDP</b> vídeo en un PC con Windows, instala gstreamer y utiliza la siguiente tubería. Recuerda cambiar la dirección IP y el Puerto para que se corresponda con tu configuración.<br /><code>gst-launch-1.0 -v udpsrc port=5600 caps='application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264' ! rtpjitterbuffer ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false</code>",
+      "4": "Para recibir <b>TCP</b> (Solo para PiCam) vídeo en un PC con Windows, instala gstreamer y utiliza la siguiente tubería. Recuerda cambiar la dirección IP y el Puerto para que se corresponda con tu configuración.<br /> <code>gst-launch-1.0 -v tcpclientsrc host='Pi-IP' port=5600 ! gdpdepay ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false</code>"
+    }
+  },
+  "vpn": {
+    "title": "VPN",
+    "subTitle": "Virtual Private Network",
+    "enableText": "¿Habilitar VPN?",
+    "services": "Servicios",
+    "servicesDescription": "Seleccionar del menú desplegable.",
+    "configuration": "Configuración",
+    "configurationDescription": "Tu archivo <b>openvpn</b> de configuración.<br /> Busca en la sección de ayuda de VPN para saber como generar / descargar este archivo.",
+    "openVpnfileUploadText": "Arrastra tu archivo ovpn aquí",
+    "openVpnDeleteFile": "Eliminar archivo",
+    "buttons": {
+      "connect": "Conectar",
+      "disconnect": "Desconectar",
+      "viewVpnInterface": "Ver Interfaz VPN",
+      "logfile": "Archivo de registro",
+      "interfaces": "Interfaces",
+      "ZTconnectionInfo": "ZeroTier Con Info",
+      "ZTlistPeers": "Lista de ZeroTier peers"
+    },
+    "tips": {
+      "title": "Consejos",
+      "1": "Es muy recomendable utilizar ZeroTier VPN. Es muy sencillo de configurar y utiliza la técnica NAT travesal. ZeroTier intentará establecer una conexión directa sin utilizar servidores de terceros, reduciendo así la latencia.",
+      "2": "Google proporciona una sencilla manera de montar un servidor openvpn. Leer más aquí <a href='https://openvpn.net/index.php/access-server/on-google-cloud.html'>https://openvpn.net/index.php/access-server/on-google-cloud.html</a>"
+    }
+  },
+  "settings": {
+    "license": {
+      "title": "Licencia de la Aplicación",
+      "subTitle": "Resumen Clave de Licencia",
+      "licenseKey": "Clave de Licencia",
+      "changeKey": "cambiar",
+      "licenseStatus": "Estado de la Licencia",
+      "allowedDevices": "Dispositivos Autorizados",
+      "remainingDevices": "Dispositivos Restantes",
+      "freeUpSlots": "Liberar espacios",
+      "currentDevice": "(actual)",
+      "unregisterDevice": "anular el registro",
+      "registeredUser": "Nombre registrado",
+      "activationDate": "Fecha de Activación",
+      "expirationDate": "Fecha de Vencimiento",
+      "raspberryVersion": "Versión de la Raspberry",
+      "orderId": "Solicitar ID",
+      "supportText": "Por favor contacte con nosotros si necesita más información",
+      "buttons": {
+        "validate": "Validar",
+        "cancel": "Cancelar"
+      }
+    },
+    "applicationVersion": {
+      "title": "Versión de la Aplicación",
+      "subTitle": "Resumen de la Aplicación",
+      "currentVersion": "Versión Actual",
+      "changeLog": "Changelog",
+      "application": "Aplicación",
+      "rollbackVersion": "Volver a una Versión Anterior",
+      "rollbackText": "Volver a la Versión:",
+      "newVersionAvailable": "Nueva Versión Disponible",
+      "upgradeSuccess": "Instalación completada, por favor actualiza la página.",
+      "newversionExist": "Ya dispones de la última versión",
+      "buttons": {
+        "refreshBrowser": "Actualiza el Navegador",
+        "downgradeNow": "¡Volver a versión anterior Ahora!",
+        "checkForUpdates": "Buscar Actualizaciones",
+        "updateNow": "¡Actualizar Ahora!"
+      }
+    },
+    "applicationSettings": {
+      "title": "Configuración",
+      "darkTheme": "Tema Oscuro",
+      "darkThemeDescription": "Change between Light or Dark scheme",
+      "serverMessages": "Mensajes del Servidor",
+      "serverMessagesDescription": "Get real time messages from the server, such as undervoltage, CPU throttling. It will be highlighted in the header section",
+      "serverPort": "Puerto del Servidor",
+      "serverPortDescription": "Change the default server port. Standard port 80. <br />Do not change if you dont know what you are doing!",
+      "serverPortHelpBLock": "Puerto Predeterminado 80",
+      "applicationLanguage": "Idioma de la Aplicación",
+      "applicationLanguageDescription": "¿Quieres colaborar con el proyecto? Visita <a target='_blank' href='https://github.com/UAVmatrix/uavcast-pro-translations'>here</a>",
+      "applicationLanguageHelpBlock": "Escoge tu idioma predeterminado",
+      "backupTitle": "Backup Database",
+      "backupDescription": "Backup all of your configurations.",
+      "resetLogfilesTitle": "Erase Logfiles",
+      "resetLogfilesDescription": "Logfiles will accumulate over time and it could be usefull to erase them if you troubleshooting an issue.",
+      "resetDatabaseTitle": "Reset Database",
+      "resetDatabaseDescription": "This will not erase userdata such as license, but all configurations will be lost.",
+      "restoreTitle": "Restore Database",
+      "restoreDescription": "Restore database from an earlier backup. (.zip) <br /> NOTE! All current config will be overwritten.",
+      "restore": "Backup all of your configurations.",
+      "buttons": {
+        "resetLogfiles": "Erase Files",
+        "resetDatabase": "Reset Database",
+        "backup": "Backup Database",
+        "restore": "Restore Database",
+        "changePort": "Change"
+      }
+    }
+  },
+  "raspberry": {
+    "diagnostic": {
+      "title": "Raspberry",
+      "rebootNotification": {
+        "title": "¿Quieres reinciar la Raspberry PI?",
+        "content": "¡Comprueba que hayas guardado todo correctamente!",
+        "cancel": "Cancelar",
+        "approve": "Reiniciar ahora"
+      },
+      "shutdownNotification": {
+        "title": "¿Quieres apagar la Raspberry PI?",
+        "content": "¡Comprueba que hayas guardado todo correctamente!",
+        "cancel": "Cancelar",
+        "approve": "Apagar ahora"
+      },
+      "buttons": {
+        "reboot": "Reiniciar",
+        "shutdown": "Apagar",
+        "usbDevices": "Dispositivos USB",
+        "kernelMessages": "Mensajes del Kernel",
+        "network": "Red",
+        "speedTest": "Test de velocidad",
+        "process": "Procesos",
+        "sendCommand": "Mandar comando"
+      },
+      "customTerminal": {
+        "title": "Terminal personalizada",
+        "helpText": "Ejemplo, escribe <code>ls</code> para ver el listado de archivos en tu directorio principal"
+      },
+      "tips": {
+        "title": "Troubleshooting Tips",
+        "1": "Si encuentras algun problema porfavor descarga los archivos de registro y contacta con el propietario de la aplicación"
+      }
+    },
+    "network": {
+      "hostname": {
+        "title": "Hostname",
+        "description": "A hostname is the label assigned to your RPI. Its used to distinguish one device from another on a network. You can access your RPI using the hostname instead of IP address. Default name is <a target='_blank' rel='noopener noreferrer' href='http://raspberrypi/'>raspberrypi</a>"
+      },
+      "interface": {
+        "title": "Interfaces",
+        "description": "You will find all active interfaces below. Box with green outline is your default connection to the outer world.<br />Do not change any values while in flight, this might disconnect you from the vehicle.",
+        "ipaddress": "IP Address",
+        "netmask": "Netmask",
+        "gateway": "Gateway",
+        "ipv6": "IPv6",
+        "buttons": {
+          "save": "Save"
+        }
+      },
+      "route": {
+        "title": "Default network route",
+        "pre-description": "Raspberry Pi is currently using gateway",
+        "post-description": "to access the World Wide Web.",
+        "description": "You can specify another default interface from the dropdown bellow. Only physical devices can be selected, not VPN or other bridged interface.<br />Raspberry will still use other interfaces, but priority the one you select as first option."
+      },
+      "wifi": {
+        "title": "WiFi Network",
+        "description": "Disconnect wifi adapter temporarily. It will re-connect during next startup.",
+        "scantext": "Scan for WiFi networks.",
+        "connecttext": "Press the network name you want to connect to.",
+        "buttons": {
+          "disconnect": "Disconnect WiFi",
+          "scannow": "Scan Now"
+        },
+        "table": {
+          "ssid": "SSID",
+          "signal": "Signal",
+          "channel": "Channel"
+        },
+        "modal": {
+          "title": "Warning!",
+          "description": "You are about to disconnect WiFI interface.<br />Make sure you are connected by other means if you want to stay connected.<br /> Are you sure you want to proceed?",
+          "accepttext": "Proceed"
+        }
+      }
+    },
+    "led": {
+      "title": "LED Control",
+      "statusLedTitle": "OnBoard Status LED",
+      "statusLedSubTitle": "Select a status to enable the onboard status (green) LED",
+      "statusLedHelpBlock": "Select a tigger status",
+      "powerLedTitle": "OnBoard Power LED",
+      "powerLedSubTitle": "Select a status to enable the onboard power (red) LED. <br /><b>Note!</b> Not all boards is equiped with power LED.",
+      "powerLedHelpBlock": "Select a tigger status"
+    }
+  },
+  "uavcast": {
+    "title": "Archivos de registro",
+    "troubleshootingText": "If you need any assistance or have a issue you want to address, then download application logfiles and submit them to",
+    "buttons": {
+      "uavcast": "UAVcast",
+      "dynDns": "DynDNS",
+      "video": "Vídeo",
+      "telemetry": "Telemetría",
+      "navio": "Navio",
+      "downloadLogfiles": "Descarga todos los archivos de registro"
+    },
+    "tips": {
+      "title": "Troubleshooting Tips",
+      "1": "i encuentras algun problema porfavor descarga los archivos de registro y publicalos a"
+    }
+  }
+}

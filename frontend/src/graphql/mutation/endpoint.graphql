@@ -1,0 +1,46 @@
+mutation addEndpoint {
+  addEndpoint {
+     data {
+      id
+      telemEnable
+      moduleActive
+      name
+      endpointIPaddress
+      telemetryPort
+      videoPort
+      videoEnable
+    }
+  }
+}
+
+mutation removeEndpoint($id: String!) { 
+  removeEndpoint(id: $id) {
+     data {
+      id
+      telemEnable
+      moduleActive
+      name
+      endpointIPaddress
+      telemetryPort
+      videoPort
+      videoEnable
+    }
+  }
+}
+
+mutation updateEndpoint($endpoint: EndpointProperties!) {
+  updateEndpoint(endpoint: $endpoint) {
+    data {
+      id
+      telemEnable
+      moduleActive
+      name
+      endpointIPaddress
+      telemetryPort
+      videoPort
+      videoEnable
+    }
+  }
+}
+
+

@@ -1,0 +1,467 @@
+{
+  "headerLinks": {
+    "discord": "Discord",
+    "community": "Forum",
+    "documentation": "Documentation"
+  },
+  "sidebarLinks": {
+    "categories": {
+      "header": "Kontrol Paneli",
+      "settings": {
+        "title": "Ayarlar",
+        "flightController": "Uçuş Kontrol",
+        "groundControl": "Yer Kontrol",
+        "cellModem": "GSM Modem",
+        "dynamicDns": "Dinamik DNS",
+        "camera": "Kamera",
+        "vpn": "VPN"
+      },
+      "tools": {
+        "title": "Araçlar",
+        "raspberry": "Raspberry",
+        "diagnostic": "Diagnostic",
+        "network": "Network",
+        "led": "Led"
+      },
+      "application": {
+        "title": "Uygulamalar",
+        "settings": "Ayarlar",
+        "version": "Versiyon"
+      }
+    }
+  },
+  "dashboard": {
+    "uavcast": {
+      "statusLeds": {
+        "information": "Her uygulamanın çalışıp çalışmadığını izler. Herhangi bir sorunla karşılaştığınız günlük dosyalarının yapılandırmasını kontrol edin.",
+        "telemetry": "Telemetri:",
+        "video": "Video:",
+        "modem": "Modem:",
+        "dns": "DNS:",
+        "vpn": "VPN:",
+        "autostart": "Otomatik Başlangıç:"
+      },
+      "buttons": {
+        "startCasting": {
+          "title": "Kaydı Başlat / Kaydı Durdur",
+          "information": "Bu, etkinleştirdiğiniz tüm uygulamaları doğru sırayla başlatır..",
+          "start": "Kaydı Başlat",
+          "stop": "Kaydı Durdur"
+        },
+        "autostart": {
+          "title": "Otomatik Başlatmayı Etkinlelştir",
+          "information": "Raspberry açıldığında  UAVcast otomatik olarak çalışmaya başlayacak .",
+          "enable": "Otomatik Başlangıcı Aktifleştir",
+          "disable": "Otomatiği Başlangıcı Kapat"
+        }
+      }
+    },
+    "statusCards": {
+      "gcs": {
+        "title": "Yer Kontrol İstasyonu",
+        "text1": "Hedef #1",
+        "text2": "Telemetri Portu:"
+      },
+      "modem": {
+        "title": "Modem",
+        "text1": "Aktif:",
+        "text2": "APN:"
+      },
+      "camera": {
+        "title": "Kamera",
+        "text1": "Aktif:",
+        "text2": "APN:"
+      },
+      "dns": {
+        "title": "Raspberry Dinamik DNS",
+        "text1": "Aktif:",
+        "text2": "Rumuz:"
+      }
+    },
+    "montioring": {
+      "cpu": {
+        "title": "CPU",
+        "temperature": "Sicaklik @"
+      },
+      "storage": {
+        "title": "Yerel Disk",
+        "total": "Toplam",
+        "used": "Kullanılan",
+        "free": "Boş Alan"
+      },
+      "memory": {
+        "title": "Bellek",
+        "total": "Toplam",
+        "used": "Kullanılan",
+        "free": "Boş Alan"
+      },
+      "network": {
+        "title": "Ağ İstatistikleri",
+        "subTitle": "Her 10 saniyede güncellenir.",
+        "interface": "Arayüz",
+        "received": "Alındı",
+        "sent": "Gönderildi",
+        "rx": "Rx (saniye başına)",
+        "tx": "Tx (saniye başına)",
+        "lateancy": "Gecikme (ms)"
+      }
+    }
+  },
+  "flightcontroller": {
+    "title": "Uçuş Kontol",
+    "subTitle": "Uçuş Kontol ayarları",
+    "fcType": "Uçuş Kontrolörü Tipi",
+    "fcTypeDescription": "Bir uçuş kontrolörü seçin. Tüm ardupilot sürümleri ve Px4 desteklenir.",
+    "connection": "Bağlantı",
+    "connectionDescription": "Bağlantı metodu seçiniz",
+    "baud": "Baud",
+    "baudDescription": "Baud değeri seçiniz",
+    "protocol": "Protokol",
+    "protocolDescription": "Bağlantı protokolü seçiniz",
+    "internal_address_header": "FC Internal Address",
+    "internal_address_description": "This is the internal address raspberry uses for communication with Flight Controller. <br /> Only change if you know what you are doing!",
+    "buttons": {
+      "start": "Telemetriyi başlat",
+      "stop": "Telemetriyi durdur",
+      "logfile": "Kayıt Dosyası"
+    },
+    "tips": {
+      "1": "Uçuş kontrolörünü RPI GPIO'ya bağladıysanız, hem RPI'nin hem de uçuş kontrolörünün aynı elektriksel zemini paylaşması çok önemlidir, seri iletişim buna bağlıdır..",
+      "2": "USB kablosunu kullanmada sorun yaşıyorsanız, diğer tüm USB cihazlarını RPI'den çıkardığınızdan emin olun. Bazı USB cihazları çakışmaya neden olabilir."
+    },
+    "navio": {
+      "vehicle": "Araç",
+      "launchOptions": "Kalkış ayarları (Opsiyonel)",
+      "launchOptionsDescription": "Anahtarlar ve seri portlar arasında eşleştirme."
+    }
+  },
+  "groundControlStation": {
+    "title": "Yer Kontrol İstasyonu",
+    "subTitle": "Yer Kontrol İstasyonu IP adresini ve portu ekleyin.",
+    "subTitle1": "<b>DİKKAT!</b> Zemin Kontrolü IP adresleri eklemek sadece Telemetri veya video için UDP seçildiğinde uygulanır",
+    "buttons": {
+      "addDestinations": "Hedef Ekleyin"
+    },
+    "destinationModule": {
+      "name": "isim",
+      "host": "Sunucu",
+      "telemPort": "Telem Portu",
+      "videoPort": "Video Portu",
+      "videoSwitch": "Video",
+      "telemSwitch": "Telemetri",
+      "portCheck": "Port Kontrol",
+      "removeModule": "kaldır"
+    }
+  },
+  "modem": {
+    "title": "Modem",
+    "subTitle": "Modem yapılandırması",
+    "enableText": "Hücresel modemi etkinleştirmek istiyor musunuz? <br /> <b>Modem Manager</b> bir taşıyıcı bağlantı kurmak için kullanılır. Desteklenen tüm cihazları bulabilirsiniz.",
+    "model": "Model",
+    "modelDescription": "Stick veya HiLink arasında seçim yapın<br /> Örnek: <code>E3276H</code> (Ending character)<br /> HiLink modemler, LTE / 4G ağına bağlanmak için yerleşik yazılımı kullanır",
+    "hilinkInterface": "Arayüz",
+    "hilinkInterfaceDescription": "HiLink modem arayüz adını ayarlayın. Bu normalde RPI 2 ve 3 içinn <code>eth1</code> ve <code>eth0</code> Pi0w.<br /> için  Arayüz LED'i doğru bağlantı sağlandığında yeşile dönecektir.",
+    "manager": "Model",
+    "managerDescription": "Hücre bağlantısını yönetmek için Ağ Yöneticisi'ni veya Modem Yöneticisi'ni kullanmak isteyip istemediğinizi seçin. Modemler farklı şekilde davranır, bu yüzden sorun yaşarsanız her iki seçeneği de test edin. Bu seçeneği değiştirirseniz RPI'yi yeniden başlatmanız önerilir.",
+    "stickInterface": "Arayüz",
+    "stickInterfaceDescription": "Stick modem arayüz adını ayarlayın. Bu normalde <code> wwan0 </code> veya <code> ppp0 </code> olur. Aşağıdaki ağ düğmesine basarak arabirim adını görebilirsiniz. <br /> Arabirimin uygun İnternet erişimi varsa, LED yeşile döner.",
+    "apn": "Erişim Noktası",
+    "apnDescription": "Bir Erişim Noktası Adı, GSM, GPRS, 3G veya 4G mobil ağı ile sık sık İnternet erişimi olan başka bir bilgisayar ağı arasındaki ağ geçidi",
+    "internalAddress": "Dahili Adres",
+    "internalAddressDescription": " USB modem dahili addresi. USB modems genelde <br /><code>cdc-wdm0</code> adresini alır.İhtiyaç dahilinde adresi değiştirebilirsiniz.",
+    "username": "Kullanıcı Adı",
+    "usernameDescription": "Bazı yüklenicilier kullanıcı adı ve şifre talep ederler.Ancak çoğu yüklenici kullanıcı adı ve şifre talep etmez.",
+    "password": "Parola",
+    "passwordDescription": "Bazı yüklenicilier kullanıcı adı ve şifre talep ederler.Ancak çoğu yüklenici kullanıcı adı ve şifre talep etmez. ",
+    "pin": "PIN",
+    "pinDescription": "PIN kodu girişini deaktive etmediğiniz sürece PIN kodu girmeniz gerekir",
+    "buttons": {
+      "connect": "Bağlan",
+      "disconnect": "Bağlantıyı sonlandır",
+      "availableModems": "Erişilebilir Modemler",
+      "network": "Ağ",
+      "modemInformation": "Modem Bilgisi",
+      "connectionStatus": "Bağlantı Durumu"
+    },
+    "tips": {
+      "title": "Sorun giderme önerileri",
+      "1": "HiLink modemleri Ethernet kablosu ile aynı şekilde hareket eder. Modemi takar takmaz RPI çevrimiçi olacak.",
+      "2": "Desteklenen tüm modemleri burada bulabilirsiniz. <a href='https://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/'>https://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/</a>"
+    }
+  },
+  "dynamicDns": {
+    "title": "DNS",
+    "subTitle": "Dinamik DNS yapılandırması",
+    "enableText": "Dinamik DNS'i etkinleştirmek istiyor musunuz?",
+    "username": "Kullanıcı Adı",
+    "usernameDescription": "DNS sunucunuzun kullanıcı adı.",
+    "usernameHelpBlock": "Lütfen kullanıcı adı giriniz",
+    "password": "Şifre",
+    "passwordDescription": "DNS sunuzunuzun parolası.",
+    "passwordHelpBlock": "Lütfen parolanızı giriniz",
+    "alias": "Rumuz",
+    "aliasDescription": "Oluşturulan Dns rumuzu sizin yeni adresiniz",
+    "aliasHelpBlock": "Lütfen DNS rumuzu giriniz",
+    "dnsSystem": "DNS Sistemi",
+    "dnsSystemDescription": "DNS sistemi sunucunuz tarafından oluşturuldu.",
+    "dnsSystemHelpBlock": "Lütfen DNS sisteminizi giriniz",
+    "buttons": {
+      "connect": "Bağlan",
+      "disconnect": "Bağlantıyı Kes"
+    },
+    "tips": {
+      "title": "Hata Giderme Önerileri",
+      "1": "DDNS veya DynamicDNS, bir web URL'sini bir IP adresine bağlamanın bir yoludur. Uzak bir ortağı dinamik bir IP ile bağlamak istiyorsanız, kullanışlıdır..",
+      "2": "Listedeki gibi ücretsiz satıcıları kullanabilirsiniz <a href='https://www.noip.com/'>https://www.noip.com</a>, <a href='https://www.duckdns.org/'>https://www.duckdns.org/</a>"
+    }
+  },
+  "camera": {
+    "title": "Kamera",
+    "subTitle": "Kamera yapılandırması",
+    "cameraType": "Kamera Tipi",
+    "cameraHelpBlock": "Kamera tipinizi seçiniz",
+    "protocol": "Protokol",
+    "protocolDescription": "UDP veya TCP.",
+    "tcpHost": "TCP Sunucusu",
+    "tcpHostDescription": " TCP Sunucu IP adrfesi ekleyin.Bu sizin Raspberry Pi adresniz olmalı.",
+    "resolution": "Çözünürlük.",
+    "resolutionDescription": "Video çözünürlüğünü seçiniz.",
+    "width": "En",
+    "height": "Yükseklik",
+    "bitrate": "Bit Oranı",
+    "bitrateDescription": "Default : 2000000 or 2Mbits/s. Use bits per second, so 10Mbits/s would be 10000000. For H264, 1080p30 a high quality bitrate would be 15Mbits/s or more. Maximum bitrate is 25Mbits/s (25000000), but much over 17Mbits/s won't show noticeable improvement at 1080p30.",
+    "bitrateHelpBlock": "Bit Oranı",
+    "rotation": "Rotation",
+    "rotationDescription": "Sets the rotation of the image in the viewfinder and resulting image. This can take any value from 0 upwards, but due to hardware constraints only 0, 90, 180, and 270 degree rotations are supported",
+    "rotationHelpBlock": "Rotation",
+    "contrast": "Contrast",
+    "contrastDescription": "Sets the contrast of the image. 0 is the default",
+    "contrastHelpBlock": "Contrast",
+    "brightness": "Brightness",
+    "brightnessDescription": "Sets the brightness of the image. 50 is the default. 0 is black, 100 is white",
+    "brightnessHelpBlock": "Brightness",
+    "autowhitebalance": "Automatic White Balance",
+    "autowhitebalanceDescription": "Default Value: Auto. Modes for which colour temperature ranges (K) are available have these settings in brackets.",
+    "autowhitebalanceHelpBlock": "White Balance",
+    "framesPrSecond": "Saniye başına kare sayısı",
+    "framesPrSecondDescription": "Default value = 20. At present, the minimum frame rate allowed is 2fps, and the maximum is 30fps",
+    "framesPrSecondHelpBlock": "FPS",
+    "cameraFlip": "Kamerayı döndür",
+    "cameraFlipDescription": " Görüntü oryantasyonunu seçiniz (Dikey/Yatay).",
+    "cameraFlipHelpBlock": "Orientation",
+    "httplivestreamHeader": "HTTP live stream",
+    "httplivestreamDescription": "Recommended settings for In-Browser live stream<br />FPS => 10 - 15<br />Resolution => 960x540<br />",
+    "httplivestreamLink": "Goto VideoStream Page",
+    "buttons": {
+      "start": "Kamerayı başlat",
+      "stop": "Kamerayı durdur",
+      "logFile": "Kayıt Dosyası"
+    },
+    "tips": {
+      "title": "Öneriler",
+      "1": "<b> Özel bağlantı hattı </b> 'nı seçin ve bir <b> test video akışı </b> oluşturmak için bu kodu ekleyin. Bağlı bir kamera olmadan test etmek güzel. Ayarlarınıza uygun IP ve Bağlantı Noktasını değiştirin <br /> <code> gst-launch-1.0 videotestsrc! x264enc! video / x-h264, akış biçimi = bayt akışı! rtph264pay! udpsink ana bilgisayarı = 192.168.1.100 bağlantı noktası = 5600 </code>",
+      "2": "<b>Mission planner</b> ve <b>QGroundControl</b> otomatik olarak <code>5600</code> hattındaki yayınınızı algılayacaktır.",
+      "3": "<b>UDP</b> yayınını Windows bilgisayarda almak için,Gstreamer yükleyin ve bu bağlantı hattını kullanınız.Ayarlarınızı eşleştirmeyi unutmayınız.<br /><code>gst-launch-1.0 -v udpsrc port=5600 caps='application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264' ! rtpjitterbuffer ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false</code>",
+      "4": "<b>TCP</b> (Sadece PiCam için) yayınını Windows bilgisayarda almak için,Gstreamer yükleyin ve bu bağlantı hattını kullanınız.Ayarlarınızı eşleştirmeyi unutmayınız. <br /> <code>gst-launch-1.0 -v tcpclientsrc host='Pi-IP' port=5600 ! gdpdepay ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink sync=false</code>"
+    }
+  },
+  "vpn": {
+    "title": "VPN",
+    "subTitle": "Kişisel Özel Ağ",
+    "enableText": "VPN aktifleştirilsin mi?",
+    "services": "Servisler",
+    "servicesDescription": "Menüden seçiniz.",
+    "configuration": "Yapılandırma",
+    "configurationDescription": "Sizin <b>openvpn</b> configuration file.<br /> VPN yardım bölümüne bu dosyayı üretmek veya indirmek için gözatabilirsiniz",
+    "openVpnfileUploadText": "Ovpn dosyanızı buraya yerleştirin",
+    "openVpnDeleteFile": "Dosyayı sil",
+    "buttons": {
+      "connect": "Bağlan",
+      "disconnect": "Bağlantıyı Kes",
+      "viewVpnInterface": "VPN Arayüzünü İncele",
+      "logfile": "Kayıt Dosyası",
+      "interfaces": "Arayüzler",
+      "ZTconnectionInfo": "ZeroTier Balantı Bilgisi",
+      "ZTlistPeers": "ZeroTier eş listeleri"
+    },
+    "tips": {
+      "title": "Öneriler",
+      "1": "ZeroTier VPN kullanmanız şiddetle tavsiye edilir. NAT travesal tekniğini yapılandırması ve kullanımı çok kolaydır. ZeroTier 3. parti sunucu kullanmadan doğrudan bağlantı kurmaya çalışacaktır. Bu gecikmeyi azaltacaktır.",
+      "2": " Google, bir openvpn sunucusunu başlatmak için kolay bir yol sağlar. Burada daha fazla okuyun <a href='https://openvpn.net/index.php/access-server/on-google-cloud.html'>https://openvpn.net/index.php/access-server/on-google-cloud.html</a>"
+    }
+  },
+  "settings": {
+    "license": {
+      "title": "Uygulama lisansı",
+      "subTitle": "Lisans anahtarı hakkında",
+      "licenseKey": "Lisans anahtarı",
+      "changeKey": "değiştir",
+      "licenseStatus": "Lisans durumu",
+      "allowedDevices": "İzin verilen cihazlar",
+      "remainingDevices": "Kalan cihazlar",
+      "freeUpSlots": "Uygun alanlar",
+      "currentDevice": "(mevcut)",
+      "unregisterDevice": "Kayıttan çık",
+      "registeredUser": "Kayıt İsmi",
+      "activationDate": "Üyelik Başlangıç Tarihi",
+      "expirationDate": "Üyelik Bitiş Tarihi",
+      "raspberryVersion": "Raspberry Versiyonu",
+      "orderId": "Sipariş ID",
+      "supportText": "Herhangi bir bilgi ihtiyacında lütfen bize danışın",
+      "buttons": {
+        "validate": "Doğrula",
+        "cancel": "İptal Et"
+      }
+    },
+    "applicationVersion": {
+      "title": "Uygulama Versiyonu",
+      "subTitle": "Uygulama Hakkında",
+      "currentVersion": "Mevcut versiyona",
+      "changeLog": "Yenilikler",
+      "application": "Uygulama",
+      "rollbackVersion": "Önceki versiyona geri dön",
+      "rollbackText": "Geri dönülecek versiyon",
+      "newVersionAvailable": "Yeni versiyon mevcut!",
+      "upgradeSuccess": "Yükleme tamamlandı. Lütfen tarayıcı sayfanızı yenileyiniz.",
+      "newversionExist": "Mevcut en güncel versiyona sahipsiniz",
+      "buttons": {
+        "refreshBrowser": "Tarayıcıyı yenileyin",
+        "downgradeNow": "Eski versiyona dön!",
+        "checkForUpdates": "Güncellemeleri Kontrol Et",
+        "updateNow": "Şimdi Güncelle!"
+      }
+    },
+    "applicationSettings": {
+      "title": "Ayarlar",
+      "darkTheme": "Koyu Tema",
+      "darkThemeDescription": "Change between Light or Dark scheme",
+      "serverMessages": "Server Mesajları",
+      "serverMessagesDescription": "Get real time messages from the server, such as undervoltage, CPU throttling. It will be highlighted in the header section",
+      "serverPort": "Sunucu Portu",
+      "serverPortDescription": "Change the default server port. Standard port 80. <br />Do not change if you dont know what you are doing!",
+      "serverPortHelpBLock": "Varsayılan port 80",
+      "applicationLanguage": "Uygulama Dili",
+      "applicationLanguageDescription": "Destek olmak ister misiniz?  <a target='_blank' href='https://github.com/UAVmatrix/uavcast-pro-translations'>buradan</a> Türkçe seçeneği Ozan ERBASAN tarafından çevrilmiştir.",
+      "applicationLanguageHelpBlock": "Varsayınal dil seçeneği",
+      "backupTitle": "Backup Database",
+      "backupDescription": "Backup all of your configurations.",
+      "resetLogfilesTitle": "Erase Logfiles",
+      "resetLogfilesDescription": "Logfiles will accumulate over time and it could be usefull to erase them if you troubleshooting an issue.",
+      "resetDatabaseTitle": "Reset Database",
+      "resetDatabaseDescription": "This will not erase userdata such as license, but all configurations will be lost.",
+      "restoreTitle": "Restore Database",
+      "restoreDescription": "Restore database from an earlier backup. (.zip) <br /> NOTE! All current config will be overwritten.",
+      "restore": "Backup all of your configurations.",
+      "buttons": {
+        "resetLogfiles": "Erase Files",
+        "resetDatabase": "Reset Database",
+        "backup": "Backup Database",
+        "restore": "Restore Database",
+        "changePort": "Change"
+      }
+    }
+  },
+  "raspberry": {
+    "diagnostic": {
+      "title": "Raspberry",
+      "rebootNotification": {
+        "title": "Raspberry PI'yi yeniden başlatmak istiyor musunuz?",
+        "content": "Her şeyi kaydettiğinizden emin olun!",
+        "cancel": "İptal et",
+        "approve": "Şimdi yeniden başlat."
+      },
+      "shutdownNotification": {
+        "title": "Raspberry PI'yi kapatmak istiyor musunuz?",
+        "content": "Her şeyi kaydettiğinizden emin olun!",
+        "cancel": "İptal et",
+        "approve": "Şimdi kapat"
+      },
+      "buttons": {
+        "reboot": "Yeniden başlat",
+        "shutdown": "Kapat",
+        "usbDevices": "USB cihazları",
+        "kernelMessages": "Kernel mesajları",
+        "network": "Ağ",
+        "speedTest": "Hız Testi",
+        "process": "İşlem",
+        "sendCommand": "Komut Gönder"
+      },
+      "customTerminal": {
+        "title": "Özel Terminal",
+        "helpText": "Örnek: <code>ls</code> yazarak ana dizindeki tüm dosyaları görüntüleyiebilirsiniz."
+      },
+      "tips": {
+        "title": "Sorun giderme önerileri",
+        "1": "Eğer herhangi bir sorun ile karşılaşırsanız lütfen kayıt dosyalarını indirip uygulama sahibi ile iletişime geçiniz."
+      }
+    },
+    "network": {
+      "hostname": {
+        "title": "Hostname",
+        "description": "A hostname is the label assigned to your RPI. Its used to distinguish one device from another on a network. You can access your RPI using the hostname instead of IP address. Default name is <a target='_blank' rel='noopener noreferrer' href='http://raspberrypi/'>raspberrypi</a>"
+      },
+      "interface": {
+        "title": "Interfaces",
+        "description": "You will find all active interfaces below. Box with green outline is your default connection to the outer world.<br />Do not change any values while in flight, this might disconnect you from the vehicle.",
+        "ipaddress": "IP Address",
+        "netmask": "Netmask",
+        "gateway": "Gateway",
+        "ipv6": "IPv6",
+        "buttons": {
+          "save": "Save"
+        }
+      },
+      "route": {
+        "title": "Default network route",
+        "pre-description": "Raspberry Pi is currently using gateway",
+        "post-description": "to access the World Wide Web.",
+        "description": "You can specify another default interface from the dropdown bellow. Only physical devices can be selected, not VPN or other bridged interface.<br />Raspberry will still use other interfaces, but priority the one you select as first option."
+      },
+      "wifi": {
+        "title": "WiFi Network",
+        "description": "Disconnect wifi adapter temporarily. It will re-connect during next startup.",
+        "scantext": "Scan for WiFi networks.",
+        "connecttext": "Press the network name you want to connect to.",
+        "buttons": {
+          "disconnect": "Disconnect WiFi",
+          "scannow": "Scan Now"
+        },
+        "table": {
+          "ssid": "SSID",
+          "signal": "Signal",
+          "channel": "Channel"
+        },
+        "modal": {
+          "title": "Warning!",
+          "description": "You are about to disconnect WiFI interface.<br />Make sure you are connected by other means if you want to stay connected.<br /> Are you sure you want to proceed?",
+          "accepttext": "Proceed"
+        }
+      }
+    },
+    "led": {
+      "title": "LED Control",
+      "statusLedTitle": "OnBoard Status LED",
+      "statusLedSubTitle": "Select a status to enable the onboard status (green) LED",
+      "statusLedHelpBlock": "Select a tigger status",
+      "powerLedTitle": "OnBoard Power LED",
+      "powerLedSubTitle": "Select a status to enable the onboard power (red) LED. <br /><b>Note!</b> Not all boards is equiped with power LED.",
+      "powerLedHelpBlock": "Select a tigger status"
+    }
+  },
+  "uavcast": {
+    "title": "Kayıt Dosyaları",
+    "troubleshootingText": "If you need any assistance or have a issue you want to address, then download application logfiles and submit them to",
+    "buttons": {
+      "uavcast": "UAVcast",
+      "dynDns": "DynDNS",
+      "video": "Video",
+      "telemetry": "Telemetri",
+      "navio": "Navio",
+      "downloadLogfiles": "Tüm kayıt dosyalarını indir."
+    },
+    "tips": {
+      "title": "Sorun giderme önerileri",
+      "1": "Eğer herhangi bir sorun ile karşılaşırsanız lütfen kayıt dosyalarını indirip uygulama sahibi ile iletişime geçiniz. Kayıt dosyalarınızı"
+    }
+  }
+}
