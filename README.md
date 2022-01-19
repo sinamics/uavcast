@@ -1,4 +1,4 @@
-# uavcast
+# uavcast - companion software for remote vehicles
 
 After several toughts and discussions with myself i finally came to the conclusion of publishing the whole uavcast 5.x dev build publically as open source in hopes that community will make this project become better and more advanced.
 
@@ -10,7 +10,9 @@ Run devbuld.sh
 
 - [x] Backend nodejs (Typescript)
 - [x] Frontend React (Typescript)
-- [x] Supervisor nodejs
+- [x] sqlite3 database
+- [x] graphql && codegen
+- [x] type-graphql
 
 ## Usage
 
