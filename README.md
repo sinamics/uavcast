@@ -4,8 +4,6 @@ After several toughts and discussions with myself i finally came to the conclusi
 
 uavcast 5.x has been re-written from the ground-up compared to the previouse versions, and are still missing key features before it is usable.
 
-Run devbuld.sh
-
 ## Codebase
 
 - [x] Backend nodejs (Typescript)
@@ -32,3 +30,16 @@ VSCode will start the docker compose file for you and open a terminal window con
 - Run `cd backend && npm install`
 - Run `cd frontend && npm install`
 - Run `npm start` from the project root to start both frontend & backend.
+
+### Teardown
+
+After closing VSCode, you may still have containers running. To close everything down, just run docker-compose down -v to cleanup all containers.
+
+### Making changes
+
+Do not make large sweeping changes. Open a discussion on GitHub for any large or architectural ideas.
+Ensure lint passes. `npm run lint` This command will ensure basic conformance to styles, applying as many automatic fixes as possible, including Prettier formatting.
+
+## Documentation
+
+(https://docs.uavmatrix.com/5.x/)[https://docs.uavmatrix.com/5.x/]
