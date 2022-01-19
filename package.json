@@ -1,6 +1,6 @@
 {
   "name": "app",
-  "private": true,
+  "private": false,
   "scripts": {
     "start": "concurrently \"cd frontend && npm start\" \"cd backend && ts-node-dev --respawn --transpile-only src/index.ts\" ",
     "codegen": "cd frontend && npm run codegen"

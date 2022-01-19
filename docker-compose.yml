@@ -17,6 +17,7 @@ services:
       - /dev:/dev:ro
     ports:
       - '3000:3000'
+      - '80:80'
     # environment:
     #   - REACT_APP_UAVCAST_VER="5.0.0-rc10"
     # depends_on:
@@ -24,7 +25,7 @@ services:
     entrypoint:
       - '/bin/systemctl'
     # command: /bin/sh -c "while sleep 1000; do :; done"
-    tty: true
-    stdin_open: true
+    # tty: true
+    # stdin_open: true
 volumes:
   uavdata:
