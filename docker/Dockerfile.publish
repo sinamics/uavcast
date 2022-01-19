@@ -61,7 +61,6 @@ RUN groupadd --gid $USER_GID $USERNAME \
 COPY --from=backend /backend ./backend
 COPY --from=frontend /frontend/build ./frontend/build
 
-COPY ["install", "./install"]
 COPY ["bin", "./bin"]
 COPY ["docker", "./docker"]
 
