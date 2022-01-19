@@ -35,6 +35,9 @@ https://docs.uavmatrix.com/5.x/
 
 Upon opening, you should be prompted to open the project in a **remote container**. This will build a container on top of the base uavcast container with all the development dependencies installed. This ensures everyone uses a consistent development environment without the need to install any dependencies on your host machine.
 
+After starting the container first time, it will install some additional package, give it few minutes to complete.
+![install](https://i.ibb.co/6XWg1sV/Skjermbilde-2022-01-19-202346.png)
+
 ### Run uavcast from the command line
 
 VSCode will start the docker compose file for you and open a terminal window connected to `/app/uavcast` folder.
