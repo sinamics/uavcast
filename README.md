@@ -1,6 +1,6 @@
 # uavcast - companion software for remote vehicles
 
-After several toughts and discussions with myself i finally came to the conclusion of publishing the whole uavcast 5.x dev build publically as open source in hopes that community will make this project become better and more advanced.
+After several toughts and discussions with myself i finally came to the conclusion of publishing the uavcast 5.x dev build publically as open source in hope that community will collaborate and make this project better and more advanced.
 
 uavcast 5.x has been re-written from the ground-up compared to the previouse versions, and are still missing key features before it is usable.
 
@@ -8,7 +8,7 @@ Latest build of this repository can be found at:
 
 - https://hub.docker.com/repository/docker/sinamics/uavcast
 
-Install latest version:
+To install latest version on Rasperry PI, Jetson, or any arm/v7, arm64 device:
 
 - `curl -s http://install.uavmatrix.com/next/ | sudo bash`
 
@@ -33,7 +33,7 @@ https://docs.uavmatrix.com/5.x/
 
 ### Open the repo with Visual Studio Code
 
-Upon opening, you should be prompted to open the project in a remote container. This will build a container on top of the base uavcast container with all the development dependencies installed. This ensures everyone uses a consistent development environment without the need to install any dependencies on your host machine.
+Upon opening, you should be prompted to open the project in a **remote container**. This will build a container on top of the base uavcast container with all the development dependencies installed. This ensures everyone uses a consistent development environment without the need to install any dependencies on your host machine.
 
 ### Run uavcast from the command line
 
