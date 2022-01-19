@@ -25,6 +25,8 @@ COPY init/journalctl3.py /bin/journalctl
 
 COPY docker/bin/entrypoint.sh /home/uavcast/etc/
 
+RUN mkdir -p /app/uavcast/data && chown -R uavcast /app/uavcast/data
+
 RUN chmod +x  /bin/systemctl \
               /bin/systemctl3.py \
               /bin/journalctl

@@ -8,7 +8,7 @@ Latest build of this repository can be found at:
 
 - https://hub.docker.com/repository/docker/sinamics/uavcast
 
-To install latest version on Rasperry PI, Jetson, or any arm/v7, arm64 device:
+To install latest version on Rasperry PI, Jetson, or any arm/v7, arm64, amd64 device:
 
 - `curl -s http://install.uavmatrix.com/next/ | sudo bash`
 
@@ -35,7 +35,9 @@ https://docs.uavmatrix.com/5.x/
 
 Upon opening, you should be prompted to open the project in a **remote container**. This will build a container on top of the base uavcast container with all the development dependencies installed. This ensures everyone uses a consistent development environment without the need to install any dependencies on your host machine.
 
-After starting the container first time, it will install some additional package, give it few minutes to complete.
+If vscode does not start the remote container automatically, use hotkeys: `ctrl + shift + p` and select `Remote-Container: Rebuild and Reopen container`
+
+After starting the container for the first time, it will install some additional package, give it few minutes to complete.
 ![install](https://i.ibb.co/6XWg1sV/Skjermbilde-2022-01-19-202346.png)
 
 ### Run uavcast from the command line
@@ -63,3 +65,8 @@ Example external publish:
 
 Example local build:
 `./compile_release.sh --version 5.0.0 --build_gcc --build_frontend --build_backend --docker_local`
+
+### Images
+
+![Map](https://i.ibb.co/1zZTysD/Skjermbilde-2022-01-19-204037.png)
+![Dashboard](https://i.ibb.co/7CpNwQS/Skjermbilde-2022-01-19-204107.png)
