@@ -36,7 +36,7 @@ const ZerotierTable = () => {
           </Table.Header>
 
           <Table.Body>
-            {networks.map((prop: any, idx: any) => {
+            {networks && networks.map((prop: any, idx: any) => {
               const ZtStatusClass = classnames({
                 'text-danger': prop.status !== 'OK',
                 'text-success': prop.status === 'OK'

@@ -10,7 +10,7 @@ sqlite3 *db;
 int Database::connect_db()
 {
 
-    if (sqlite3_open("/home/uavcast/persistent/uavcast.db", &db) != SQLITE_OK)
+    if (sqlite3_open("../../data/sql/uavcast.db", &db) != SQLITE_OK)
     {
         return -1;
     }
