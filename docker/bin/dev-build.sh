@@ -7,6 +7,9 @@
 Systemd="/etc/systemd/system"
 APPROOT="/app/uavcast"
 
+# install global dependencies
+npm i concurrently ts-node-dev typescript -g
+
 sudo apt-get install -y libsqlite3-dev
 
 sudo apt-get install -y jq dnsutils usb-modeswitch modemmanager openvpn \
@@ -22,7 +25,7 @@ sudo apt-get install -y libjsoncpp-dev
 sudo apt-get install -y libcap2-bin
 sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
 
-npm i concurrently ts-node-dev typescript -g
+
 
 # fetch translations
 # https://github.com/UAVmatrix/uavcast-pro-translations
