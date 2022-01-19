@@ -16,14 +16,19 @@ Run devbuld.sh
 
 ## Usage
 
-Add backend/.env
+### Prerequisites
 
-```js
-SQLITE_DATABASE = '/home/uavcast/persistent/uavcast.db';
-```
+- [x] Docker
+- [x] Visual Studio Code
 
-Add frontend/.env
+### Open the repo with Visual Studio Code
 
-```js
-REACT_APP_UAVCAST_VER = '5.0.0-rc9';
-```
+Upon opening, you should be prompted to open the project in a remote container. This will build a container on top of the base uavcast container with all the development dependencies installed. This ensures everyone uses a consistent development environment without the need to install any dependencies on your host machine.
+
+### Run uavcast from the command line
+
+VSCode will start the docker compose file for you and open a terminal window connected to `/app/uavcast` folder.
+
+- Run `cd backend && npm install`
+- Run `cd frontend && npm install`
+- Run `npm start` from the project root to start both frontend & backend.
