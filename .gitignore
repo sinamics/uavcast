@@ -11,9 +11,8 @@ build/
 #exclude all dist folders
 dist/
 
-#logs
-log/
-
+#data, logs
+/data
 
 #backend
 /backend/node_sqlite3.node
