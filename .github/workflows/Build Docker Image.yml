@@ -1,8 +1,9 @@
 name: ci
-on:
-  create:
-    tags:
-      - '*'
+# on:
+#   create:
+#     tags:
+#       - '*'
+on: [workflow_dispatch]
 jobs:
   docker:
     runs-on: ubuntu-latest
