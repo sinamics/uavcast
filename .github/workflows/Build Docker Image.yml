@@ -56,7 +56,7 @@ jobs:
 
   build_docker:
     runs-on: self-hosted
-    needs: build_gcc
+    needs: [submodule, build_gcc, checkout]
     steps:
       - name: Login to DockerHub
         uses: docker/login-action@v1
