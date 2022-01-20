@@ -1,4 +1,4 @@
-# :helicopter: :boat: :red_car: uavcast - companion software for remote vehicles
+# uavcast - companion software for remote :helicopter: :boat: :red_car:
 
 uavcast 5.x has been re-written from the ground-up compared to the previouse versions, and are still missing key features before it is usable.
 
