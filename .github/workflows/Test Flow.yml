@@ -1,4 +1,4 @@
-name: ci
+name: ci_test
 on:
   push:
     tags:
