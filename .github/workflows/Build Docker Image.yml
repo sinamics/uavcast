@@ -8,9 +8,6 @@ on:
 jobs:
   checkout:
     runs-on: self-hosted
-    # Map a step output to a job output
-    outputs:
-      version: ${{ steps.set_version_tag.outputs.tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,11 +22,9 @@ jobs:
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
           fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
-      - name: set tag env
-        id: set_version_tag
-        run: |
-         echo "::set-output name=tag::${{ steps.previoustag.outputs.tag }}"
-         echo needs tag name: ${{ needs.checkout.outputs.version }}
+
+      - name: Print Version Tag
+        run: echo release version:: ${{ steps.previoustag.outputs.tag }}
 
   submodule:
     runs-on: self-hosted
@@ -123,6 +118,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -130,7 +130,7 @@ jobs:
           file: docker/Dockerfile.publish
           platforms: linux/arm/v7,linux/arm64
           push: true
-          tags: sinamics/uavcast:${{ needs.checkout.outputs.version }}
+          tags: sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
