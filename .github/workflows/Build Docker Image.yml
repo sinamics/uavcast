@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: install cppunit
-        run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev
+        run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev sqlite3 libsqlite3-dev
       - name: make binaries
         run: make -C bin/
       # Update references
