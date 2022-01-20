@@ -48,6 +48,11 @@ VSCode will start the docker compose file for you and open a terminal window con
 - Run `cd frontend && npm install`
 - Run `npm start` from the project root to start both frontend & backend.
 
+### Supervisor
+
+Uavcast uses a supervisor container to manage the application update ect. Supervisor is not needed for development.
+To run the supervisor, type `cd supervisor && npm install && npm start` from the uavcast project root.
+
 ### Teardown
 
 After closing VSCode, you may still have containers running. To close everything down, just run docker-compose down -v to cleanup all containers.
