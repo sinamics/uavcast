@@ -6,21 +6,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  docker:
+  checkout:
     runs-on: self-hosted
     steps:
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v2
-      - name: install cppunit
-        run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev sqlite3 libsqlite3-dev
-      - name: make binaries
-        run: make -C bin/
-      # Update references
-      - name: Git Sumbodule Update
-        run: |
-          git submodule update --init --recursive
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -41,6 +33,27 @@ jobs:
         #   key: ${{ runner.os }}-buildx-${{ github.sha }}
         #   restore-keys: |
         #     ${{ runner.os }}-buildx-
+      
+
+  submodule:
+    runs-on: self-hosted
+    needs: checkout
+      - name: Git Sumbodule Update
+        run: |
+          git submodule update --init --recursive
+
+  build_gcc:
+    runs-on: self-hosted
+    needs: checkout
+    steps:
+      - name: install cppunit
+        run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev sqlite3 libsqlite3-dev
+      - name: make binaries
+        run: make -C bin/
+
+  build_docker:
+    runs-on: self-hosted
+    needs: checkout
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
