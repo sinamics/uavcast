@@ -2,19 +2,6 @@
   "name": "webserver",
   "version": "0.0.1",
   "bin": "dist/index.js",
-  "pkg": {
-    "scripts": [
-      "node_modules/rechoir/lib/*.js"
-    ],
-    "assets": [
-      "../frontend/build/**/*",
-      "./dist/**/*",
-      "./ormconfig.js"
-    ],
-    "targets": [
-      "node14.4-linux-armv7"
-    ]
-  },
   "devDependencies": {
     "@types/app-root-path": "^1.2.4",
     "@types/archiver": "^5.1.1",
