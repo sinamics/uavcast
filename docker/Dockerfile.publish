@@ -58,9 +58,6 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-COPY --from=backend /backend ./backend
-COPY --from=frontend /frontend/build ./frontend/build
-
 COPY ["bin", "./bin"]
 COPY ["docker", "./docker"]
 COPY ["frontend", "./frontend"]
