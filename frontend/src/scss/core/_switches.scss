@@ -1,3 +1,4 @@
+// sass-lint:disable-all
 @mixin switch-size($width, $height, $font-size, $handle-margin) {
   width: $width;
   height: $height;
@@ -49,7 +50,7 @@
     }
     border: 1px solid $border-color;
     border-radius: 2px;
-    transition: opacity background .15s ease-out;
+    transition: opacity background 0.15s ease-out;
   }
   @if $type == text or $type == icon {
     .switch-label::before,
@@ -57,7 +58,7 @@
       position: absolute;
       top: 50%;
       width: 50%;
-      margin-top: -.5em;
+      margin-top: -0.5em;
       line-height: 1;
       text-align: center;
       transition: inherit;
@@ -93,10 +94,10 @@
     background: #fff;
     border: 1px solid $border-color;
     border-radius: 1px;
-    transition: left .15s ease-out;
+    transition: left 0.15s ease-out;
     @if $type == ddd {
       border: 0;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
   }
 
@@ -104,14 +105,12 @@
     left: $width - $height + $handle-margin;
   }
 
-
   @if $type == ddd {
     @extend .switch-pill;
   }
 
   //size variations
   @if $type == default {
-
     &.switch-lg {
       @include switch-size($switch-lg-width, $switch-lg-height, $switch-lg-font-size, $handle-margin);
     }
@@ -121,9 +120,7 @@
     &.switch-xs {
       @include switch-size($switch-xs-width, $switch-xs-height, $switch-xs-font-size, $handle-margin);
     }
-
   } @else if $type == text {
-
     &.switch-lg {
       @include switch-size($switch-text-lg-width, $switch-text-lg-height, $switch-text-lg-font-size, $handle-margin);
     }
@@ -133,9 +130,7 @@
     &.switch-xs {
       @include switch-size($switch-text-xs-width, $switch-text-xs-height, $switch-text-xs-font-size, $handle-margin);
     }
-
   } @else if $type == icon {
-
     &.switch-lg {
       @include switch-size($switch-icon-lg-width, $switch-icon-lg-height, $switch-icon-lg-font-size, $handle-margin);
     }
@@ -145,9 +140,7 @@
     &.switch-xs {
       @include switch-size($switch-icon-xs-width, $switch-icon-xs-height, $switch-icon-xs-font-size, $handle-margin);
     }
-
   } @else if $type == ddd {
-
     &.switch-lg {
       @include switch-size($switch-lg-width, $switch-lg-height, $switch-lg-font-size, 0);
     }
@@ -163,11 +156,11 @@
 @mixin switch-variant($color) {
   > .switch-input:checked ~ .switch-label {
     background: $color !important;
-    border-color: darken($color,10%);
+    border-color: darken($color, 10%);
   }
 
   > .switch-input:checked ~ .switch-handle {
-    border-color: darken($color,10%);
+    border-color: darken($color, 10%);
   }
 }
 
@@ -220,7 +213,6 @@ $switch-xs-width: 24px;
 $switch-xs-height: 16px;
 $switch-xs-font-size: 7px;
 
-
 $switch-text-lg-width: 56px;
 $switch-text-lg-height: 28px;
 $switch-text-lg-font-size: 12px;
@@ -236,7 +228,6 @@ $switch-text-sm-font-size: 8px;
 $switch-text-xs-width: 32px;
 $switch-text-xs-height: 16px;
 $switch-text-xs-font-size: 7px;
-
 
 $switch-icon-lg-width: 56px;
 $switch-icon-lg-height: 28px;
@@ -287,15 +278,15 @@ $switch-icon-xs-font-size: 7px;
 
 @each $color, $value in $theme-colors {
   //normal style
-  .switch-#{$color} {
+  .switch-#{'' + $color} {
     @include switch-variant($value);
   }
   //outline style
-  .switch-#{$color}-outline {
+  .switch-#{'' + $color}-outline {
     @include switch-outline-variant($value);
   }
   //outline alternative style
-  .switch-#{$color}-outline-alt {
+  .switch-#{'' + $color}-outline-alt {
     @include switch-outline-alt-variant($value);
   }
 }
