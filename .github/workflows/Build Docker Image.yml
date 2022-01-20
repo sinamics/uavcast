@@ -15,12 +15,6 @@ jobs:
           fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
           submodules: true
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-        with:
-          image: tonistiigi/binfmt:latest
-          platforms: all
-
       - name: install cppunit
         run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev sqlite3 libsqlite3-dev
       - name: make binaries
@@ -78,6 +72,12 @@ jobs:
           driver-opts: |
             image=moby/buildkit:master
             network=host
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: all
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
