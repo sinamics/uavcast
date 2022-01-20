@@ -15,16 +15,14 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
-      - uses: actions-ecosystem/action-release-label@v1
-        id: release-label
-        if: ${{ github.event.pull_request.merged == true }}
-
-      - uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
 
       - name: set tag env
-        run: echo "RELEASE_VERSION=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=${{ steps.previoustag.outputs.tag }}" >> $GITHUB_ENV
 
   submodule:
     runs-on: self-hosted
