@@ -122,7 +122,7 @@ jobs:
           file: docker/Dockerfile.publish
           platforms: linux/arm/v7,linux/arm64
           push: true
-          tags: sinamics/uavcast:${{ jobs.checkout.steps.previoustag.outputs.tag }}
+          tags: sinamics/uavcast:${{ checkout.steps.previoustag.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
