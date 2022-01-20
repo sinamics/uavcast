@@ -1,43 +1,43 @@
-FROM node:14.4.0 as backend
-ARG USERNAME=uavcast
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+# FROM node:14.4.0 as backend
+# ARG USERNAME=uavcast
+# ARG USER_UID=1000
+# ARG USER_GID=$USER_UID
 
-WORKDIR /backend
+# WORKDIR /backend
 
-# backend
-COPY ["backend/package.json", \
-      "backend/ormconfig.js", \
-      "backend/.eslintignore", \
-      "backend/ormconfig.js", \
-      "backend/tsconfig.json", "./"]
+# # backend
+# COPY ["backend/package.json", \
+#       "backend/ormconfig.js", \
+#       "backend/.eslintignore", \
+#       "backend/ormconfig.js", \
+#       "backend/tsconfig.json", "./"]
 
-COPY ["backend/src", "./src"]
+# COPY ["backend/src", "./src"]
 
-RUN npm install
-RUN npm run lint
-RUN mkdir dist
-RUN npm run build
+# RUN npm install
+# RUN npm run lint
+# RUN mkdir dist
+# RUN npm run build
 
-# frontend
-FROM node:14.4.0 as frontend
+# # frontend
+# FROM node:14.4.0 as frontend
 
-WORKDIR /frontend
+# WORKDIR /frontend
 
-# install app dependencies
-COPY [  "frontend/package.json", \
-        "frontend/.env", \
-        "frontend/.eslintignore", \
-        "frontend/codegen.yml", \
-        "frontend/tsconfig.json", "./"]
+# # install app dependencies
+# COPY [  "frontend/package.json", \
+#         "frontend/.env", \
+#         "frontend/.eslintignore", \
+#         "frontend/codegen.yml", \
+#         "frontend/tsconfig.json", "./"]
 
-COPY ["frontend/src", "./src"]
-COPY ["frontend/public", "./public"]
+# COPY ["frontend/src", "./src"]
+# COPY ["frontend/public", "./public"]
 
-RUN npm i node-gyp -g
-RUN npm install --legacy-peer-deps
-RUN npm run lint
-RUN npm run build
+# RUN npm i node-gyp -g
+# RUN npm install --legacy-peer-deps
+# RUN npm run lint
+# RUN npm run build
 
 
 ## make app
@@ -63,6 +63,8 @@ COPY --from=frontend /frontend/build ./frontend/build
 
 COPY ["bin", "./bin"]
 COPY ["docker", "./docker"]
+COPY ["frontend", "./frontend"]
+COPY ["backend", "./backend"]
 
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
