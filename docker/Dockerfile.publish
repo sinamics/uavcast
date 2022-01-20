@@ -51,4 +51,3 @@ RUN ["/app/uavcast/docker/bin/./prod-build.sh"]
 
 ENTRYPOINT ["/app/uavcast/docker/bin/entrypoint.sh"]
 CMD ["/bin/systemctl"]
-
