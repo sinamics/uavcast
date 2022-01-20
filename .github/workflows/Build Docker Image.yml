@@ -75,7 +75,7 @@ jobs:
 
   build_docker:
     runs-on: self-hosted
-    needs: [submodule, build_gcc, checkout]
+    needs: [submodule, build_frontend, build_backend, build_gcc, checkout]
     steps:
       - name: Cache Docker layers
         uses: actions/cache@v2
