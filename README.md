@@ -70,3 +70,8 @@ Example local build:
 
 ![Map](https://i.ibb.co/1zZTysD/Skjermbilde-2022-01-19-204037.png)
 ![Dashboard](https://i.ibb.co/7CpNwQS/Skjermbilde-2022-01-19-204107.png)
+
+### License
+
+Copyright and License
+uavcast is provided under the [GNU Affero General Public License v3.0](https://github.com/sinamics/uavcast/blob/main/LICENSE).
