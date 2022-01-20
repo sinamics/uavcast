@@ -16,7 +16,6 @@
     "chart.js": "^2.9.4",
     "chartjs-chart-timeline": "^0.4.0",
     "chartjs-plugin-zoom": "^0.7.7",
-    "d3": "^6.7.0",
     "file-saver": "^2.0.5",
     "leaflet": "^1.7.1",
     "rc-slider": "^9.7.4",
