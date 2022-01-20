@@ -60,7 +60,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 COPY ["bin", "./bin"]
 COPY ["docker", "./docker"]
-COPY ["frontend", "./frontend"]
+COPY ["frontend/build", "./frontend/build"]
 COPY ["backend", "./backend"]
 
 # systemctl3
