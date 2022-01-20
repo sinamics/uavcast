@@ -33,7 +33,7 @@ jobs:
 
   build_backend:
     runs-on: self-hosted
-    needs: checkout
+    needs: [build_gcc, submodule]
     steps:
       - name: Cache node modules
         uses: actions/cache@v2
@@ -54,7 +54,7 @@ jobs:
 
   build_frontend:
     runs-on: self-hosted
-    needs: checkout
+    needs: [build_gcc, submodule]
     steps:
       - name: Cache frontend modules
         uses: actions/cache@v2
