@@ -14,7 +14,7 @@ To install latest version on Rasperry PI, Jetson, or any arm/v7, arm64, amd64 de
 
 https://docs.uavmatrix.com/5.x/
 
-## Codebase
+## :computer: Codebase
 
 - [x] Backend nodejs (Typescript)
 - [x] Frontend React (Typescript)
@@ -24,7 +24,7 @@ https://docs.uavmatrix.com/5.x/
 
 ## :wrench: Usage
 
-### Prerequisites
+### :exclamation: Prerequisites
 
 - [x] Docker
 - [x] Visual Studio Code
