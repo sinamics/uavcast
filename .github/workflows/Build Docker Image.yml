@@ -80,7 +80,7 @@ jobs:
       - name: backend lint
         run: cd backend && npm run lint
       - name: frontend lint
-        run: cd frontend && npm run build
+        run: cd frontend && npm run lint
 
   build_docker:
     runs-on: self-hosted
