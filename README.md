@@ -2,6 +2,8 @@
 
 uavcast 5.x has been re-written from the ground-up compared to the previouse versions, and are still missing key features before it is usable.
 
+:warning: This project is still in **alfa** and are missing key features, use at your own risk.
+
 Latest build of this repository can be found at:
 
 - https://hub.docker.com/repository/docker/sinamics/uavcast
