@@ -31,15 +31,6 @@ jobs:
       - name: make binaries
         run: make -C bin/
 
-  lint_check:
-    runs-on: self-hosted
-    needs: [submodule, checkout]
-    steps:
-      - name: backend lint
-        run: cd backend && npm run lint
-      - name: frontend lint
-        run: cd frontend && npm run build
-
   build_backend:
     runs-on: self-hosted
     needs: [build_gcc, submodule, lint_check]
@@ -82,9 +73,18 @@ jobs:
       - name: Build frontend
         run: cd frontend && npm run build
 
-  build_docker:
+  lint_check:
     runs-on: self-hosted
     needs: [build_frontend, build_backend]
+    steps:
+      - name: backend lint
+        run: cd backend && npm run lint
+      - name: frontend lint
+        run: cd frontend && npm run build
+
+  build_docker:
+    runs-on: self-hosted
+    needs: [lint_check]
     steps:
       - name: Cache Docker layers
         uses: actions/cache@v2
