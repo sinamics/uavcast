@@ -1,4 +1,4 @@
-FROM sinamics/debian-uavcast-base:latest as main
+FROM sinamics/debian-uavcast-base:latest
 LABEL maintainer="Bernt Christian Egeland / uavmatrix.com"
 
 WORKDIR /app/uavcast
