@@ -14,7 +14,7 @@ To install latest version on Rasperry PI, Jetson, or any arm/v7, arm64, amd64 de
 
 https://docs.uavmatrix.com/5.x/
 
-## :computer: Codebase
+## :hammer: Codebase
 
 - [x] Backend nodejs (Typescript)
 - [x] Frontend React (Typescript)
@@ -29,7 +29,7 @@ https://docs.uavmatrix.com/5.x/
 - [x] Docker
 - [x] Visual Studio Code
 
-### Open the repo with Visual Studio Code
+### :computer: Open the repo with Visual Studio Code
 
 Upon opening, you should be prompted to open the project in a **remote container**. This will build a container on top of the base uavcast container with all the development dependencies installed. This ensures everyone uses a consistent development environment without the need to install any dependencies on your host machine.
 
