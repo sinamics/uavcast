@@ -31,6 +31,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: checkout
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
+          submodules: true
       - name: install cppunit
         run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev sqlite3 libsqlite3-dev
       - name: make binaries
