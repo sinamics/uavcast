@@ -10,7 +10,7 @@ jobs:
     runs-on: self-hosted
     # Map a step output to a job output
     outputs:
-      version: ${{ steps.set_version_tag.outputs.version }}
+      version: ${{ steps.set_version_tag.outputs.tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -27,7 +27,10 @@ jobs:
           fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
       - name: set tag env
         id: set_version_tag
-        run:  echo "::set-output name=version::${{ steps.previoustag.outputs.tag }}"
+        run: |
+         echo "::set-output name=tag::${{ steps.previoustag.outputs.tag }}"
+         echo needs tag name: ${{ needs.checkout.outputs.version }}
+
   submodule:
     runs-on: self-hosted
     needs: checkout
