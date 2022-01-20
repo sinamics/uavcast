@@ -47,7 +47,7 @@ jobs:
 
   build_gcc:
     runs-on: self-hosted
-    needs: checkout
+    needs: submodule
     steps:
       - name: install cppunit
         run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev sqlite3 libsqlite3-dev
@@ -56,7 +56,7 @@ jobs:
 
   build_docker:
     runs-on: self-hosted
-    needs: checkout
+    needs: build_gcc
     steps:
       - name: Login to DockerHub
         uses: docker/login-action@v1
