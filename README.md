@@ -10,7 +10,7 @@ To install latest version on Rasperry PI, Jetson, or any arm/v7, arm64, amd64 de
 
 - `curl -s http://install.uavmatrix.com/next/ | sudo bash`
 
-## Documentation
+## :notebook: Documentation
 
 https://docs.uavmatrix.com/5.x/
 
@@ -22,7 +22,7 @@ https://docs.uavmatrix.com/5.x/
 - [x] graphql && codegen
 - [x] type-graphql
 
-## Usage
+## :wrench: Usage
 
 ### Prerequisites
 
