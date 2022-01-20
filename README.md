@@ -1,6 +1,4 @@
-# uavcast - companion software for remote vehicles
-
-After several toughts and discussions with myself i finally came to the conclusion of publishing the uavcast 5.x dev build publically as open source in hope that community will collaborate and make this project better and more advanced.
+# :helicopter: :boat: :red_car: uavcast - companion software for remote vehicles
 
 uavcast 5.x has been re-written from the ground-up compared to the previouse versions, and are still missing key features before it is usable.
 
