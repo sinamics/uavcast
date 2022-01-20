@@ -10,7 +10,7 @@ jobs:
     runs-on: self-hosted
     # Map a step output to a job output
     outputs:
-      version: ${{ steps.previoustag.outputs.tag }}
+      version: ${{ steps.set_version_tag.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,7 +25,9 @@ jobs:
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
           fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
-
+      - name: set tag env
+        id: set_version_tag
+        run:  echo "::set-output name=version::${{ steps.previoustag.outputs.tag }}"
   submodule:
     runs-on: self-hosted
     needs: checkout
