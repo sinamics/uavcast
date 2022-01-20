@@ -19,7 +19,7 @@ jobs:
 
       - name: 'Get Previous tag'
         id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
         with:
           fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
   submodule:
@@ -96,7 +96,7 @@ jobs:
     steps:
       - name: 'Get Previous tag'
         id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
         with:
           fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
 
@@ -120,14 +120,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-
-
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
           file: docker/Dockerfile.publish
-          platforms: linux/arm/v7,linux/arm64
+          platforms: linux/arm,linux/arm64,linux/amd64
           push: true
           tags: sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache

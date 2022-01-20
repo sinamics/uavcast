@@ -196,7 +196,7 @@ if (( $docker_publish > 0 )); then
     docker run --privileged --rm tonistiigi/binfmt --install all
 
     docker buildx build --pull --rm -f "docker/Dockerfile.publish" \
-    --platform linux/arm,linux/arm64 \
+    --platform linux/arm,linux/arm64,linux/amd64 \
     -t sinamics/uavcast:$version_arg "." --push
 
     # docker login #-u $DOCKER_USER -p $DOCKER_PASS
