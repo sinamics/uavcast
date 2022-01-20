@@ -23,9 +23,6 @@ jobs:
         with:
           fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
 
-      - name: set tag env
-        run: echo "RELEASE_VERSION=${{ steps.previoustag.outputs.tag }}" >> $GITHUB_ENV
-
   submodule:
     runs-on: self-hosted
     needs: checkout
@@ -125,9 +122,10 @@ jobs:
           file: docker/Dockerfile.publish
           platforms: linux/arm/v7,linux/arm64
           push: true
-          tags: sinamics/uavcast:${{ env.RELEASE_VERSION }}
+          tags: sinamics/uavcast:${{ jobs.checkout.steps.previoustag.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
+
       - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
