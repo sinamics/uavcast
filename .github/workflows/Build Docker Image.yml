@@ -134,11 +134,6 @@ jobs:
         with:
           fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
           submodules: true
-  
-      # - name: install cppunit
-      #   run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev sqlite3 libsqlite3-dev
-      # - name: make binaries
-      #   run: make -C bin/
 
       # - name: Cache npm modules
       #   uses: actions/cache@v2
@@ -153,24 +148,6 @@ jobs:
       #       ${{ runner.os }}-build-
       #       ${{ runner.os }}-
 
-      # - name: Install backend dependencies
-      #   run: cd backend && npm install
-
-      # - name: Install frontend dependecies
-      #   run: cd frontend && npm install
-
-      # - name: backend lint
-      #   run: cd backend && npm run lint
-
-      # - name: frontend lint
-      #   run: cd frontend && npm run lint
-
-      # - name: Build Backend
-      #   run: cd backend && npm run build
-
-      # - name: Build frontend
-      #   run: cd frontend && npm run build
-
       - name: 'Get Previous tag'
         id: previoustag
         uses: 'WyriHaximus/github-action-get-previous-tag@v1'
@@ -180,18 +157,18 @@ jobs:
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
-          path: /tmp/.buildx-cache
+          path: /tmp/.buildx-amd64-cache
           key: $-buildx-amd64-$
           restore-keys: |
             $-buildx-amd64-
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-        with:
-          driver: docker-container
-          driver-opts: |
-            image=moby/buildkit:master
-          install: true
+        # with:
+        #   driver: docker-container
+        #   driver-opts: |
+        #     image=moby/buildkit:master
+        #   install: true
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
