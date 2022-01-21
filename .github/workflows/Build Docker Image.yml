@@ -55,7 +55,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile.publish
-          platforms: linux/armv7
+          platforms: linux/arm/v7
           push: true
           tags: sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache

@@ -1,5 +1,5 @@
 ## GCC
-FROM gcc:9.2@sha256:fc53809af3f4ec72c17e1425dce242bced1078b40ea125ead6badd20d1737ebc as gcc
+FROM gcc:9.2@sha256:e92a642a40071a39abc560d5c405e77070aa7555ad952e6ed54df2c87d0fbbd9 as gcc
 
 WORKDIR /gcc
 
