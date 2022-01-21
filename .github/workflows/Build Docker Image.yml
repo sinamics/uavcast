@@ -15,41 +15,36 @@ jobs:
           fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
           submodules: true
 
-      - name: install cppunit
-        run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev sqlite3 libsqlite3-dev
-      - name: make binaries
-        run: make -C bin/
+      # - name: Cache npm modules
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: cache-frontend-modules
+      #   with:
+      #     # npm cache files are stored in `~/.npm` on Linux/macOS
+      #     path: ~/.npm
+      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-${{ env.cache-name }}-
+      #       ${{ runner.os }}-build-
+      #       ${{ runner.os }}-
 
-      - name: Cache npm modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-frontend-modules
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+      # - name: Install backend dependencies
+      #   run: cd backend && npm install
 
-      - name: Install backend dependencies
-        run: cd backend && npm install
+      # - name: Install frontend dependecies
+      #   run: cd frontend && npm install
 
-      - name: Install frontend dependecies
-        run: cd frontend && npm install
+      # - name: backend lint
+      #   run: cd backend && npm run lint
 
-      - name: backend lint
-        run: cd backend && npm run lint
+      # - name: frontend lint
+      #   run: cd frontend && npm run lint
 
-      - name: frontend lint
-        run: cd frontend && npm run lint
+      # - name: Build Backend
+      #   run: cd backend && npm run build
 
-      - name: Build Backend
-        run: cd backend && npm run build
-
-      - name: Build frontend
-        run: cd frontend && npm run build
+      # - name: Build frontend
+      #   run: cd frontend && npm run build
 
       - name: 'Get Previous tag'
         id: previoustag

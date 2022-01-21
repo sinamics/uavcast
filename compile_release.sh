@@ -221,3 +221,4 @@ fi
 # assign moby containre to buildx
 # docker buildx create --driver-opt image=moby/buildkit:latest --use
 # docker run --privileged --rm tonistiigi/binfmt --install all
+# docker run --privileged --rm tonistiigi/binfmt --install arm64,arm/v7,amd64

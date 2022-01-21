@@ -22,13 +22,22 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 COPY ["bin", "./bin"]
 COPY ["docker", "./docker"]
-COPY ["frontend/build", "./frontend/build"]
+COPY ["frontend", "./frontend"]
 COPY ["backend", "./backend"]
 
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
 COPY init/systemctl3.py /bin/systemctl3.py
 COPY init/journalctl3.py /bin/journalctl
+
+# build binaries
+RUN make -C bin/
+
+RUN cd frontend && npm install
+RUN cd frontend && npm run build
+
+RUN cd backend && npm install
+RUN cd backend && npm run build
 
 RUN chmod +x -R ./docker/bin \
                 ./bin/build \
