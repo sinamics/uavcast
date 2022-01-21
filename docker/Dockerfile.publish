@@ -1,6 +1,7 @@
 ## GCC
-FROM gcc:9.2@sha256:e92a642a40071a39abc560d5c405e77070aa7555ad952e6ed54df2c87d0fbbd9 as gcc
-
+FROM --platform=$TARGETPLATFORM gcc:9.2@sha256:e92a642a40071a39abc560d5c405e77070aa7555ad952e6ed54df2c87d0fbbd9 as gcc
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
 WORKDIR /gcc
 
 # install app dependencies
@@ -18,8 +19,9 @@ RUN mkdir -p build
 RUN make
 
 ## backend
-FROM node:14-alpine@sha256:a9b200d25469261a4cccde176db08ec9f0b5799fa4220d8edfe57e69684c6dad as backend
-
+FROM --platform=$TARGETPLATFORM node:14-alpine@sha256:a9b200d25469261a4cccde176db08ec9f0b5799fa4220d8edfe57e69684c6dad as backend
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
 WORKDIR /backend
 
 # backend
@@ -35,8 +37,9 @@ RUN npm install --force
 RUN npm run build
 
 ## frontend
-FROM node:14-alpine@sha256:a9b200d25469261a4cccde176db08ec9f0b5799fa4220d8edfe57e69684c6dad as frontend
-
+FROM --platform=$TARGETPLATFORM node:14-alpine@sha256:a9b200d25469261a4cccde176db08ec9f0b5799fa4220d8edfe57e69684c6dad as frontend
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
 WORKDIR /frontend
 
 # install app dependencies
@@ -74,9 +77,6 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
 
-
-
-
 COPY --from=gcc /gcc/build ./bin/build
 COPY --from=frontend /frontend/build ./frontend/build
 COPY --from=backend /backend/dist ./backend
@@ -110,7 +110,7 @@ RUN sudo usermod -a -G docker root
 
 ENV NODE_ENV=production
 
-RUN ["/app/uavcast/docker/bin/./prod-build.sh"]
+# RUN ["/app/uavcast/docker/bin/./prod-build.sh"]
 
 ENTRYPOINT ["/app/uavcast/docker/bin/entrypoint.sh"]
 CMD ["/bin/systemctl"]
