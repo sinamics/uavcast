@@ -1,0 +1,89 @@
+name: Build Container
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        architecture: [linux-arm-v7, linux-arm64, linux-amd64]
+    outputs:
+      time: ${{ steps.vars.outputs.time }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create VARS
+        id: vars
+        run: |
+          ARCHITECTURE=${{ matrix.architecture }}
+          TIME=$(date --utc +%Y-%m-%d_%H)
+          echo "::set-output name=platform::${ARCHITECTURE//-/\/}"
+          echo "::set-output name=repo::$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')"
+          echo "::set-output name=time::$TIME"
+          echo "::set-output name=source::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/tree/${GITHUB_REF//refs\/heads\//}"
+          echo "::set-output name=url::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/README.md"
+          echo "::set-output name=tag::$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]'):$TIME-${{ matrix.architecture }}"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          install: true
+          version: latest
+          driver-opts: image=moby/buildkit:master
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          platforms: ${{ steps.vars.outputs.platform }}
+          file: docker/Dockerfile.publish
+          tags: |
+            ${{ steps.vars.outputs.tag }}
+            ghcr.io/${{ steps.vars.outputs.tag }}
+          labels: |
+            org.opencontainers.image.created=${{ steps.vars.outputs.time }}
+            org.opencontainers.image.title=${{ steps.vars.outputs.repo }}
+            org.opencontainers.image.source=${{ steps.vars.outputs.source }}
+            org.opencontainers.image.url=${{ steps.vars.outputs.url }}
+
+  publish:
+    runs-on: ubuntu-20.04
+    needs: [build]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+        with:
+          fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
+
+      - name: Create manifests for DockerHub
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
+        run: |
+          IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
+          TAG=${GITHUB_REF//refs\/heads\//}
+          SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
+          docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
