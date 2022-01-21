@@ -54,11 +54,11 @@ jobs:
           tags: |
             ${{ steps.vars.outputs.tag }}
             ghcr.io/${{ steps.vars.outputs.tag }}
-          labels: |
-            org.opencontainers.image.created=${{ steps.vars.outputs.time }}
-            org.opencontainers.image.title=${{ steps.vars.outputs.repo }}
-            org.opencontainers.image.source=${{ steps.vars.outputs.source }}
-            org.opencontainers.image.url=${{ steps.vars.outputs.url }}
+          # labels: |
+          #   org.opencontainers.image.created=${{ steps.vars.outputs.time }}
+          #   org.opencontainers.image.title=${{ steps.vars.outputs.repo }}
+          #   org.opencontainers.image.source=${{ steps.vars.outputs.source }}
+          #   org.opencontainers.image.url=${{ steps.vars.outputs.url }}
 
   publish:
     runs-on: ubuntu-20.04

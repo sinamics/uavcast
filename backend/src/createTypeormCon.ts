@@ -6,7 +6,7 @@ export const createTypeormConn = async () => {
   while (retries) {
     try {
       const options = await getConnectionOptions(process.env.NODE_ENV !== 'production' ? 'default' : 'production');
-      const conn = createConnection({ ...options, name: 'default', database: paths.dbFile || '', type: 'sqlite' });
+      const conn = createConnection({ ...options, database: paths.dbFile || '', type: 'sqlite' });
       return (await conn).synchronize();
     } catch (err) {
       console.log(err); // eslint-disable-line no-console
