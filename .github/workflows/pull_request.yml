@@ -1,9 +1,9 @@
-name: On pull request
+name: on pull request
 
 on: 
   pull_request:
   workflow_dispatch:
-  
+
 jobs:
   web_lint:
     name: Web - Lint
