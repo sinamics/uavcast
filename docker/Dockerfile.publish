@@ -31,7 +31,7 @@ COPY init/systemctl3.py /bin/systemctl3.py
 COPY init/journalctl3.py /bin/journalctl
 
 # build binaries
-RUN make -C /app/uavcast/bin/
+RUN cd /app/uavcast/bin && make
 
 RUN cd frontend && npm install
 RUN cd frontend && npm run build
