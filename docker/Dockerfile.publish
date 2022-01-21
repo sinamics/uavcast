@@ -1,3 +1,57 @@
+## GCC
+FROM gcc:9.2 as gcc
+
+WORKDIR /gcc
+
+# install app dependencies
+COPY ["bin", "./"]
+
+RUN apt-get update && apt-get install -y \
+                   libcppunit-dev \
+                   libjsoncpp-dev \
+                   libv4l-dev \ 
+                   libgstreamer1.0-dev \
+                   libcurl4-nss-dev \
+                   sqlite3 \
+                   libsqlite3-dev
+RUN mkdir -p build
+RUN make
+
+## backend
+FROM node:14-alpine as backend
+
+WORKDIR /backend
+
+# backend
+COPY ["backend/package.json", \
+      "backend/ormconfig.js", \
+      "backend/.eslintignore", \
+      "backend/ormconfig.js", \
+      "backend/tsconfig.json", "./"]
+
+COPY ["backend/src", "./src"]
+
+RUN npm install --force
+RUN npm run build
+
+## frontend
+FROM node:14-alpine as frontend
+
+WORKDIR /frontend
+
+# install app dependencies
+COPY [  "frontend/package.json", \
+        "frontend/.env", \
+        "frontend/.eslintignore", \
+        "frontend/codegen.yml", \
+        "frontend/tsconfig.json", "./"]
+
+COPY ["frontend/src", "./src"]
+COPY ["frontend/public", "./public"]
+
+RUN npm install --legacy-peer-deps
+RUN npm run build
+
 FROM --platform=$TARGETPLATFORM sinamics/debian-uavcast-base:latest as main
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
@@ -5,7 +59,6 @@ ARG BUILDPLATFORM
 LABEL maintainer="Bernt Christian Egeland / uavmatrix.com"
 
 RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
-
 WORKDIR /app/uavcast
 
 ARG USERNAME=uavcast
@@ -20,31 +73,27 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-COPY ["bin", "./bin"]
+
+## copy in files and folder
+COPY ["bin/mavlink", "./bin"]
+COPY ["bin/python", "./bin"]
+COPY ["bin/utils", "./bin"]
 COPY ["docker", "./docker"]
-COPY ["frontend", "./frontend"]
-COPY ["backend", "./backend"]
+
+
+COPY --from=gcc /gcc/build ./bin/build
+COPY --from=frontend /frontend/build ./frontend/build
+COPY --from=backend /backend/dist ./backend
+COPY --from=backend /backend/ormconfig.js ./backend
 
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
 COPY init/systemctl3.py /bin/systemctl3.py
 COPY init/journalctl3.py /bin/journalctl
 
-# build binaries
-RUN ls bin/
-RUN cd bin && ls -l
-# RUN make -C bin/
-
-RUN cd frontend && npm install
-RUN cd frontend && npm run build
-
-RUN cd backend && npm install
-RUN cd backend && npm run build
-
 RUN chmod +x -R ./docker/bin \
-                # ./bin/build \
+                ./bin/build \
                 ./bin/mavlink \
-                ./bin/python \
                 /bin/systemctl \
                 /bin/systemctl3.py \
                 /bin/journalctl
@@ -60,11 +109,8 @@ RUN sudo usermod -a -G docker root
 
 ENV NODE_ENV=production
 
-# RUN ["/app/uavcast/docker/bin/./prod-build.sh"]
+RUN ["/app/uavcast/docker/bin/./prod-build.sh"]
 
-# Make sure we set the webport stored in the database, if user uses another port than standard 80
-# ENTRYPOINT ["/bin/systemctl"]
-
-# ENTRYPOINT ["/app/uavcast/docker/bin/entrypoint.sh"]
-# CMD ["/bin/systemctl"]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["/app/uavcast/docker/bin/entrypoint.sh"]
+CMD ["/bin/systemctl"]
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
