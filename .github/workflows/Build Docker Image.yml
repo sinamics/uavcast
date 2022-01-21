@@ -58,13 +58,13 @@ jobs:
           platforms: linux/arm/v7
           push: true
           tags: sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
-          cache-from: type=local,src=/tmp/.buildx-armv7-cache
-          cache-to: type=local,dest=/tmp/.buildx-armv7-cache-new,mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
       - name: Move cache
         run: |
-          rm -rf /tmp/.buildx-armv7-cache
-          mv /tmp/.buildx-armv7-cache-new /tmp/.buildx-armv7-cache
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-publish-arm64:
     name: Build, Publish arm64
@@ -117,13 +117,13 @@ jobs:
           platforms: linux/arm64
           push: true
           tags: sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
-          cache-from: type=local,src=/tmp/.buildx-arm64-cache
-          cache-to: type=local,dest=/tmp/.buildx-arm64-cache-new,mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
       - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-arm64-cache-new /tmp/.buildx-arm64-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-publish-amd64:
     name: Build, Publish amd64
@@ -190,10 +190,10 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
-          cache-from: type=local,src=/tmp/.buildx-amd64-cache
-          cache-to: type=local,dest=/tmp/.buildx-amd64-cache-new,mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
       - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-amd64-cache-new /tmp/.buildx-amd64-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
