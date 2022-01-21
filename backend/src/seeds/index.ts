@@ -37,7 +37,7 @@ export const shouldSeed = async () => {
     runSeeder(CreateVpn);
   }
   if ((await getApplicationRepository().count()) === 0) {
-    ServerLog.info({ message: 'Seeds Application database', path: __filename });
+    ServerLog.info({ message: 'Seeds application database', path: __filename });
     runSeeder(CreateApplication);
   }
 };

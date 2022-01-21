@@ -95,5 +95,13 @@
     "**/dist": true,
     "**/node_modules": true,
     "**/*.chunk*": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/build/*/**": true,
+    "**/dist/*/**": true,
+    "**/mavlink/v2.0/dialects/*/**": true,
   }
 }
