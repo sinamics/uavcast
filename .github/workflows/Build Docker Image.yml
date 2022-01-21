@@ -186,7 +186,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: docker/Dockerfile.amd64
+          file: docker/Dockerfile.publish
           platforms: linux/amd64
           push: true
           tags: sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
