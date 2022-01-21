@@ -17,6 +17,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
+          submodules: true
+
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+        with:
+          fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
+
       - name: Create VARS
         id: vars
         run: |
@@ -27,10 +37,18 @@ jobs:
           echo "::set-output name=time::$TIME"
           echo "::set-output name=source::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/tree/${GITHUB_REF//refs\/heads\//}"
           echo "::set-output name=url::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/README.md"
-          echo "::set-output name=tag::$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]'):$TIME-${{ matrix.architecture }}"
+          echo "::set-output name=tag::$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]'):${{ steps.previoustag.outputs.tag }}-${{ matrix.architecture }}"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: $-buildx-${{ matrix.architecture }}-$
+          restore-keys: |
+            $-buildx-${{ matrix.architecture }}-
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -48,16 +66,18 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          push: true
+          push: false
           platforms: ${{ steps.vars.outputs.platform }}
           file: docker/Dockerfile.publish
           tags: |
             ${{ steps.vars.outputs.tag }}
-          # labels: |
-          #   org.opencontainers.image.created=${{ steps.vars.outputs.time }}
-          #   org.opencontainers.image.title=${{ steps.vars.outputs.repo }}
-          #   org.opencontainers.image.source=${{ steps.vars.outputs.source }}
-          #   org.opencontainers.image.url=${{ steps.vars.outputs.url }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      - name: Move docker cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   publish:
     runs-on: ubuntu-20.04
@@ -65,6 +85,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
+          submodules: true
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
