@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM sinamics/debian-uavcast-base:latest as main
+FROM --platform=$TARGETPLATFORM sinamics/debian-uavcast-base:latest as main
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
