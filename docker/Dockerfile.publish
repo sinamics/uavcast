@@ -33,7 +33,7 @@ COPY init/journalctl3.py /bin/journalctl
 # build binaries
 RUN ls bin/
 RUN cd bin && ls -l
-RUN sudo make -C bin/
+# RUN make -C bin/
 
 RUN cd frontend && npm install
 RUN cd frontend && npm run build
