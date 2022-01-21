@@ -29,6 +29,7 @@ https://docs.uavmatrix.com/5.x/
 ### :exclamation: Prerequisites
 
 - [x] Docker
+- [x] Docker Compose
 - [x] Visual Studio Code
 
 ### :computer: Open the repo with Visual Studio Code
