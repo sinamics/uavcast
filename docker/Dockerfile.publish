@@ -74,11 +74,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
 
-## copy in files and folder
-COPY ["bin/mavlink", "./bin"]
-COPY ["bin/python", "./bin"]
-COPY ["bin/utils", "./bin"]
-COPY ["docker", "./docker"]
+
 
 
 COPY --from=gcc /gcc/build ./bin/build
@@ -91,9 +87,14 @@ COPY init/systemctl3.py /bin/systemctl
 COPY init/systemctl3.py /bin/systemctl3.py
 COPY init/journalctl3.py /bin/journalctl
 
+## copy in files and folder
+COPY ["bin/mavlink", "./bin/mavlink"]
+COPY ["bin/python", "./bin/python"]
+COPY ["bin/utils", "./bin/utils"]
+COPY ["docker", "./docker"]
+
 RUN chmod +x -R ./docker/bin \
-                ./bin/build \
-                ./bin/mavlink \
+                ./bin \
                 /bin/systemctl \
                 /bin/systemctl3.py \
                 /bin/journalctl
