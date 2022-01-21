@@ -31,6 +31,8 @@ COPY init/systemctl3.py /bin/systemctl3.py
 COPY init/journalctl3.py /bin/journalctl
 
 # build binaries
+RUN ls bin/
+RUN cd bin && ls -l
 RUN sudo make -C bin/
 
 RUN cd frontend && npm install
