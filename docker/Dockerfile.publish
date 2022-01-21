@@ -1,5 +1,5 @@
 ## GCC
-FROM gcc:9.2@sha256:e92a642a40071a39abc560d5c405e77070aa7555ad952e6ed54df2c87d0fbbd9 as gcc
+FROM --platform=$TARGETPLATFORM gcc:9.2@sha256:e92a642a40071a39abc560d5c405e77070aa7555ad952e6ed54df2c87d0fbbd9 as gcc
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /gcc
@@ -19,7 +19,7 @@ RUN mkdir -p build
 RUN make
 
 ## backend
-FROM node:14-alpine@sha256:a9b200d25469261a4cccde176db08ec9f0b5799fa4220d8edfe57e69684c6dad as backend
+FROM --platform=$TARGETPLATFORM node:14-alpine@sha256:a9b200d25469261a4cccde176db08ec9f0b5799fa4220d8edfe57e69684c6dad as backend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /backend
@@ -37,7 +37,7 @@ RUN npm install --force
 RUN npm run build
 
 ## frontend
-FROM node:14-alpine@sha256:a9b200d25469261a4cccde176db08ec9f0b5799fa4220d8edfe57e69684c6dad as frontend
+FROM --platform=$TARGETPLATFORM node:14-alpine@sha256:a9b200d25469261a4cccde176db08ec9f0b5799fa4220d8edfe57e69684c6dad as frontend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /frontend
@@ -55,7 +55,7 @@ COPY ["frontend/public", "./public"]
 RUN npm install --legacy-peer-deps
 RUN npm run build
 
-FROM sinamics/debian-uavcast-base:latest as main
+FROM --platform=$TARGETPLATFORM sinamics/debian-uavcast-base:latest as main
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
@@ -79,7 +79,9 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 COPY --from=gcc /gcc/build ./bin/build
 COPY --from=frontend /frontend/build ./frontend/build
-COPY --from=backend /backend/dist ./backend
+
+COPY --from=backend /backend/dist ./backend/dist
+COPY --from=backend /backend/node_modules ./backend/node_modules
 COPY --from=backend /backend/ormconfig.js ./backend
 
 # systemctl3

@@ -36,7 +36,7 @@ jobs:
           driver: docker-container
           driver-opts: |
             image=moby/buildkit:master
-            network=host
+          install: true
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -96,8 +96,7 @@ jobs:
           driver: docker-container
           driver-opts: |
             image=moby/buildkit:master
-            network=host
-
+          install: true
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
         with:
@@ -192,8 +191,8 @@ jobs:
           driver: docker-container
           driver-opts: |
             image=moby/buildkit:master
-            network=host
-
+          install: true
+          
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
         with:
