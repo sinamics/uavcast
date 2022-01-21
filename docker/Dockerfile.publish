@@ -60,11 +60,11 @@ RUN sudo usermod -a -G docker root
 
 ENV NODE_ENV=production
 
-RUN ["/app/uavcast/docker/bin/./prod-build.sh"]
+# RUN ["/app/uavcast/docker/bin/./prod-build.sh"]
 
 # Make sure we set the webport stored in the database, if user uses another port than standard 80
 # ENTRYPOINT ["/bin/systemctl"]
 
-ENTRYPOINT ["/app/uavcast/docker/bin/entrypoint.sh"]
-CMD ["/bin/systemctl"]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
+# ENTRYPOINT ["/app/uavcast/docker/bin/entrypoint.sh"]
+# CMD ["/bin/systemctl"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
