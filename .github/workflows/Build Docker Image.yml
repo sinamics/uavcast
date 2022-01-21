@@ -157,18 +157,18 @@ jobs:
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
-          path: /tmp/.buildx-amd64-cache
+          path: /tmp/.buildx-cache
           key: $-buildx-amd64-$
           restore-keys: |
             $-buildx-amd64-
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-        # with:
-        #   driver: docker-container
-        #   driver-opts: |
-        #     image=moby/buildkit:master
-        #   install: true
+        with:
+          driver: docker-container
+          driver-opts: |
+            image=moby/buildkit:master
+          install: true
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
