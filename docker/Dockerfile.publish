@@ -42,7 +42,7 @@ RUN cd backend && npm install
 RUN cd backend && npm run build
 
 RUN chmod +x -R ./docker/bin \
-                ./bin/build \
+                # ./bin/build \
                 ./bin/mavlink \
                 ./bin/python \
                 /bin/systemctl \
