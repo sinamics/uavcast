@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_app:
+  build-publish-armv7:
+    name: Build, Publish armv7
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,6 +16,126 @@ jobs:
           fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
           submodules: true
 
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+        with:
+          fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: $-buildx-armv7-$
+          restore-keys: |
+            $-buildx-armv7-
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          driver: docker-container
+          driver-opts: |
+            image=moby/buildkit:master
+            network=host
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: all
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: docker/Dockerfile.publish
+          platforms: linux/armv7
+          push: true
+          tags: sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  build-publish-arm64:
+    name: Build, Publish arm64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
+          submodules: true
+
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+        with:
+          fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: $-buildx-arm64-$
+          restore-keys: |
+             $-buildx-arm64-
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          driver: docker-container
+          driver-opts: |
+            image=moby/buildkit:master
+            network=host
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: all
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: docker/Dockerfile.publish
+          platforms: linux/arm64
+          push: true
+          tags: sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  build-publish-amd64:
+    name: Build, Publish amd64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
+          submodules: true
+  
       # - name: install cppunit
       #   run: sudo apt install -y libcppunit-dev libjsoncpp-dev libv4l-dev libgstreamer1.0-dev libcurl4-nss-dev sqlite3 libsqlite3-dev
       # - name: make binaries
@@ -61,9 +182,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          key: $-buildx-amd64-$
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            $-buildx-amd64-
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -90,11 +211,11 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile.publish
-          platforms: linux/arm,linux/arm64,linux/amd64
+          platforms: linux/amd64
           push: true
           tags: sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
       - name: Move cache
         run: |
