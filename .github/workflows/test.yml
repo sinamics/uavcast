@@ -1,4 +1,4 @@
-name: Build Test
+name: Build Container
 on:
   push:
     tags:
@@ -31,8 +31,8 @@ jobs:
     # needs: web_lint
     strategy:
       matrix:
-        # architecture: [linux-arm-v7, linux-arm64, linux-amd64]
-        architecture: [linux-arm-v7]
+        architecture: [linux-arm-v7, linux-arm64, linux-amd64]
+        # architecture: [linux-arm-v7]
     outputs:
       time: ${{ steps.vars.outputs.time }}
 
@@ -59,6 +59,7 @@ jobs:
           echo "::set-output name=source::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/tree/${GITHUB_REF//refs\/heads\//}"
           echo "::set-output name=url::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/README.md"
           echo "::set-output name=tag::$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]'):${{ steps.previoustag.outputs.tag }}-${{ matrix.architecture }}"
+          echo "::set-output name=shadow_tag::$(uavcast-arch-images:$TIME-${{ matrix.architecture }}"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -94,19 +95,19 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          push: false
+          push: true
           platforms: ${{ steps.vars.outputs.platform }}
           file: docker/Dockerfile.test
-          outputs: type=docker,dest=/tmp/${{ matrix.architecture }}.tar
           tags: |
-            ${{ steps.vars.outputs.tag }}
-            ghcr.io/${{ matrix.architecture }}
+            ${{ steps.vars.outputs.shadow_tag }}
+            ghcr.io/${{ steps.vars.outputs.tag }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: uavcast-image
-          path: /tmp/${{ matrix.architecture }}.tar
+      - name: Move docker cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   publish:
     runs-on: ubuntu-20.04
@@ -117,28 +118,6 @@ jobs:
         with:
           fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
           submodules: true
-
-
-
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
-        with:
-          fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: uavcast-image
-          path: /tmp
-      -
-        name: Load Docker image
-        run: |
-          docker load --input /tmp/linux-arm-v7.tar
-          docker image ls -a
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -153,28 +132,32 @@ jobs:
           username: sinamics
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Login to Docker Hub
-        run: echo "${{secrets.DOCKERHUB_TOKEN}}" | docker login -u=sinamics --password-stdin
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+        with:
+          fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
 
-      # - name: Create manifests for DockerHub
+      - name: Create manifests for DockerHub
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
+        run: |
+          SHADOWIMAGE="uavcast-arch-images"
+          IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
+          TAG=${GITHUB_REF//refs\/heads\//}
+          SHADOWSOURCE=${SHADOWIMAGE}:${{ needs.build.outputs.time }}
+          SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
+
+          docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SHADOWSOURCE}-linux-amd64 --amend ${SHADOWSOURCE}-linux-arm-v7 --amend ${SHADOWSOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
+      
+      # - name: Create manifests for GitHub Container Registry
       #   env:
       #     DOCKER_CLI_EXPERIMENTAL: enabled
       #   run: |
-      #     IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
+      #     IMAGE=ghcr.io/$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
       #     TAG=${GITHUB_REF//refs\/heads\//}
       #     SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
-      #     docker manifest create sinamics/uavcast:${{ steps.previoustag.outputs.tag }} --amend linux-arm-v7.tar && \
-      #     docker manifest push sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
-      
-      - name: Create and push multi-arch manifests
-        env:
-          DOCKER_CLI_EXPERIMENTAL: enabled # To enable manifests
-        run: |
-          versions=$(docker images sinamics/uavcast --format "{{.Tag}}")
-          for version in $versions; do
-          tags=$(docker images sinamics/uavcast --format "{{.Tag}}" | grep $version- | sed 's/^/sinamics\/uavcast\:&/')
-            docker manifest create "sinamics/uavcast:${version}" $tags
-            docker manifest push "sinamics/uavcast:${version}"
-            docker manifest inspect "sinamics/uavcast:${version}"
-            echo
-          done
+      #     docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
+      #     if [[ ${GITHUB_REF//refs\/heads\//} == master ]]; then
+      #     docker manifest create ${IMAGE}:latest                             --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:latest
+      #     fi
