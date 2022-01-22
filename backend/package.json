@@ -21,7 +21,6 @@
     "@types/xml2js": "^0.4.8",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
-    "graphql-upload": "^13.0.0",
     "node-gyp": "^7.1.2",
     "nodemon": "^1.19.4",
     "ts-node": "8.5.2"
@@ -40,6 +39,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "graphql": "^14.5.8",
+    "graphql-upload": "^13.0.0",
     "jspack": "0.0.4",
     "jszip": "^3.7.1",
     "lodash": "^4.17.21",

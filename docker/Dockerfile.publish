@@ -19,11 +19,13 @@ RUN mkdir -p build
 RUN make
 
 ## backend
-FROM --platform=$TARGETPLATFORM node:14-alpine as backend
+FROM --platform=$TARGETPLATFORM 14.18.3-bullseye-slim as backend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /backend
-RUN apk add --no-cache python2 make g++ sqlite 
+
+RUN apt-get update && apt-get install -y build-essential python
+# RUN apk add --no-cache python2 make g++ sqlite
 # ENV PYTHONPATH /usr/lib/python3.7/site-packages
 # backend
 COPY ["backend/package.json", \
@@ -41,11 +43,12 @@ RUN npm install sqlite3
 RUN npm run build
 
 ## frontend
-FROM --platform=$TARGETPLATFORM node:14-alpine as frontend
+FROM --platform=$TARGETPLATFORM 14.18.3-bullseye-slim as frontend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /frontend
-RUN apk add --no-cache python2 make g++
+RUN apt-get update && apt-get install -y build-essential python
+# RUN apk add --no-cache python2 make g++
 # ENV PYTHONPATH /usr/lib/python3.7/site-packages
 
 # install app dependencies
