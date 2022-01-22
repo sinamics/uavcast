@@ -151,7 +151,7 @@ jobs:
         with:
           registry: ghcr.io
           username: sinamics
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to Docker Hub
         run: echo "${{secrets.DOCKER_TOKEN}}" | docker login -u=sinamics --password-stdin
