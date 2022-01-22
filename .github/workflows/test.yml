@@ -156,13 +156,24 @@ jobs:
       - name: Login to Docker Hub
         run: echo "${{secrets.DOCKERHUB_TOKEN}}" | docker login -u=sinamics --password-stdin
 
-      - name: Create manifests for DockerHub
-        env:
-          DOCKER_CLI_EXPERIMENTAL: enabled
-        run: |
-          IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
-          TAG=${GITHUB_REF//refs\/heads\//}
-          SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
-          docker manifest create sinamics/uavcast:${{ steps.previoustag.outputs.tag }} --amend linux-arm-v7.tar && \
-          docker manifest push sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
+      # - name: Create manifests for DockerHub
+      #   env:
+      #     DOCKER_CLI_EXPERIMENTAL: enabled
+      #   run: |
+      #     IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
+      #     TAG=${GITHUB_REF//refs\/heads\//}
+      #     SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
+      #     docker manifest create sinamics/uavcast:${{ steps.previoustag.outputs.tag }} --amend linux-arm-v7.tar && \
+      #     docker manifest push sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
       
+      - name: Create and push multi-arch manifests
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled # To enable manifests
+        run: |
+          versions=$(docker images sinamics/uavcast --format "{{.Tag}}")
+          for version in ${{ matrix.architecture }}; do
+            docker manifest create "sinamics/uavcast:${version}" $tags
+            docker manifest push "sinamics/uavcast:${version}"
+            docker manifest inspect "sinamics/uavcast:${version}"
+            echo
+          done
