@@ -6,7 +6,6 @@ module.exports = [
   {
     name: 'default',
     type: 'sqlite',
-    database: path.join(root.path, '../', '/data/sql', 'uavcast.db'),
     synchronize: true,
     logging: false,
     entities: ['src/entity/**/*{.ts,.js}'],
@@ -23,7 +22,6 @@ module.exports = [
   {
     name: 'production',
     type: 'sqlite',
-    database: path.join(root.path, '../', '/data/sql', 'uavcast.db'),
     synchronize: false, // switch this to false once you have the initial tables created and use migrations instead
     logging: false,
     seeds: ['src/seeds/**/*{.ts,.js}'],
