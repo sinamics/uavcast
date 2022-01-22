@@ -142,7 +142,7 @@ jobs:
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
         run: |
-          SHADOWIMAGE="uavcast-arch-images"
+          SHADOWIMAGE="sinamics/uavcast-arch-images"
           IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
           TAG=${GITHUB_REF//refs\/heads\//}
           SHADOWSOURCE=${SHADOWIMAGE}:${{ needs.build.outputs.time }}
