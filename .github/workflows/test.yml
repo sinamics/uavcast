@@ -153,6 +153,9 @@ jobs:
           username: sinamics
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Login to Docker Hub
+        run: echo "${{secrets.DOCKER_TOKEN}}" | docker login -u=sinamics --password-stdin
+
       - name: Create manifests for DockerHub
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
