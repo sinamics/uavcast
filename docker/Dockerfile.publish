@@ -19,7 +19,7 @@ RUN mkdir -p build
 RUN make
 
 ## backend
-FROM --platform=$TARGETPLATFORM 14.18.3-bullseye-slim as backend
+FROM --platform=$TARGETPLATFORM node:14.18.3-bullseye-slim as backend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /backend
@@ -43,7 +43,7 @@ RUN npm install sqlite3
 RUN npm run build
 
 ## frontend
-FROM --platform=$TARGETPLATFORM 14.18.3-bullseye-slim as frontend
+FROM --platform=$TARGETPLATFORM node:14.18.3-bullseye-slim as frontend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /frontend
