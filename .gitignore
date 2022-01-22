@@ -15,7 +15,6 @@ dist/
 /data
 
 #backend
-/backend/node_sqlite3.node
 /bin/**/*.o
 /bin/build
 
