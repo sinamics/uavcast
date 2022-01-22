@@ -1,0 +1,169 @@
+name: Build Container
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  # web_lint:
+  #   name: Web - Lint
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - uses: actions/setup-node@master
+  #       with:
+  #         node-version: 14.x
+  #     - run: npm install
+  #       working-directory: ./backend
+  #     - name: Lint
+  #       run: npm run lint:cmd
+  #       working-directory: ./backend
+
+  #     - run: npm install
+  #       working-directory: ./frontend
+  #     - name: Lint
+  #       run: npm run lint:cmd
+  #       working-directory: ./frontend
+  build:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    runs-on: ubuntu-20.04
+    # needs: web_lint
+    strategy:
+      matrix:
+        # architecture: [linux-arm-v7, linux-arm64, linux-amd64]
+        architecture: [linux-arm-v7]
+    outputs:
+      time: ${{ steps.vars.outputs.time }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
+          submodules: true
+
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+        with:
+          fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
+
+      - name: Create VARS
+        id: vars
+        run: |
+          ARCHITECTURE=${{ matrix.architecture }}
+          TIME=$(date --utc +%Y-%m-%d_%H)
+          echo "::set-output name=platform::${ARCHITECTURE//-/\/}"
+          echo "::set-output name=repo::$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')"
+          echo "::set-output name=time::$TIME"
+          echo "::set-output name=source::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/tree/${GITHUB_REF//refs\/heads\//}"
+          echo "::set-output name=url::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/README.md"
+          echo "::set-output name=tag::$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]'):${{ steps.previoustag.outputs.tag }}-${{ matrix.architecture }}"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: $-buildx-${{ matrix.architecture }}-$
+          restore-keys: |
+            $-buildx-${{ matrix.architecture }}-
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          install: true
+          version: latest
+          driver-opts: image=moby/buildkit:master
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: sinamics
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          platforms: ${{ steps.vars.outputs.platform }}
+          file: docker/Dockerfile.publish
+          outputs: type=docker,dest=/tmp/${{ steps.vars.outputs.tag }}.tar
+          tags: |
+            ${{ steps.vars.outputs.tag }}
+            ghcr.io/${{ steps.vars.outputs.tag }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: uavcast-image
+          path: /tmp/${{ steps.vars.outputs.tag }}.tar
+
+      - name: Move docker cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  publish:
+    runs-on: ubuntu-20.04
+    needs: [build]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
+          submodules: true
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: sinamics
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+        with:
+          fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: uavcast-image
+          path: /tmp
+      -
+        name: Load Docker image
+        run: |
+          docker load --input /tmp/${{ steps.vars.outputs.tag }}.tar
+          docker image ls -a
+
+      # - name: Create manifests for DockerHub
+      #   env:
+      #     DOCKER_CLI_EXPERIMENTAL: enabled
+      #   run: |
+      #     IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
+      #     TAG=${GITHUB_REF//refs\/heads\//}
+      #     SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
+      #     docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
+      
