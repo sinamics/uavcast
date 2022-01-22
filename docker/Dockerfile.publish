@@ -35,7 +35,8 @@ COPY ["backend/package.json", \
 
 COPY ["backend/src", "./src"]
 
-RUN npm install --force
+RUN npm install
+RUN npm install sqlite3
 RUN npm run build
 
 ## frontend
