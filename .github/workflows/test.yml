@@ -97,16 +97,16 @@ jobs:
           push: false
           platforms: ${{ steps.vars.outputs.platform }}
           file: docker/Dockerfile.test
-          outputs: type=docker,dest=/tmp/myimage.tar
+          outputs: type=docker,dest=/tmp/${{ steps.vars.outputs.platform }}.tar
           tags: |
             ${{ steps.vars.outputs.tag }}
-            ghcr.io/${{ steps.vars.outputs.tag }}
+            ghcr.io/${{ steps.vars.outputs.platform }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: uavcast-image
-          path: /tmp/myimage.tar
+          path: /tmp/${{ steps.vars.outputs.tag }}.tar
 
   publish:
     runs-on: ubuntu-20.04
