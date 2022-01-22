@@ -171,7 +171,7 @@ jobs:
           DOCKER_CLI_EXPERIMENTAL: enabled # To enable manifests
         run: |
           versions=$(docker images sinamics/uavcast --format "{{.Tag}}")
-          for version in ${{ matrix.architecture }}; do
+          for version in $versions; do
             docker manifest create "sinamics/uavcast:${version}" $tags
             docker manifest push "sinamics/uavcast:${version}"
             docker manifest inspect "sinamics/uavcast:${version}"
