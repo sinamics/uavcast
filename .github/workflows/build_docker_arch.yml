@@ -59,6 +59,7 @@ jobs:
           echo "::set-output name=source::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/tree/${GITHUB_REF//refs\/heads\//}"
           echo "::set-output name=url::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/README.md"
           echo "::set-output name=tag::$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]'):${{ steps.previoustag.outputs.tag }}-${{ matrix.architecture }}"
+          echo "::set-output name=shadow_tag::$(uavcast-arch-images:$TIME-${{ matrix.architecture }}"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -98,7 +99,7 @@ jobs:
           platforms: ${{ steps.vars.outputs.platform }}
           file: docker/Dockerfile.publish
           tags: |
-            ${{ steps.vars.outputs.tag }}
+            ${{ steps.vars.outputs.shadow_tag }}
             ghcr.io/${{ steps.vars.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
@@ -141,19 +142,22 @@ jobs:
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
         run: |
+          SHADOWIMAGE="uavcast-arch-images"
           IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
           TAG=${GITHUB_REF//refs\/heads\//}
+          SHADOWSOURCE=${SHADOWIMAGE}:${{ needs.build.outputs.time }}
           SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
-          docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
+
+          docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SHADOWSOURCE}-linux-amd64 --amend ${SHADOWSOURCE}-linux-arm-v7 --amend ${SHADOWSOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
       
-      - name: Create manifests for GitHub Container Registry
-        env:
-          DOCKER_CLI_EXPERIMENTAL: enabled
-        run: |
-          IMAGE=ghcr.io/$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
-          TAG=${GITHUB_REF//refs\/heads\//}
-          SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
-          docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
-          if [[ ${GITHUB_REF//refs\/heads\//} == master ]]; then
-          docker manifest create ${IMAGE}:latest                             --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:latest
-          fi
+      # - name: Create manifests for GitHub Container Registry
+      #   env:
+      #     DOCKER_CLI_EXPERIMENTAL: enabled
+      #   run: |
+      #     IMAGE=ghcr.io/$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
+      #     TAG=${GITHUB_REF//refs\/heads\//}
+      #     SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
+      #     docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
+      #     if [[ ${GITHUB_REF//refs\/heads\//} == master ]]; then
+      #     docker manifest create ${IMAGE}:latest                             --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:latest
+      #     fi
