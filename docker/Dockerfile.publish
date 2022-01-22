@@ -23,7 +23,7 @@ FROM --platform=$TARGETPLATFORM node:14-alpine as backend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /backend
-
+RUN apt-get update && apt-get install python
 # backend
 COPY ["backend/package.json", \
       "backend/ormconfig.js", \
