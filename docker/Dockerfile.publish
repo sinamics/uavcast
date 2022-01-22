@@ -33,7 +33,6 @@ COPY ["backend/package.json", \
       "backend/ormconfig.js", \
       "backend/.eslintignore", \
       "backend/ormconfig.js", \
-      "backend/node_sqlite3.node", \
       "backend/tsconfig.json", "./"]
 
 COPY ["backend/src", "./src"]
