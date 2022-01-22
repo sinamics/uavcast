@@ -23,10 +23,11 @@ FROM --platform=$TARGETPLATFORM node:14-alpine as backend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /backend
-RUN apk add --no-cache python2 make g++
+RUN apk add --no-cache python2 make g++ sqlite 
 # ENV PYTHONPATH /usr/lib/python3.7/site-packages
 # backend
 COPY ["backend/package.json", \
+      "backend/package-lock.json", \
       "backend/ormconfig.js", \
       "backend/.eslintignore", \
       "backend/ormconfig.js", \
@@ -35,7 +36,7 @@ COPY ["backend/package.json", \
 
 COPY ["backend/src", "./src"]
 
-RUN npm install
+RUN npm ci --only=production
 RUN npm install sqlite3
 RUN npm run build
 
@@ -49,6 +50,7 @@ RUN apk add --no-cache python2 make g++
 
 # install app dependencies
 COPY [  "frontend/package.json", \
+        "backend/package-lock.json", \
         "frontend/.env", \
         "frontend/.eslintignore", \
         "frontend/codegen.yml", \
