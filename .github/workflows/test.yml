@@ -172,6 +172,7 @@ jobs:
         run: |
           versions=$(docker images sinamics/uavcast --format "{{.Tag}}")
           for version in $versions; do
+          tags=$(docker images sinamics/uavcast --format "{{.Tag}}" | grep $version- | sed 's/^/sinamics\/uavcast\:&/')
             docker manifest create "sinamics/uavcast:${version}" $tags
             docker manifest push "sinamics/uavcast:${version}"
             docker manifest inspect "sinamics/uavcast:${version}"
