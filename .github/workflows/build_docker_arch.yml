@@ -59,7 +59,7 @@ jobs:
           echo "::set-output name=source::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/tree/${GITHUB_REF//refs\/heads\//}"
           echo "::set-output name=url::${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/README.md"
           echo "::set-output name=tag::$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]'):${{ steps.previoustag.outputs.tag }}-${{ matrix.architecture }}"
-          echo "::set-output name=shadow_tag::$(uavcast-arch-images:$TIME-${{ matrix.architecture }}"
+          echo "::set-output name=shadow_tag::sinamics/uavcast-arch-images:$TIME-${{ matrix.architecture }}"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -142,7 +142,7 @@ jobs:
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
         run: |
-          SHADOWIMAGE="uavcast-arch-images"
+          SHADOWIMAGE="sinamics/uavcast-arch-images"
           IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
           TAG=${GITHUB_REF//refs\/heads\//}
           SHADOWSOURCE=${SHADOWIMAGE}:${{ needs.build.outputs.time }}
