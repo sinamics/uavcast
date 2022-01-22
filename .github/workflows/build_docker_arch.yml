@@ -6,25 +6,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  web_lint:
-    name: Web - Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
-        with:
-          node-version: 14.x
-      - run: npm install
-        working-directory: ./backend
-      - name: Lint
-        run: npm run lint:cmd
-        working-directory: ./backend
+  # web_lint:
+  #   name: Web - Lint
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - uses: actions/setup-node@master
+  #       with:
+  #         node-version: 14.x
+  #     - run: npm install
+  #       working-directory: ./backend
+  #     - name: Lint
+  #       run: npm run lint:cmd
+  #       working-directory: ./backend
 
-      - run: npm install
-        working-directory: ./frontend
-      - name: Lint
-        run: npm run lint:cmd
-        working-directory: ./frontend
+  #     - run: npm install
+  #       working-directory: ./frontend
+  #     - name: Lint
+  #       run: npm run lint:cmd
+  #       working-directory: ./frontend
 
   build:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
