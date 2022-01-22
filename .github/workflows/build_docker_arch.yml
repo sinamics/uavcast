@@ -25,10 +25,11 @@ jobs:
       - name: Lint
         run: npm run lint:cmd
         working-directory: ./frontend
-        
+
   build:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-20.04
+    needs: web_lint
     strategy:
       matrix:
         architecture: [linux-arm-v7, linux-arm64, linux-amd64]

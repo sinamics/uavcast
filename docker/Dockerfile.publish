@@ -23,8 +23,8 @@ FROM --platform=$TARGETPLATFORM node:14-alpine as backend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /backend
-RUN apk add --no-cache python3 make g++
-ENV PYTHONPATH /usr/lib/python3.7/site-packages
+RUN apk add --no-cache python2 make g++
+# ENV PYTHONPATH /usr/lib/python3.7/site-packages
 # backend
 COPY ["backend/package.json", \
       "backend/ormconfig.js", \
@@ -43,8 +43,8 @@ FROM --platform=$TARGETPLATFORM node:14-alpine as frontend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /frontend
-RUN apk add --no-cache python3 make g++
-ENV PYTHONPATH /usr/lib/python3.7/site-packages
+RUN apk add --no-cache python2 make g++
+# ENV PYTHONPATH /usr/lib/python3.7/site-packages
 
 # install app dependencies
 COPY [  "frontend/package.json", \
