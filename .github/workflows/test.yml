@@ -97,10 +97,10 @@ jobs:
           push: false
           platforms: ${{ steps.vars.outputs.platform }}
           file: docker/Dockerfile.test
-          outputs: type=docker,dest=/tmp/${{ steps.vars.outputs.platform }}.tar
+          outputs: type=docker,dest=/tmp/${{ matrix.architecture }}.tar
           tags: |
             ${{ steps.vars.outputs.tag }}
-            ghcr.io/${{ steps.vars.outputs.platform }}
+            ghcr.io/${{ matrix.architecture }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
