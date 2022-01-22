@@ -1,4 +1,4 @@
-name: Build Container
+name: TEst Container
 on:
   push:
     tags:
