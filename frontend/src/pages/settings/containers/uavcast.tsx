@@ -67,7 +67,7 @@ const Uavcast = () => {
               />
             </Grid.Column>
             <Grid.Column>
-              {message && !message?.uavcast?.hasLatest && (
+              {message && message?.uavcast?.isRunning && !message?.uavcast?.hasLatest && (
                 <Label className='theme' basic color='orange' pointing='left'>
                   {`New Version ${message?.uavcast?.remoteVersion}`}
                 </Label>

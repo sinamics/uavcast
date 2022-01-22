@@ -1,0 +1,25 @@
+## GCC
+FROM gcc:9.2 as gcc
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+ARG TARGETARCH
+
+WORKDIR /gcc
+
+RUN git clone https://github.com/mavlink-router/mavlink-router.git
+RUN cd mavlink-router && git submodule update --init --recursive
+RUN apt-get update && apt-get install -y python3-pip
+RUN pip3 install meson
+RUN cd mavlink-router && apt-get install -y git meson ninja-build pkg-config gcc g++ systemd
+
+RUN cd mavlink-router && meson setup -D systemdsystemunitdir=/usr/lib/systemd/system build .
+RUN cd mavlink-router && ninja -C build
+RUN cd mavlink-router && ninja -C build install
+
+RUN mkdir -p mavlink
+RUN cp /usr/bin/mavlink-routerd ./mavlink/mavlink-routerd-${TARGETPLATFORM}
+
+FROM scratch AS export-stage
+COPY --from=gcc /gcc/mavlink/mavlink-routerd-${TARGETPLATFORM} .
+
+ENTRYPOINT ["tail", "-f", "/dev/null"]

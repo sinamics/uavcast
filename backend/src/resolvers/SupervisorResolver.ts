@@ -38,6 +38,7 @@ export class Supervisor {
   async getUavcastInformation(): Promise<any> {
     try {
       const uavcast = await getver('uavcastinformation');
+      console.log(uavcast);
       return { message: { uavcast } };
     } catch (error) {
       return { errors: [{ message: error.error }] };

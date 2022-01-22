@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <curl/curl.h> 
+#include <curl/curl.h>
 #include "includes/utils.h"
 #include <jsoncpp/json/json.h> // sudo apt-get install libjsoncpp-dev
 #include <cstring>
@@ -25,7 +25,7 @@ bool isNumber(const string& str)
 }
 bool is_number(const std::string& s)
 {
-    return !s.empty() && std::find_if(s.begin(), 
+    return !s.empty() && std::find_if(s.begin(),
         s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
 }
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
@@ -47,7 +47,7 @@ int extractIntegerWords(string str)
     return 0;
 }
 
-string trim(string str) 
+string trim(string str)
 {
     if (!str.empty() && str[str.length()-1] == '\n') {
         str.erase(str.length()-1);
@@ -83,13 +83,13 @@ string get_running_supervisor_version()
 {
     Utils utils;
 
-    string uavcast_version = utils.exec("sudo docker ps --all | grep 'sinamics/uavcast-supervisor' | awk '{print $2}'");
+    string uavcast_version = utils.exec("docker ps -f name=supervisor | grep -w supervisor | awk '{print $2}'");
     if(trim(uavcast_version) == ""){
-        static const char s[] = "supervisor not running"; 
+        static const char s[] = "supervisor not running";
         return s;
     }
     string version = uavcast_version.substr(uavcast_version.find(":") + 1);
-   
+
     return trim(version);
 };
 
@@ -100,7 +100,7 @@ string get_dockerhub_latest_supervisor_version()
     std::string json;
     Json::Reader reader;
     Json::Value val;
-    
+
     // Json::Value json;
     curl = curl_easy_init();
     if(curl) {
@@ -139,7 +139,7 @@ int get_supervisor_app_information()
     return 0;
 }
 
-// UAVCAST 
+// UAVCAST
 bool uavcast_isRunning()
 {
     Utils utils;
@@ -152,14 +152,17 @@ string get_running_uavcast_version()
 {
     Utils utils;
 
-    string uavcast_version = utils.exec("sudo docker ps --all | grep 'sinamics/uavcast' | awk '{print $2}'");
+    string uavcast_version = utils.exec("docker ps -f name=uavcast | grep -w uavcast | awk '{print $2}'");
     if(uavcast_version == ""){
-        static const char s[] = "uavcast not running"; 
+        static const char s[] = "uavcast not running";
         return s;
     }
+    int chkver = uavcast_version.find(":");
+    if(chkver == -1) return "uavcast not running";
+
     string version = uavcast_version.substr(uavcast_version.find(":") + 1);
     std::cout << version << std::endl;
-   
+
     return trim(version);
 };
 
@@ -191,7 +194,7 @@ string get_dockerhub_latest_uavcast_version()
     std::string json;
     Json::Reader reader;
     Json::Value val;
-    
+
     // Json::Value json;
     curl = curl_easy_init();
     if(curl) {
