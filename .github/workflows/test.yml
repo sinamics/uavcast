@@ -96,24 +96,17 @@ jobs:
         with:
           push: false
           platforms: ${{ steps.vars.outputs.platform }}
-          file: docker/Dockerfile.publish
+          file: docker/Dockerfile.test
           outputs: type=docker,dest=/tmp/${{ steps.vars.outputs.tag }}.tar
           tags: |
             ${{ steps.vars.outputs.tag }}
             ghcr.io/${{ steps.vars.outputs.tag }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: uavcast-image
           path: /tmp/${{ steps.vars.outputs.tag }}.tar
-
-      - name: Move docker cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   publish:
     runs-on: ubuntu-20.04
