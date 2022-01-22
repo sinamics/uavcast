@@ -31,7 +31,8 @@ jobs:
     # needs: web_lint
     strategy:
       matrix:
-        architecture: [linux-arm-v7, linux-arm64, linux-amd64]
+        # architecture: [linux-arm-v7, linux-arm64, linux-amd64]
+        architecture: [linux-arm-v7]
     outputs:
       time: ${{ steps.vars.outputs.time }}
 
