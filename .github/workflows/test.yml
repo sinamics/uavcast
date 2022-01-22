@@ -141,15 +141,15 @@ jobs:
       -
         name: Load Docker image
         run: |
-          docker load --input /tmp/${{ matrix.architecture }}.tar
+          docker load --input /tmp/linux-arm-v7.tar
           docker image ls -a
 
-      # - name: Create manifests for DockerHub
-      #   env:
-      #     DOCKER_CLI_EXPERIMENTAL: enabled
-      #   run: |
-      #     IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
-      #     TAG=${GITHUB_REF//refs\/heads\//}
-      #     SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
-      #     docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
+      - name: Create manifests for DockerHub
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
+        run: |
+          IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
+          TAG=${GITHUB_REF//refs\/heads\//}
+          SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
+          docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }} --amend linux-arm-v7.tar && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
       
