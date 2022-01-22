@@ -160,5 +160,6 @@ jobs:
           IMAGE=$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
           TAG=${GITHUB_REF//refs\/heads\//}
           SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
-          docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }} --amend linux-arm-v7.tar && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
+          docker manifest create sinamics/uavcast:${{ steps.previoustag.outputs.tag }} --amend linux-arm-v7.tar && \
+          docker manifest push sinamics/uavcast:${{ steps.previoustag.outputs.tag }}
       
