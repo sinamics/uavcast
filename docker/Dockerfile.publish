@@ -38,7 +38,7 @@ COPY ["backend/package.json", \
 
 COPY ["backend/src", "./src"]
 
-RUN npm ci --only=production
+RUN npm install --production
 RUN npm install sqlite3
 RUN npm run build
 
@@ -62,7 +62,7 @@ COPY [  "frontend/package.json", \
 COPY ["frontend/src", "./src"]
 COPY ["frontend/public", "./public"]
 
-RUN npm install --legacy-peer-deps
+RUN npm install
 RUN npm run build
 
 FROM --platform=$TARGETPLATFORM sinamics/debian-uavcast-base:latest as main
