@@ -12,7 +12,7 @@ const FcFooter = () => {
           <Button
             onClick={() =>
               kernelCommand({
-                variables: { cmd: '/app/uavcast/bin/uav_main -t start', path: '/' }
+                variables: { cmd: '/app/uavcast/bin/build/./uav_main -t start', path: '/' }
               })
             }
             positive
@@ -24,7 +24,7 @@ const FcFooter = () => {
           <Button
             onClick={() =>
               kernelCommand({
-                variables: { cmd: '/app/uavcast/bin/uav_main -t stop', path: '/' }
+                variables: { cmd: '/app/uavcast/bin/build/uav_main -t stop', path: '/' }
               })
             }
             negative

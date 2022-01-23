@@ -28,7 +28,7 @@ const RightSidebar = ({ message = {} }: any = {}) => {
                     color={heartbeat?.connected ? 'olive' : 'orange'}
                     onClick={() =>
                       kernelCommand({
-                        variables: { cmd: '/app/uavcast/bin/uav_main -t start', path: '/' }
+                        variables: { cmd: '/app/uavcast/bin/build/uav_main -t start', path: '/' }
                       })
                     }
                   >
