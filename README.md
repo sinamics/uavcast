@@ -36,7 +36,7 @@ https://docs.uavmatrix.com/5.x/
 
 Upon opening, you should be prompted to open the project in a **remote container**. This will build a container on top of the base uavcast container with all the development dependencies installed. This ensures everyone uses a consistent development environment without the need to install any dependencies on your host machine.
 
-If vscode does not start the remote container automatically, use hotkeys: <kbd>Ctrl</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> and select `Remote-Container: Rebuild and Reopen container`
+If vscode does not start the remote container automatically, use hotkeys: <kbd>Ctrl</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> and select <kbd>Remote-Container: Rebuild and Reopen container</kbd>
 
 After starting the container for the first time, it will install some additional package, give it few minutes to complete.
 ![install](https://i.ibb.co/6XWg1sV/Skjermbilde-2022-01-19-202346.png)
