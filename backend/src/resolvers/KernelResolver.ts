@@ -11,15 +11,13 @@ const ServerLog = winston.loggers.get('server');
 export class KernelResolver {
   @Mutation(() => KernelResponse)
   async kernelMessage(@Args() { cmd, shell = true, path }: KernelInput, @PubSub() pubSub: PubSubEngine) {
-
     await pubSub.publish('KERNEL_MESSAGE', { message: 'waiting response from kernel...\n' });
-    const child = spawn(cmd, { shell, cwd:path  });
+    const child = spawn(cmd, { shell, cwd: path });
     child.stdout.on('data', async (data) => {
       ServerLog.info({ message: data.toString('utf8'), data: cmd, path: __filename });
       await pubSub.publish('KERNEL_MESSAGE', { message: data.toString('utf8') });
     });
     child.stderr.on('data', async (error) => {
-      console.log(error.toString('utf8'));
       ServerLog.error({ message: error.toString('utf8'), data: cmd, path: __filename });
       await pubSub.publish('KERNEL_MESSAGE', { errors: [{ message: error.toString('utf8'), path: 'kernelMessage' }] });
     });
