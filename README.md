@@ -18,11 +18,11 @@ https://docs.uavmatrix.com/5.x/
 
 ## :hammer: Codebase
 
-- [x] Express nodejs (Typescript)
-- [x] Typeorm && sqlite3 database
-- [x] React (Typescript)
-- [x] Semantic-ui-react
-- [x] graphql / type-graphql && codegen
+- :white_check_mark: Express nodejs (Typescript)
+- :white_check_mark: Typeorm && sqlite3 database
+- :white_check_mark: React (Typescript)
+- :white_check_mark: Semantic-ui-react
+- :white_check_mark: graphql / type-graphql && codegen
 
 ## :wrench: Developer Usage
 
@@ -30,9 +30,9 @@ https://docs.uavmatrix.com/5.x/
 
 These packages needs to be installed
 
-- [x] Docker
-- [x] Docker Compose
-- [x] Visual Studio Code
+- :heavy_plus_sign: Docker
+- :heavy_plus_sign: Docker Compose
+- :heavy_plus_sign: Visual Studio Code
 
 ### :computer: Open the repo with Visual Studio Code
 
