@@ -58,7 +58,8 @@ To run the supervisor, type `cd supervisor && npm install && npm start` from the
 
 ### Teardown
 
-After closing VSCode, you may still have containers running. To close everything down, just run `docker-compose down -v` to cleanup all containers.
+After closing VSCode, you may still have containers running. To close everything down, just run\
+`docker-compose down -v` to cleanup all containers.
 
 ### Making changes
 
@@ -70,10 +71,10 @@ Ensure lint passes. `npm run lint` This command will ensure basic conformance to
 Use these commands in the project root (!not in the vscode developer container).
 Type `compile_release.sh` + arguments to genereate local docker image, or you can publish to your own container registery.
 
-Example external publish:
+Example external publish:\
 `./compile_release.sh --version 5.x.x --build_gcc --build_frontend --build_backend --docker_publish`
 
-Example local build:
+Example local build:\
 `./compile_release.sh --version 5.x.x --build_gcc --build_frontend --build_backend --docker_local`
 
 ### Images
