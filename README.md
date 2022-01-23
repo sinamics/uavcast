@@ -2,7 +2,7 @@
 
 uavcast 5.x has been re-written from the ground-up compared to the previouse versions, and are still missing key features before it is usable.
 
-:warning: This project is still in development and does not have a stabel version yet.
+:warning: This project is still in development and does not have a stabel version yet. Feel free to make improvements and provide a PR.
 
 Latest build of this repository can be found at:
 
@@ -18,15 +18,17 @@ https://docs.uavmatrix.com/5.x/
 
 ## :hammer: Codebase
 
-- [x] Backend nodejs (Typescript)
-- [x] Frontend React (Typescript)
-- [x] sqlite3 database
-- [x] graphql && codegen
-- [x] type-graphql
+- [x] Express nodejs (Typescript)
+- [x] Typeorm && sqlite3 database
+- [x] React (Typescript)
+- [x] Semantic-ui-react
+- [x] graphql / type-graphql && codegen
 
-## :wrench: Usage
+## :wrench: Developer Usage
 
 ### :exclamation: Prerequisites
+
+These packages needs to be installed
 
 - [x] Docker
 - [x] Docker Compose
@@ -45,7 +47,7 @@ After starting the container for the first time, it will install some additional
 
 VSCode will start the docker compose file for you and open a terminal window connected to `/app/uavcast` folder.
 
-- Run <kbd>cd backend && npm install</kbd>
+- Run `cd backend && npm install`
 - Run `cd frontend && npm install`
 - Run `npm start` from the project root to start both frontend & backend.
 
@@ -56,7 +58,7 @@ To run the supervisor, type `cd supervisor && npm install && npm start` from the
 
 ### Teardown
 
-After closing VSCode, you may still have containers running. To close everything down, just run docker-compose down -v to cleanup all containers.
+After closing VSCode, you may still have containers running. To close everything down, just run `docker-compose down -v` to cleanup all containers.
 
 ### Making changes
 
@@ -65,12 +67,14 @@ Ensure lint passes. `npm run lint` This command will ensure basic conformance to
 
 ### Build docker locally
 
-use the `compile_release.sh` to genereate local docker image, or you can publish to your own container registery.
+Use these commands in the project root (!not in the vscode developer container).
+Type `compile_release.sh` + arguments to genereate local docker image, or you can publish to your own container registery.
+
 Example external publish:
-`./compile_release.sh --version 5.0.0 --build_gcc --build_frontend --build_backend --docker_publish`
+`./compile_release.sh --version 5.x.x --build_gcc --build_frontend --build_backend --docker_publish`
 
 Example local build:
-`./compile_release.sh --version 5.0.0 --build_gcc --build_frontend --build_backend --docker_local`
+`./compile_release.sh --version 5.x.x --build_gcc --build_frontend --build_backend --docker_local`
 
 ### Images
 
