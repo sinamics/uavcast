@@ -5,6 +5,9 @@ import SystemLogger from '../logger';
 import JSZip from 'jszip';
 import Promise from 'bluebird';
 import fs from 'fs';
+import winston from 'winston';
+
+const ServerLog = winston.loggers.get('server');
 
 export const fileDownload = (app: any) => {
   app.use(express.json());
@@ -84,18 +87,23 @@ export const fileDownload = (app: any) => {
 
         // Get systemctl logs
         const systemctlPath = '/var/log/journal';
-        if (fs.statSync(systemctlPath).isDirectory()) {
-          const directoryContents = fs.readdirSync(systemctlPath, {
-            withFileTypes: true
+        if (!fs.existsSync(systemctlPath))
+          return ServerLog.error({
+            message: `${systemctlPath} not included in log! does not exsist. development?`,
+            data: systemctlPath,
+            path: __filename
           });
-          directoryContents.forEach(({ name }) => {
-            const path = `${systemctlPath}/${name}`;
-            if (fs.statSync(path).isFile()) {
-              zip.file(name, fs.readFileSync(path, 'utf-8'));
-            }
-          });
-        }
+        const directoryContents = fs.readdirSync(systemctlPath, {
+          withFileTypes: true
+        });
+        directoryContents.forEach(({ name }) => {
+          const path = `${systemctlPath}/${name}`;
+          if (fs.statSync(path).isFile()) {
+            zip.file(name, fs.readFileSync(path, 'utf-8'));
+          }
+        });
       }
+      return true;
     });
 
     const zipAsBase64 = await zip.generateAsync({ type: 'base64' });

@@ -111,7 +111,7 @@ MAVLINKROUTERED=$Systemd/"mavlink-router.service"
 Description=MAVLink Router
 [Service]
 Type=simple
-ExecStart=$ROOTFOLDER/bin/mavlink/mavlink-routerd -c $ROOTFOLDER/etc/mavlink-router/main.conf
+ExecStart=$ROOTFOLDER/bin/mavlink/mavlink-routerd
 StandardOutput=journal+console
 StandardError=inherit
 Restart=on-failure

@@ -67,7 +67,7 @@ int Mavlink::ardupilot(FlightControllerRecords fc_record)
     EndpointRecords endpoints = db.get_endpoints();
     std::string clients;
 
-    std::ofstream MavConfigFile("/app/uavcast/etc/mavlink-router/main.conf");
+    std::ofstream MavConfigFile("/etc/mavlink-router/main.conf");
     MavConfigFile << "[General]\n";
 
     if (!fc_record.size())
@@ -79,7 +79,7 @@ int Mavlink::ardupilot(FlightControllerRecords fc_record)
     // Add loging if selected!
     if (fc_record[0].binFlightLog == 1)
     {
-        MavConfigFile << "  Log=/var/log/flight-stack\n";
+        MavConfigFile << "  Log=/app/uavcast/data/log/mavlink/flight\n";
         MavConfigFile << "  MavlinkDialect=ardupilotmega\n";
     }
 
@@ -147,6 +147,6 @@ int Mavlink::connect()
     if(fc_record[0].controller == "navio"){
         return navio(fc_record);
     }
-    
+
     return 0;
 }

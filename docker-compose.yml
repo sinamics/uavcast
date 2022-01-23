@@ -12,7 +12,7 @@ services:
       - .:/app/uavcast:cached
       - uavdata:/app/uavcast/data
       - /var/lib/zerotier-one:/var/lib/zerotier-one:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
       - /dev:/dev:ro
     ports:
       - '3000:3000'

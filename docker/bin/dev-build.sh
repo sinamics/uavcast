@@ -51,6 +51,8 @@ RemainAfterExit=yes
 KillMode=control-group
 SyslogIdentifier=uavcast
 Restart=on-failure
+StandardOutput=journal+console
+StandardError=inherit
 [Install]
 WantedBy=multi-user.target
 EOM
@@ -72,6 +74,8 @@ ExecStart=$APPROOT/bin/build/uav_camera -start
 #ExecStop=$APPROOT/bin/build/uav_camera -stop
 KillMode=control-group
 SyslogIdentifier=uavcast-camera
+StandardOutput=journal+console
+StandardError=inherit
 [Install]
 WantedBy=multi-user.target
 EOM
@@ -85,9 +89,11 @@ touch $MAVLINKROUTERED
 Description=MAVLink Router
 [Service]
 Type=simple
-ExecStart=$APPROOT/bin/mavlink/mavlink-routerd -c $APPROOT/etc/mavlink-router/main.conf
+ExecStart=$APPROOT/bin/mavlink/mavlink-routerd
 Restart=on-failure
 RestartSec=5
+StandardOutput=journal+console
+StandardError=inherit
 [Install]
 WantedBy=multi-user.target
 EOM
@@ -101,3 +107,15 @@ elif [ "$ARCH" == "armv7l" ]; then
 else
     cp ${APPROOT}/bin/mavlink/mavlink-routerd-arm64 ${APPROOT}/bin/mavlink/mavlink-routerd
 fi
+
+## add mavlink config
+mkdir -p /etc/mavlink-router
+cp ${APPROOT}/etc/mavlink-router-example.conf /etc/mavlink-router/main.conf
+
+## Docker
+sudo touch /var/run/docker.sock
+sudo chmod 666 /var/run/docker.sock
+sudo chown uavcast:docker /var/run/docker.sock
+
+## vscode
+code --install-extension ${APPROOT}/.vscode/extensions.json
