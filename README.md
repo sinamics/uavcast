@@ -2,7 +2,7 @@
 
 uavcast 5.x has been re-written from the ground-up compared to the previouse versions, and are still missing key features before it is usable.
 
-:warning: This project is still in **alfa**, use at your own risk.
+:warning: This project is still in development and does not have a stabel version yet.
 
 Latest build of this repository can be found at:
 
