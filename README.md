@@ -30,10 +30,8 @@ https://docs.uavmatrix.com/5.x/
 
 These packages needs to be installed
 
-:heavy_plus_sign: Docker
-
-:heavy_plus_sign: Docker Compose
-
+:heavy_plus_sign: Docker\
+:heavy_plus_sign: Docker Compose\
 :heavy_plus_sign: Visual Studio Code
 
 ### :computer: Open the repo with Visual Studio Code
@@ -49,8 +47,8 @@ After starting the container for the first time, it will install some additional
 
 VSCode will start the docker compose file for you and open a terminal window connected to `/app/uavcast` folder.
 
-- :heavy_minus_sign: Run `cd backend && npm install`
-- :heavy_minus_sign: Run `cd frontend && npm install`
+:heavy_minus_sign: Run `cd backend && npm install`\
+:heavy_minus_sign: Run `cd frontend && npm install`
 
 :heavy_minus_sign: Run `npm start` from the project root to start both frontend & backend.
 
