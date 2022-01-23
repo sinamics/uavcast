@@ -45,7 +45,7 @@ After starting the container for the first time, it will install some additional
 
 VSCode will start the docker compose file for you and open a terminal window connected to `/app/uavcast` folder.
 
-- Run `cd backend && npm install`
+- Run <kbd>cd backend && npm install</kbd>
 - Run `cd frontend && npm install`
 - Run `npm start` from the project root to start both frontend & backend.
 
