@@ -83,13 +83,13 @@ string get_running_supervisor_version()
 {
     Utils utils;
 
-    string uavcast_version = utils.exec("docker ps -f name=supervisor | grep -w supervisor | awk '{print $2}'");
+    string uavcast_version = utils.exec("docker ps -f name=^/supervisor$ | grep -w supervisor | awk '{print $2}'");
     if(trim(uavcast_version) == ""){
         static const char s[] = "supervisor not running";
         return s;
     }
     string version = uavcast_version.substr(uavcast_version.find(":") + 1);
-
+    // std::cout << version << std::endl;
     return trim(version);
 };
 
@@ -152,7 +152,7 @@ string get_running_uavcast_version()
 {
     Utils utils;
 
-    string uavcast_version = utils.exec("docker ps -f name=uavcast | grep -w uavcast | awk '{print $2}'");
+    string uavcast_version = utils.exec("docker ps -f name=^/uavcast$ | grep -w uavcast | awk '{print $2}'");
     if(uavcast_version == ""){
         static const char s[] = "uavcast not running";
         return s;
@@ -161,7 +161,7 @@ string get_running_uavcast_version()
     if(chkver == -1) return "uavcast not running";
 
     string version = uavcast_version.substr(uavcast_version.find(":") + 1);
-    std::cout << version << std::endl;
+    // std::cout << version << std::endl;
 
     return trim(version);
 };
@@ -198,21 +198,28 @@ string get_dockerhub_latest_uavcast_version()
     // Json::Value json;
     curl = curl_easy_init();
     if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://hub.docker.com/v2/repositories/sinamics/uavcast/tags?page_size=100");
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &json);
-        // res = curl_easy_perform(curl);
-        curl_easy_perform(curl);
-        curl_easy_cleanup(curl);
-        bool parseSuccess = reader.parse(json,  val);
-        if (parseSuccess)
-        {
-            const Json::Value resultValue = val["results"][0]["name"];
-            // std::cout << resultValue.asString() << std::endl;
-            return resultValue.asString();
+
+        try {
+            curl_easy_setopt(curl, CURLOPT_URL, "https://hub.docker.com/v2/repositories/sinamics/uavcast/tags?page_size=100");
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &json);
+            // res = curl_easy_perform(curl);
+            curl_easy_perform(curl);
+            curl_easy_cleanup(curl);
+            bool parseSuccess = reader.parse(json,  val);
+            if (parseSuccess)
+            {
+                const Json::Value resultValue = val["results"][0]["name"];
+                // std::cout << resultValue.asString() << std::endl;
+                return resultValue.asString();
+            }
+        }
+        catch (int error) {
+            // Block of code to handle errors
+            std::cout << "an error occured. get_dockerhub_latest_uavcast_version" << std::endl;
         }
     }
-    return {};
+    return "";
 };
 int get_uavcast_app_information()
 {

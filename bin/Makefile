@@ -35,3 +35,5 @@ clean:
 
 build_dir:
 	mkdir -p build
+
+.PHONY:
