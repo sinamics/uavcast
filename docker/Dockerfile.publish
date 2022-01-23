@@ -67,6 +67,7 @@ RUN npm run build
 FROM --platform=$TARGETPLATFORM sinamics/debian-uavcast-base:latest as main
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
+ARG TARGETARCH
 
 LABEL maintainer="Bernt Christian Egeland / uavmatrix.com"
 
@@ -102,9 +103,10 @@ COPY init/systemctl3.py /bin/systemctl3.py
 COPY init/journalctl3.py /bin/journalctl
 
 ## copy in files and folder
-COPY ["bin/mavlink", "./bin/mavlink"]
+COPY ["bin/mavlink/mavlink-routerd-${TARGETARCH}", "./bin/mavlink/mavlink-routerd"]
 COPY ["bin/python", "./bin/python"]
 COPY ["bin/utils", "./bin/utils"]
+COPY ["bin/etc", "./bin/etc"]
 COPY ["docker", "./docker"]
 
 RUN chmod +x -R ./docker/bin \

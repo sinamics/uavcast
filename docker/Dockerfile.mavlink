@@ -1,4 +1,13 @@
-## GCC
+#####
+#
+# Generate mavlink binaries
+# !needs binfmt:
+# docker run --privileged --rm tonistiigi/binfmt --install all
+#
+# run as:
+# docker buildx build --pull --rm -f Dockerfile.mavlink --platform linux/arm,linux/arm64,linux/amd64 -t mavlink --output out .
+######
+
 FROM gcc:9.2 as gcc
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
@@ -17,9 +26,10 @@ RUN cd mavlink-router && ninja -C build
 RUN cd mavlink-router && ninja -C build install
 
 RUN mkdir -p mavlink
-RUN cp /usr/bin/mavlink-routerd ./mavlink/mavlink-routerd-${TARGETPLATFORM}
+RUN mv /usr/bin/mavlink-routerd ./mavlink/mavlink-routerd-${TARGETARCH}
 
 FROM scratch AS export-stage
-COPY --from=gcc /gcc/mavlink/mavlink-routerd-${TARGETPLATFORM} .
+ARG TARGETARCH
+COPY --from=gcc /gcc/mavlink/mavlink-routerd-${TARGETARCH} .
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]

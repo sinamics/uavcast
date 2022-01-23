@@ -19,13 +19,13 @@ int openvpn()
        
         std::cout << ">> generates configuration files.." << '\n';
         // Generate password file 
-        std::ofstream OpenVpnPassFile("/home/uavcast/etc/login.txt");
+        std::ofstream OpenVpnPassFile("/app/uavcast/etc/login.txt");
         OpenVpnPassFile << vpn_val.username << "\n";
         OpenVpnPassFile << vpn_val.password;
         OpenVpnPassFile.close();
 
         vpn_connect_str =
-            std::string("sudo openvpn --config /home/uavcast/etc/openvpn.conf --auth-user-pass /home/uavcast/etc/login.txt");
+            std::string("sudo openvpn --config /app/uavcast/etc/openvpn.conf --auth-user-pass /app/uavcast/etc/login.txt");
 
         std::string vpn_connect = utils.exec_p(vpn_connect_str.c_str());
         std::cout << vpn_connect << '\n';

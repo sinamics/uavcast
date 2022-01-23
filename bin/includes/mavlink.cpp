@@ -67,7 +67,7 @@ int Mavlink::ardupilot(FlightControllerRecords fc_record)
     EndpointRecords endpoints = db.get_endpoints();
     std::string clients;
 
-    std::ofstream MavConfigFile("/home/uavcast/etc/mavlink-router/main.conf");
+    std::ofstream MavConfigFile("/app/uavcast/etc/mavlink-router/main.conf");
     MavConfigFile << "[General]\n";
 
     if (!fc_record.size())
