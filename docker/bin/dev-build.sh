@@ -25,8 +25,6 @@ sudo apt-get install -y libjsoncpp-dev
 sudo apt-get install -y libcap2-bin
 sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
 
-
-
 # fetch translations
 # https://github.com/UAVmatrix/uavcast-pro-translations
 git submodule update --init --recursive
@@ -94,29 +92,12 @@ RestartSec=5
 WantedBy=multi-user.target
 EOM
 
-# restart mavlink-router if already running
-# if systemctl is-active --quiet mavlink-router
-# then
-#     sudo systemctl restart mavlink-router
-# else
 
-FILE="/etc/mavlink-router/main.conf"
-mkdir -p /etc/mavlink-router && touch $FILE
-
-/bin/cat <<EOM >$FILE
-[General]
-    TcpServerPort=5790
-    ReportStats=false
-    MavlinkDialect=auto
-
-[UartEndpoint controller]
-    Device=/dev/ttyACM0
-    Baud=57600
-
-[UdpEndpoint localhost]
-    Mode=Normal
-    Address=127.0.0.1
-    Port=12550
-EOM
-#     sudo systemctl start mavlink-router
-# fi
+ARCH=`uname -m`
+if [ "$ARCH" == "x86_64" ]; then
+    cp ${APPROOT}/bin/mavlink/mavlink-routerd-amd64 ${APPROOT}/bin/mavlink/mavlink-routerd
+elif [ "$ARCH" == "armv7l" ]; then
+    cp ${APPROOT}/bin/mavlink/mavlink-routerd-arm ${APPROOT}/bin/mavlink/mavlink-routerd
+else
+    cp ${APPROOT}/bin/mavlink/mavlink-routerd-arm64 ${APPROOT}/bin/mavlink/mavlink-routerd
+fi

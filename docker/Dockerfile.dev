@@ -1,5 +1,5 @@
 FROM sinamics/debian-uavcast-base:latest
-LABEL maintainer="Bernt Christian Egeland / uavmatrix.com"
+LABEL maintainer="Bernt Christian Egeland / (aka sinamics)"
 
 ENV NPM_CONFIG_PREFIX=/home/uavcast/.npm-global
 ENV PATH=$PATH:/home/uavcast/.npm-global/bin
@@ -23,14 +23,10 @@ COPY init/systemctl3.py /bin/systemctl
 COPY init/systemctl3.py /bin/systemctl3.py
 COPY init/journalctl3.py /bin/journalctl
 
-COPY docker/bin/entrypoint.sh /home/uavcast/etc/
-
 RUN mkdir -p /app/uavcast/data && chown -R uavcast /app/uavcast/data
 
 RUN chmod +x  /bin/systemctl \
               /bin/systemctl3.py \
               /bin/journalctl
-
-# RUN sudo chown -R uavcast /home/uavcast/
 
 ENV NODE_ENV=development
