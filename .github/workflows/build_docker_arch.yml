@@ -28,7 +28,7 @@ jobs:
   build:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-20.04
-    # needs: web_lint
+    needs: web_lint
     strategy:
       matrix:
         architecture: [linux-arm-v7, linux-arm64, linux-amd64]

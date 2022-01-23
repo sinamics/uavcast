@@ -59,7 +59,7 @@
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "lint": "npm run lint:cmd -- --fix",
-    "lint:cmd": "eslint  ./ --ext .tsx,.js"
+    "lint:cmd": "eslint  ./ --ext .tsx,.js --max-warnings 0"
   },
   "eslintConfig": {
     "extends": [
