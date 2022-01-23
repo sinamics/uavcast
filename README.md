@@ -18,11 +18,11 @@ https://docs.uavmatrix.com/5.x/
 
 ## :hammer: Codebase
 
-- :white_check_mark: Express nodejs (Typescript)
-- :white_check_mark: Typeorm && sqlite3 database
-- :white_check_mark: React (Typescript)
-- :white_check_mark: Semantic-ui-react
-- :white_check_mark: graphql / type-graphql && codegen
+:white_check_mark: Express nodejs (Typescript)
+:white_check_mark: Typeorm && sqlite3 database
+:white_check_mark: React (Typescript)
+:white_check_mark: Semantic-ui-react
+:white_check_mark: graphql / type-graphql && codegen
 
 ## :wrench: Developer Usage
 
@@ -30,9 +30,9 @@ https://docs.uavmatrix.com/5.x/
 
 These packages needs to be installed
 
-- :heavy_plus_sign: Docker
-- :heavy_plus_sign: Docker Compose
-- :heavy_plus_sign: Visual Studio Code
+:heavy_plus_sign: Docker
+:heavy_plus_sign: Docker Compose
+:heavy_plus_sign: Visual Studio Code
 
 ### :computer: Open the repo with Visual Studio Code
 
@@ -47,9 +47,9 @@ After starting the container for the first time, it will install some additional
 
 VSCode will start the docker compose file for you and open a terminal window connected to `/app/uavcast` folder.
 
-- Run `cd backend && npm install`
-- Run `cd frontend && npm install`
-- Run `npm start` from the project root to start both frontend & backend.
+:heavy_minus_sign: Run `cd backend && npm install`
+:heavy_minus_sign: Run `cd frontend && npm install`
+:heavy_minus_sign: Run `npm start` from the project root to start both frontend & backend.
 
 ### Supervisor
 
