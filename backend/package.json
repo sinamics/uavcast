@@ -21,12 +21,11 @@
     "@types/xml2js": "^0.4.8",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
-    "node-gyp": "^7.1.2",
     "nodemon": "^1.19.4",
-    "ts-node": "8.5.2",
-    "sqlite3": "^5.0.2"
+    "ts-node": "8.5.2"
   },
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.8",
     "@types/winston": "^2.4.4",
     "apollo-server-express": "^2.9.9",
     "app-root-path": "^3.0.0",
@@ -46,8 +45,10 @@
     "lodash": "^4.17.21",
     "microtime": "^3.0.0",
     "moment": "^2.29.1",
+    "node-pre-gyp": "^0.17.0",
     "reflect-metadata": "^0.1.10",
     "socket.io-client": "^4.2.0",
+    "sqlite3": "^5.0.2",
     "systeminformation": "^5.6.12",
     "type-graphql": "^0.17.5",
     "typeorm": "0.2.38",

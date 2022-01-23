@@ -15,6 +15,11 @@ ROOTFOLDER="/app/uavcast"
 
 main="$MAINPID"
 
+sudo apt-get install -y libjsoncpp-dev \
+                        libsqlite3-dev \
+                        libv4l-dev \
+                        libcap2-bin
+                        
 # Generate UAVcast.service file
 UAVCAST=$Systemd/"uavcast.service"
 
