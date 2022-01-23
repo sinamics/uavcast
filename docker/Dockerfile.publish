@@ -106,7 +106,7 @@ COPY init/journalctl3.py /bin/journalctl
 COPY ["bin/mavlink/mavlink-routerd-${TARGETARCH}", "./bin/mavlink/mavlink-routerd"]
 COPY ["bin/python", "./bin/python"]
 COPY ["bin/utils", "./bin/utils"]
-COPY ["bin/etc", "./bin/etc"]
+COPY ["etc", "./etc"]
 COPY ["docker", "./docker"]
 
 RUN chmod +x -R ./docker/bin \
