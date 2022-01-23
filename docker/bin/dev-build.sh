@@ -85,7 +85,7 @@ touch $MAVLINKROUTERED
 Description=MAVLink Router
 [Service]
 Type=simple
-ExecStart=$APPROOT/bin/mavlink/mavlink-routerd
+ExecStart=$APPROOT/bin/mavlink/mavlink-routerd -c $APPROOT/etc/mavlink-router/main.conf
 Restart=on-failure
 RestartSec=5
 [Install]
