@@ -31,7 +31,9 @@ https://docs.uavmatrix.com/5.x/
 These packages needs to be installed
 
 :heavy_plus_sign: Docker
+
 :heavy_plus_sign: Docker Compose
+
 :heavy_plus_sign: Visual Studio Code
 
 ### :computer: Open the repo with Visual Studio Code
