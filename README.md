@@ -70,7 +70,7 @@ Ensure lint passes. `npm run lint` This command will ensure basic conformance to
 
 ### Build docker locally
 
-Use these commands in the project root (!not in the vscode developer container).
+Use these commands in the project root (!not in the vscode developer container).\
 Type `./compile_release.sh` + arguments to genereate local docker image, or you can publish to your own container registery.
 
 Example external publish:\
