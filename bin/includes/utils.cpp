@@ -5,6 +5,8 @@
 #include <bits/stdc++.h>
 #include <sys/stat.h>
 #include "utils.h"
+#include <jsoncpp/json/json.h> 
+#include <curl/curl.h>
 
 int Utils::getProcIdByName(std::string procName)
 {
@@ -144,4 +146,71 @@ std::vector<std::string> Utils::split(const std::string str, char delim)
         }
     }
     return result;
+}
+
+
+std::size_t json_callback(
+            const char* in,
+            std::size_t size,
+            std::size_t num,
+            std::string* out)
+    {
+        const std::size_t totalBytes(size * num);
+        out->append(in, totalBytes);
+        return totalBytes;
+    }
+
+Json::Value Utils::http_get_json(std::string url)
+{
+    // const std::string url(url);
+
+    CURL* curl = curl_easy_init();
+
+    // Set remote URL.
+    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+
+    // Response information.
+    long httpCode(0);
+
+    std::string httpData;
+    // Hook up data handling function.
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, json_callback);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &httpData);
+
+    // Run our HTTP GET command, capture the HTTP response code, and clean up.
+    curl_easy_perform(curl);
+    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+    curl_easy_cleanup(curl);
+
+    if (httpCode != CURLE_HTTP_RETURNED_ERROR)
+    {
+        // Response looks good - done using Curl now.  Try to parse the results
+        // and print them out.
+        Json::Value jsonData;
+        JSONCPP_STRING jsonError;
+        Json::CharReaderBuilder builder;
+
+        const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+
+        if (reader->parse(httpData.c_str(), httpData.c_str() + httpData.length(), &jsonData, &jsonError))
+        {
+            const Json::Value resultValue = jsonData;
+            return jsonData;
+            // const Json::Value resultValue = jsonData["results"][0]["name"];
+            // return resultValue.asString();
+        }
+        else
+        {
+            std::cout << "Could not parse HTTP data as JSON" << std::endl;
+            return {};
+        }
+    }
+    else
+    {
+        std::cout << "Couldn't GET from " << url << " - exiting" << std::endl;
+        return {};
+    }
 }

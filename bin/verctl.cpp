@@ -95,28 +95,12 @@ string get_running_supervisor_version()
 
 string get_dockerhub_latest_supervisor_version()
 {
-    CURL *curl;
-    // CURLcode res;
-    std::string json;
-    Json::Reader reader;
-    Json::Value val;
-
-    // Json::Value json;
-    curl = curl_easy_init();
-    if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://hub.docker.com/v2/repositories/sinamics/uavcast-supervisor/tags?page_size=100");
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &json);
-        // res = curl_easy_perform(curl);
-        curl_easy_perform(curl);
-        curl_easy_cleanup(curl);
-        bool parseSuccess = reader.parse(json,  val);
-        if (parseSuccess)
-        {
-            const Json::Value resultValue = val["results"][0]["name"];
-            // std::cout << resultValue.asString() << std::endl;
-            return resultValue.asString();
-        }
+    Utils util;
+    Json::Value jsonData = util.http_get_json("https://hub.docker.com/v2/repositories/sinamics/uavcast-supervisor/tags?page_size=100");
+    if(!jsonData.empty()){
+        return jsonData["results"][0]["name"].asString();
+    } else {
+        std::cout << "Could not parse supervisor HTTP data as JSON" << std::endl;
     }
     return {};
 };
@@ -189,37 +173,15 @@ int get_dockerhub_uavcast_versions()
 };
 string get_dockerhub_latest_uavcast_version()
 {
-    CURL *curl;
-    // CURLcode res;
-    std::string json;
-    Json::Reader reader;
-    Json::Value val;
-
-    // Json::Value json;
-    curl = curl_easy_init();
-    if(curl) {
-
-        try {
-            curl_easy_setopt(curl, CURLOPT_URL, "https://hub.docker.com/v2/repositories/sinamics/uavcast/tags?page_size=100");
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &json);
-            // res = curl_easy_perform(curl);
-            curl_easy_perform(curl);
-            curl_easy_cleanup(curl);
-            bool parseSuccess = reader.parse(json,  val);
-            if (parseSuccess)
-            {
-                const Json::Value resultValue = val["results"][0]["name"];
-                // std::cout << resultValue.asString() << std::endl;
-                return resultValue.asString();
-            }
-        }
-        catch (int error) {
-            // Block of code to handle errors
-            std::cout << "an error occured. get_dockerhub_latest_uavcast_version" << std::endl;
-        }
+    Utils util;
+    Json::Value jsonData = util.http_get_json("https://hub.docker.com/v2/repositories/sinamics/uavcast/tags?page_size=100");
+    if(!jsonData.empty()){
+        return jsonData["results"][0]["name"].asString();
+    } else {
+        std::cout << "Could not parse uavcast HTTP data as JSON" << std::endl;
     }
-    return "";
+
+    return {};
 };
 int get_uavcast_app_information()
 {
