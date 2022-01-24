@@ -8,7 +8,9 @@ Latest build of this repository can be found at:
 
 - https://hub.docker.com/repository/docker/sinamics/uavcast
 
-To install latest developer version on Rasperry PI, Jetson, or any arm/v7, arm64, amd64 device:
+## :whale: Installation
+
+To install developer version (supervisor & uavcast) on Rasperry PI, Jetson, or any arm/v7, arm64, amd64 device:
 
 - `curl -s http://install.uavmatrix.com/next/ | sudo bash`
 
@@ -24,7 +26,7 @@ https://docs.uavmatrix.com/5.x/
 :white_check_mark: Semantic-ui-react\
 :white_check_mark: graphql / type-graphql && codegen
 
-## :wrench: Developer Usage
+## :wrench: Developer Instructions
 
 ### :exclamation: Prerequisites
 
