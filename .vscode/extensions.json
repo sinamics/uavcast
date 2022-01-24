@@ -1,3 +1,29 @@
 {
-  "recommendations": []
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "apollographql.vscode-apollo",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "xabikos.reactsnippets",
+    "jawandarajbir.react-vscode-extension-pack",
+    "graphql.vscode-graphql",
+    "christian-kohler.npm-intellisense",
+    "christian-kohler.path-intellisense",
+    "gruntfuggly.todo-tree",
+    "formulahendry.auto-rename-tag",
+    "aaron-bond.better-comments",
+    "ms-vscode.cpptools",
+    "austin.code-gnu-global",
+    "ms-azuretools.vscode-docker",
+    "dsznajder.es7-react-js-snippets",
+    "xabikos.javascriptsnippets",
+    "alduncanson.react-hooks-snippets",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-sqlite",
+    "wayou.vscode-todo-highlight",
+    "rbbit.typescript-hero",
+    "pkief.material-icon-theme",
+    "formulahendry.auto-close-tag",
+    "mikestead.dotenv"
+  ]
 }
