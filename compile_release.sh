@@ -15,27 +15,27 @@ docker_publish=0
 alfa=0
 beta=0
 version_arg=
-app_type=pro
+image_name=sinamics/uavcast
 # usage function
 function usage()
 {
    cat << HEREDOC
 
-   Usage: $progname [ --version VERSION ] [ --build_gcc ] [ --build_frontend ] [ --build_backend ] [ --type TYPE ] [ --version ] [ --docker_publish ] [ --docker_local ]
+   Usage: $progname [ --version VERSION ] [ --build_gcc ] [ --build_frontend ] [ --build_backend ] [ --version ] [ --docker_publish ] [ --docker_local ]
 
    Example publish:
-    ./compile_release.sh --version 5.0.0-rc1 --build_gcc --build_frontend  --build_backend --docker_publish
+    ./compile_release.sh --image_name sinamics/uavcast --version 5.0.0-rc1 --build_gcc --build_frontend  --build_backend --docker_publish
 
    Example local build:
-    ./compile_release.sh --version 5.0.0-rc1 --build_gcc --build_frontend  --build_backend --docker_local
+    ./compile_release.sh --image_name sinamics/uavcast --version 5.0.0-rc1 --build_gcc --build_frontend  --build_backend --docker_local
 
    optional arguments:
      -h, --help                 Show help
      -f, --build_frontend       Build Frontend
      -b, --build_backend        Build Backend
      -g, --build_gcc            Build C++ binaries
-     -t, --type TYPE            pro (default) | com
-     -v, --version              Set app version
+     -n, --image_name           Docker image name (repo/name)
+     -v, --version              Set app version (repo/name:[version])
      -d, --docker_local         Build docker image locally
      -p, --docker_publish       Publish docker image to dockerhub
 
@@ -46,7 +46,7 @@ HEREDOC
 # use getopt and store the output into $OPTS
 # note the use of -o for the short options, --long for the long name options
 # and a : for any option that takes a parameter
-OPTS=$(getopt -o "hdfbgt:v:p" --long "help,docker_local,docker_publish,build_gcc,build_frontend,build_backend,type:,version:" -n "$progname" -- "$@")
+OPTS=$(getopt -o "hdfbgpv:n:" --long "help,docker_local,docker_publish,build_gcc,build_frontend,build_backend,version:,image_name:" -n "$progname" -- "$@")
 if [ $? != 0 ] ; then echo "Error in command line arguments." >&2 ; usage; exit 1 ; fi
 if [ $# == 0 ] ; then usage; exit 1 ; fi
 
@@ -59,7 +59,7 @@ while true; do
     -f | --build_frontend ) build_frontend=$((build_frontend + 1)); shift ;;
     -b | --build_backend ) build_backend=$((build_backend + 1)); shift ;;
     -g | --build_gcc ) build_gcc=$((build_gcc + 1)); shift ;;
-    -t | --type ) app_type="$2"; shift 2 ;;
+    -n | --image_name ) image_name="$2"; shift 2 ;;
     -v | --version ) version_arg="$2"; shift 2 ;;
     -d | --docker_local ) docker_local=$((docker_local + 1)); shift ;;
     -p | --docker_publish ) docker_publish=$((docker_publish + 1)); shift ;;
@@ -84,15 +84,6 @@ fi
 
 # update submodules
 # sudo git submodule update --init --recursive
-IMAGE=sinamics/uavcast
-
-
-if [ "$app_type" == "pro" ]; then
-    COMPILETYPE=uavcast
-    PROFESSIONAL=true
-    reactga='"UA-107582726-2"'
-fi
-
 
 # set version nummer as enviroment
 if [[ ! -f "$DIR/frontend/.env" ]]; then
@@ -176,6 +167,7 @@ if (( $beta > 0 )); then
 fi
 
 if (( $docker_local > 0 )); then
+    echo "building image $image_name:$version_arg"
     docker buildx create --name uavcast_builder
     docker buildx use uavcast_builder
     docker buildx build --pull --rm -f "docker/Dockerfile.publish" \
@@ -189,6 +181,7 @@ if (( $docker_local > 0 )); then
 fi
 
 if (( $docker_publish > 0 )); then
+    echo "building image $image_name:$version_arg"
     # run multiarch bild container
     #Docker Buildx
     docker buildx create --name uavcast_builder
@@ -197,10 +190,10 @@ if (( $docker_publish > 0 )); then
 
     docker buildx build --pull --rm -f "docker/Dockerfile.publish" \
     --platform linux/arm,linux/arm64,linux/amd64 \
-    -t sinamics/uavcast:$version_arg "." --push
+    -t $image_name:$version_arg "." --push
 
     # docker login #-u $DOCKER_USER -p $DOCKER_PASS
-    # docker push sinamics/uavcast:${version_arg}
+    # docker push $image_name:${version_arg}
 fi
 
 

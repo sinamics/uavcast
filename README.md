@@ -70,14 +70,25 @@ Ensure lint passes. `npm run lint` This command will ensure basic conformance to
 
 ### Build docker locally
 
-Use these commands in the project root (!not in the vscode developer container).
+Use these commands in the project root (!not in the vscode developer container).\
 Type `./compile_release.sh` + arguments to genereate local docker image, or you can publish to your own container registery.
 
 Example external publish:\
-`./compile_release.sh --version 5.x.x --build_gcc --build_frontend --build_backend --docker_publish`
+`./compile_release.sh --image_name sinamics/uavcast --version 5.x.x --build_gcc --build_frontend --build_backend --docker_publish`
 
 Example local build:\
-`./compile_release.sh --version 5.x.x --build_gcc --build_frontend --build_backend --docker_local`
+`./compile_release.sh --image_name sinamics/uavcast --version 5.x.x --build_gcc --build_frontend --build_backend --docker_local`
+
+run docker image locally:
+
+```docker
+docker run --restart unless-stopped --name uavcast -d \
+    -v uavdata:/app/uavcast/data \
+    -v /var/lib/zerotier-one:/var/lib/zerotier-one \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /dev:/dev \
+    --privileged=true --net=host [image_name]:[version]
+```
 
 ### Images
 
