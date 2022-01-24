@@ -13,7 +13,7 @@ int App::serverport()
     app_values app;
     db.get_application(&app);
 
-    if(app.webPort < 1) {
+    if(app.webPort < 2 || app.webPort > 65000) {
         std::cout << ">> Invalid port number! Database does probably not exsist! First startup?" << '\n';
         return 1;
     }
