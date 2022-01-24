@@ -28,9 +28,9 @@ https://docs.uavmatrix.com/5.x/
 
 ## :wrench: Developer Instructions
 
-### :exclamation: Prerequisites
+### Prerequisites
 
-These packages needs to be installed
+:warning: These packages needs to be installed
 
 :heavy_plus_sign: Docker\
 :heavy_plus_sign: Docker Compose\
