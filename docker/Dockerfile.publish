@@ -44,8 +44,7 @@ COPY ["backend/package.json", \
 
 COPY ["backend/src", "./src"]
 
-RUN npm install --production
-RUN npm install sqlite3
+RUN npm install
 RUN npm run build
 
 ###
