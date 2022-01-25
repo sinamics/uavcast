@@ -119,7 +119,8 @@ RUN apt-get update && apt-get install -y \
                    libcurl4-nss-dev \
                    sqlite3 \
                    libsqlite3-dev
-                   
+
+# TODO re-run installation of sqlite3, it fails for some reason if not.               
 RUN cd backend && npm i sqlite3
 
 # systemctl3
