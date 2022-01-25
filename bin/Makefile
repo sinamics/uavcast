@@ -31,7 +31,7 @@ versionControl: verctl.o includes/utils.o
 
 #Clean up method
 clean:
-	rm *.o includes/*.o build/uav_camera build/uav_status build/uav_main
+	-rm *.o includes/*.o build/uav_camera build/uav_status build/uav_main
 
 build_dir:
 	mkdir -p build
