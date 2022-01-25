@@ -30,7 +30,7 @@ const WebPortInput = () => {
     setPortLoadingt(true);
     storeData({ variables: { properties: { webPort: port } } }).then(() =>
       kernel({
-        variables: { cmd: 'nohup /app/uavcast/bin/./uav_main -p && docker restart uavcast &', path: '/app/uavcast/bin' }
+        variables: { cmd: 'nohup /app/uavcast/bin/build/./uav_main -p && docker restart uavcast &', path: '/app/uavcast/bin' }
       }).then(() => {
         const host = window.location.hostname;
         const newHost = `${host}:${port}`;
