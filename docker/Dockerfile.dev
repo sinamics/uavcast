@@ -18,6 +18,15 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
+RUN apt-get update && apt-get install -y \
+                   libcppunit-dev \
+                   libjsoncpp-dev \
+                   libv4l-dev \
+                   libgstreamer1.0-dev \
+                   libcurl4-nss-dev \
+                   sqlite3 \
+                   libsqlite3-dev
+                   
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
 COPY init/systemctl3.py /bin/systemctl3.py

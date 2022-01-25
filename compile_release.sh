@@ -7,9 +7,6 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 progname=$(basename $0)
-build_frontend=0
-build_backend=0
-build_gcc=0
 docker_local=0
 docker_publish=0
 alfa=0
@@ -21,19 +18,16 @@ function usage()
 {
    cat << HEREDOC
 
-   Usage: $progname [ --version VERSION ] [ --build_gcc ] [ --build_frontend ] [ --build_backend ] [ --version ] [ --docker_publish ] [ --docker_local ]
+   Usage: $progname [ --version VERSION ] [ --version ] [ --docker_publish ] [ --docker_local ]
 
    Example publish:
-    ./compile_release.sh --image_name sinamics/uavcast --version 5.0.0-rc1 --build_gcc --build_frontend  --build_backend --docker_publish
+    ./compile_release.sh --image_name sinamics/uavcast --version 5.0.0-rc1 --docker_publish
 
    Example local build:
-    ./compile_release.sh --image_name sinamics/uavcast --version 5.0.0-rc1 --build_gcc --build_frontend  --build_backend --docker_local
+    ./compile_release.sh --image_name sinamics/uavcast --version 5.0.0-rc1 --docker_local
 
    optional arguments:
      -h, --help                 Show help
-     -f, --build_frontend       Build Frontend
-     -b, --build_backend        Build Backend
-     -g, --build_gcc            Build C++ binaries
      -n, --image_name           Docker image name (repo/name)
      -v, --version              Set app version (repo/name:[version])
      -d, --docker_local         Build docker image locally
@@ -46,7 +40,7 @@ HEREDOC
 # use getopt and store the output into $OPTS
 # note the use of -o for the short options, --long for the long name options
 # and a : for any option that takes a parameter
-OPTS=$(getopt -o "hdfbgpv:n:" --long "help,docker_local,docker_publish,build_gcc,build_frontend,build_backend,version:,image_name:" -n "$progname" -- "$@")
+OPTS=$(getopt -o "hdpv:n:" --long "help,docker_local,docker_publish,version:,image_name:" -n "$progname" -- "$@")
 if [ $? != 0 ] ; then echo "Error in command line arguments." >&2 ; usage; exit 1 ; fi
 if [ $# == 0 ] ; then usage; exit 1 ; fi
 
@@ -56,9 +50,6 @@ while true; do
 #   echo "\$1:\"$1\" \$2:\"$2\""
   case "$1" in
     -h | --help ) usage; exit; ;;
-    -f | --build_frontend ) build_frontend=$((build_frontend + 1)); shift ;;
-    -b | --build_backend ) build_backend=$((build_backend + 1)); shift ;;
-    -g | --build_gcc ) build_gcc=$((build_gcc + 1)); shift ;;
     -n | --image_name ) image_name="$2"; shift 2 ;;
     -v | --version ) version_arg="$2"; shift 2 ;;
     -d | --docker_local ) docker_local=$((docker_local + 1)); shift ;;
@@ -92,68 +83,10 @@ else
     sed -i 's/REACT_APP_UAVCAST_VER=.*/REACT_APP_UAVCAST_VER='\"$version_arg\"'/' $DIR/frontend/.env
 fi
 
-if (( $build_gcc > 0 )); then
-    echo ">>> Building c++ files"
-    #Build c++
-    make -C bin
-fi
 # crypt
 #If file is older than one year, abort. User will get notified.
 DATEMESSAGE="Your version of uavcast has expired and will no longer work. Please update your version, see https://docs.uavmatrix.com. If you have any further questions, please contact UAVmatrix, support@uavmatrix.com"
 
-##
-#
-# ?Eslint
-#
-##
-if (( $build_frontend > 0 )); then
-    # check linting and Build frontend
-    cd frontend
-        echo ">>> Frontend eslint.."
-        npm run lint | grep -E 'problem|problems|error|warnings'
-        if [ $? == 0 ]; then
-            printf "${YELLOW}\nFix eslint error(s)!!\n${NC}"
-            exit
-        fi
-    cd ..
-fi
-if (( $build_backend > 0 )); then
-    # Build Backend
-    # compile typescript to dist/index.js for pkg to work
-    cd backend
-        echo ">>> Backend eslint.."
-        npm run lint | grep -E 'problem|problems|error|warnings'
-        if [ $? == 0 ]; then
-            printf "${YELLOW}\nFix eslint error(s)!!\n${NC}"
-            exit
-        fi
-    cd ..
-fi
-
-##
-#
-#  ?Build App
-#
-##
-if (( $build_frontend > 0 )); then
-    # check linting and Build frontend
-    cd frontend
-        echo ">>> Building frontend"
-        rm -rf build/ && npm run build
-    cd ..
-fi
-
-if (( $build_backend > 0 )); then
-    # Build Backend
-    # compile typescript to dist/index.js for pkg to work
-    cd backend
-        echo ">>> Remove dist folder."
-        rm -rf dist/ && mkdir dist && cp .env dist/
-
-        echo ">>> Building backend"
-        npm run build
-    cd ..
-fi
 
 # Set filename
 FILENAME=$COMPILETYPE'_'master.tar

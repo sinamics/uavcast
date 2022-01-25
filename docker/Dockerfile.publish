@@ -75,7 +75,7 @@ RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
 WORKDIR /app/uavcast
 
 ARG USERNAME=uavcast
-ARG USER_UID=1000
+ARG USER_UID=1001
 ARG USER_GID=$USER_UID
 
 # Create the user
@@ -95,6 +95,15 @@ COPY --from=backend /backend/node_modules ./backend/node_modules
 COPY --from=backend /backend/ormconfig.js ./backend
 # COPY --from=backend /backend/node_sqlite3.node ./backend
 
+RUN apt-get update && apt-get install -y \
+                   libcppunit-dev \
+                   libjsoncpp-dev \
+                   libv4l-dev \
+                   libgstreamer1.0-dev \
+                   libcurl4-nss-dev \
+                   sqlite3 \
+                   libsqlite3-dev
+                   
 RUN cd backend && npm i sqlite3
 
 # systemctl3
@@ -129,6 +138,5 @@ RUN ["/app/uavcast/docker/bin/./install.sh"]
 RUN ["/app/uavcast/docker/bin/./install-prod-addon.sh"]
 
 ENTRYPOINT ["/app/uavcast/docker/bin/entrypoint.sh"]
-
 CMD ["/bin/systemctl"]
 # ENTRYPOINT ["tail", "-f", "/dev/null"]

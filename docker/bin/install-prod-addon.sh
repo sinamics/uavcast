@@ -9,12 +9,5 @@
 # Set folders
 APPROOT="/app/uavcast"
 
-#start webserver
-systemctl enable uavcast-web
-systemctl start uavcast-web
-
-#start mavlink
-systemctl enable mavlink-router
-systemctl start mavlink-router
 
 

@@ -11,10 +11,6 @@ APPROOT="/app/uavcast"
 # install global dependencies
 npm i concurrently ts-node-dev typescript -g
 
-sudo apt-get install -y libsqlite3-dev \
-                        libv4l-dev \
-                        libcap2-bin
-
 sudo ln -s /usr/include/libv4l1-videodev.h   /usr/include/linux/videodev.h
 sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
 

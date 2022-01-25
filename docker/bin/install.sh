@@ -7,9 +7,6 @@
 Systemd="/etc/systemd/system"
 APPROOT="/app/uavcast"
 
-# install global dependencies
-npm i concurrently ts-node-dev typescript -g
-
 # Generate UAVcast.service file
 UAVCAST=$Systemd/"uavcast.service"
 
@@ -124,11 +121,19 @@ cp ${APPROOT}/etc/mavlink-router-example.conf /etc/mavlink-router/main.conf
 
 #Install ZeroTier
 sudo curl -s https://install.zerotier.com/ | sudo bash 
-sudo systemctl enable zerotier-one 
+sudo systemctl enable zerotier-one                 
 
 ## Docker
 sudo touch /var/run/docker.sock
 sudo chmod 666 /var/run/docker.sock
 sudo chown uavcast:docker /var/run/docker.sock
+
+#start webserver
+sudo systemctl enable uavcast-web
+sudo systemctl start uavcast-web
+
+#start mavlink
+sudo systemctl enable mavlink-router
+sudo systemctl start mavlink-router
 
 echo "NODE_ENV=production" >> ~/.bashrc
