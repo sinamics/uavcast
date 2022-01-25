@@ -17,8 +17,5 @@ services:
       - /dev:/dev:ro
     entrypoint:
       - '/bin/systemctl'
-    # command: /bin/sh -c "while sleep 1000; do :; done"
-    # tty: true
-    # stdin_open: true
 volumes:
   uavdata:

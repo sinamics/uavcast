@@ -125,7 +125,8 @@ RUN sudo usermod -a -G docker root
 
 ENV NODE_ENV=production
 
-RUN ["/app/uavcast/docker/bin/./prod-build.sh"]
+RUN ["/app/uavcast/docker/bin/./install.sh"]
+RUN ["/app/uavcast/docker/bin/./install-prod-addon.sh"]
 
 ENTRYPOINT ["/app/uavcast/docker/bin/entrypoint.sh"]
 

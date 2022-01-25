@@ -15,7 +15,7 @@
     "editor.formatOnType": true,
     "files.trimTrailingWhitespace": true
   },
-
+  // "runArgs": ["--net=host"],
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
     "esbenp.prettier-vscode",
@@ -45,5 +45,5 @@
     "mikestead.dotenv"
   ],
   // Uncomment the next line to run commands after the container is created - for example installing curl.
-  "postCreateCommand": "sudo docker/bin/./dev-build.sh"
+  "postCreateCommand": "sudo docker/bin/./install.sh && sudo docker/bin/./install-dev-addon.sh"
 }

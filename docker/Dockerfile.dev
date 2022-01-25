@@ -1,6 +1,8 @@
 FROM sinamics/debian-uavcast-base:latest
 LABEL maintainer="Bernt Christian Egeland / (aka sinamics)"
 
+WORKDIR /app/uavcast
+
 ENV NPM_CONFIG_PREFIX=/home/uavcast/.npm-global
 ENV PATH=$PATH:/home/uavcast/.npm-global/bin
 

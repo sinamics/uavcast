@@ -1,20 +1,15 @@
 #!/bin/bash
 #	----------------------------------------------------------------
-#	UAVcast installation file.
+#	uavcast dev-installation file.
 #   Author Bernt Christian Egeland
 #	----------------------------------------------------------------
-#Get current Directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-VERSION_ID=9 #set to default stretch
-
-# Set folders
-BASEFOLDER="$(cd ../; pwd)"
 Systemd="/etc/systemd/system"
-ROOTFOLDER="/app/uavcast"
+APPROOT="/app/uavcast"
 
-main="$MAINPID"
-                        
+# install global dependencies
+npm i concurrently ts-node-dev typescript -g
+
 # Generate UAVcast.service file
 UAVCAST=$Systemd/"uavcast.service"
 
@@ -25,13 +20,14 @@ Requires=network-online.target
 Wants=network-online.target
 After=network-online.target
 [Service]
-WorkingDirectory=ROOTFOLDER
+WorkingDirectory=$APPROOT
 Type=simple
 GuessMainPID=no
-ExecStart=ROOTFOLDER/bin/build/uav_main -a
-ExecStop=ROOTFOLDER/bin/build/uav_main -s
+ExecStart=$APPROOT/bin/build/uav_main -a
+ExecStop=$APPROOT/bin/build/uav_main -s
 RemainAfterExit=yes
 KillMode=control-group
+SyslogIdentifier=uavcast
 StandardOutput=journal+console
 StandardError=inherit
 Restart=on-failure
@@ -49,11 +45,12 @@ Requires=network-online.target
 Wants=network-online.target
 After=network-online.target
 [Service]
-WorkingDirectory=ROOTFOLDER
+WorkingDirectory=$APPROOT/bin/build
 Type=simple
 GuessMainPID=no
-ExecStart=ROOTFOLDER/bin/build/uav_camera -start
+ExecStart=$APPROOT/bin/build/uav_camera -start
 KillMode=control-group
+SyslogIdentifier=uavcast-camera
 StandardOutput=journal+console
 StandardError=inherit
 [Install]
@@ -70,11 +67,12 @@ Requires=network-online.target
 Wants=network-online.target
 After=network-online.target
 [Service]
-WorkingDirectory=ROOTFOLDER
+WorkingDirectory=$APPROOT/bin/build
 Type=simple
 GuessMainPID=no
-ExecStart=ROOTFOLDER/bin/build/uav_vpn -o start
+ExecStart=$APPROOT/bin/build/uav_vpn -o start
 KillMode=control-group
+SyslogIdentifier=uavcast-vpn
 StandardOutput=journal+console
 StandardError=inherit
 [Install]
@@ -88,10 +86,10 @@ UAVCASTWEB=$Systemd/"uavcast-web.service"
 [Unit]
 Description=Webinterface for UAVcast
 [Service]
-WorkingDirectory=$ROOTFOLDER
+WorkingDirectory=$APPROOT
 Type=simple
 GuessMainPID=no
-ExecStart=/usr/bin/node $ROOTFOLDER/backend/dist/index.js
+ExecStart=/usr/bin/node $APPROOT/backend/dist/index.js
 KillMode=control-group
 SyslogIdentifier=uavcast-webinterface
 StandardOutput=journal+console
@@ -111,7 +109,7 @@ MAVLINKROUTERED=$Systemd/"mavlink-router.service"
 Description=MAVLink Router
 [Service]
 Type=simple
-ExecStart=$ROOTFOLDER/bin/mavlink/mavlink-routerd
+ExecStart=$APPROOT/bin/mavlink/mavlink-routerd
 StandardOutput=journal+console
 StandardError=inherit
 Restart=on-failure
@@ -120,27 +118,16 @@ RestartSec=5
 WantedBy=multi-user.target
 EOM
 
-#Prevent Network Manager to control WIFI
-mkdir -p /etc/NetworkManager
-NetworkManager="/etc/NetworkManager/NetworkManager.conf"
-/bin/cat <<EOM >$NetworkManager
-[main]
-plugins=ifupdown,keyfile
+## add mavlink config
+mkdir -p /etc/mavlink-router
+cp ${APPROOT}/etc/mavlink-router-example.conf /etc/mavlink-router/main.conf
 
-[ifupdown]
-managed=false
+# install zerotier client
+curl -s https://install.zerotier.com | sudo bash
 
-[keyfile]
-unmanaged-devices=interface-name:eth*,interface-name:wlan*
-EOM
-
-#start webserver
-systemctl enable uavcast-web
-systemctl start uavcast-web
-
-#start mavlink
-systemctl enable mavlink-router
-systemctl start mavlink-router
-
+## Docker
+sudo touch /var/run/docker.sock
+sudo chmod 666 /var/run/docker.sock
+sudo chown uavcast:docker /var/run/docker.sock
 
 echo "NODE_ENV=production" >> ~/.bashrc
