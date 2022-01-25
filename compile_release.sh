@@ -104,6 +104,7 @@ if (( $docker_local > 0 )); then
     docker buildx create --name uavcast_builder
     docker buildx use uavcast_builder
     docker buildx build --pull --rm -f "docker/Dockerfile.publish" \
+    --platform linux/arm \
     -t sinamics/uavcast:$version_arg "." --output "type=docker,name=sinamics/uavcast:${version_arg}"
 
     # docker build --pull --rm -f "Dockerfile" -t sinamics/uavcast:$version_arg "."
