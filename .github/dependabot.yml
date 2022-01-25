@@ -9,11 +9,13 @@ updates:
     directory: '/frontend' # Location of package manifests
     schedule:
       interval: 'monthly'
+    open-pull-requests-limit: 3
 
   - package-ecosystem: 'npm' # See documentation for possible values
     directory: '/backend' # Location of package manifests
     schedule:
       interval: 'monthly'
+    open-pull-requests-limit: 3
 
   - package-ecosystem: 'github-actions'
     # Workflow files stored in the
@@ -21,3 +23,4 @@ updates:
     directory: '/'
     schedule:
       interval: 'monthly'
+    open-pull-requests-limit: 3
