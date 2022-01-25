@@ -14,7 +14,7 @@ Systemd="/etc/systemd/system"
 ROOTFOLDER="/app/uavcast"
 
 main="$MAINPID"
-                        
+
 # Generate UAVcast.service file
 UAVCAST=$Systemd/"uavcast.service"
 
@@ -142,5 +142,8 @@ systemctl start uavcast-web
 systemctl enable mavlink-router
 systemctl start mavlink-router
 
+## add mavlink config
+mkdir -p /etc/mavlink-router
+cp ${APPROOT}/etc/mavlink-router-example.conf /etc/mavlink-router/main.conf
 
 echo "NODE_ENV=production" >> ~/.bashrc
