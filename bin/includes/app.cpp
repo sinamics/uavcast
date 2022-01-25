@@ -14,17 +14,18 @@ int App::serverport()
     db.get_application(&app);
 
     if(app.webPort < 2 || app.webPort > 65000) {
-        std::cout << ">> Invalid port number! Database does probably not exsist! First startup?" << '\n';
+        std::cout << ">> Invalid port number " << app.webPort <<
+        " Database does probably not exsist! First startup?" << '\n';
         return 1;
     }
 
     //Change the port number in systemd.
-    std::string sed = 
+    std::string sed =
         std::string("sudo sed -ri 's/(SERVER_PORT)(=.*)/\\1=") + std::to_string(app.webPort) +
         std::string("\"/' /etc/systemd/system/uavcast-web.service");
 
     utils.exec_p(sed.c_str());
-    std::cout << ">> WebPort changed" << '\n';
+    std::cout << ">> WebPort changed " << app.webPort << '\n';
 
     //restart docker container
     // std::string systemd = "docker restart uavcast";
