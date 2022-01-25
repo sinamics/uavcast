@@ -122,8 +122,9 @@ EOM
 mkdir -p /etc/mavlink-router
 cp ${APPROOT}/etc/mavlink-router-example.conf /etc/mavlink-router/main.conf
 
-# install zerotier client
-curl -s https://install.zerotier.com | sudo bash
+#Install ZeroTier
+sudo curl -s https://install.zerotier.com/ | sudo bash 
+sudo systemctl enable zerotier-one 
 
 ## Docker
 sudo touch /var/run/docker.sock
