@@ -10,7 +10,7 @@ sqlite3 *db;
 int Database::connect_db()
 {
 
-    if (sqlite3_open("../../data/sql/uavcast.db", &db) != SQLITE_OK)
+    if (sqlite3_open("/app/uavcast/data/sql/uavcast.db", &db) != SQLITE_OK)
     {
         return -1;
     }
@@ -463,7 +463,8 @@ int Database::get_application(app_values *app)
 {
     if (Database::connect_db() != 0)
     {
-        return -1;
+        std::cout << "Database not ready!" << '\n';
+        return app->webPort = 80;
     }
 
     int rc;
@@ -479,9 +480,9 @@ int Database::get_application(app_values *app)
         // std::cout << sqlite3_column_count(stmt) << '\n';
         for (int col = 0; col < sqlite3_column_count(stmt); col++)
         {
-            // std::cout << sqlite3_column_name(stmt, col) << '\n';
             if (strcmp(sqlite3_column_name(stmt, col), "webPort") == 0)
             {
+                // std::cout << sqlite3_column_int(stmt, col) << '\n';
                 app->webPort = sqlite3_column_int(stmt, col);
             }
         }
