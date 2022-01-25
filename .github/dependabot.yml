@@ -5,12 +5,6 @@
 
 version: 2
 updates:
-  - package-ecosystem: 'composer'
-    # Files stored in repository root
-    directory: '/'
-    schedule:
-      interval: 'monthly'
-
   - package-ecosystem: 'npm' # See documentation for possible values
     directory: '/frontend' # Location of package manifests
     schedule:
