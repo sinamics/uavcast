@@ -74,10 +74,10 @@ Use these commands in the project root (!not in the vscode developer container).
 Type `./compile_release.sh` + arguments to genereate local docker image, or you can publish to your own container registery.
 
 Example external publish:\
-`./compile_release.sh --image_name sinamics/uavcast --version 5.x.x --build_gcc --build_frontend --build_backend --docker_publish`
+`./compile_release.sh --image_name sinamics/uavcast --version 5.x.x --docker_publish`
 
 Example local build:\
-`./compile_release.sh --image_name sinamics/uavcast --version 5.x.x --build_gcc --build_frontend --build_backend --docker_local`
+`./compile_release.sh --image_name sinamics/uavcast --version 5.x.x --docker_local`
 
 run docker image locally:
 
