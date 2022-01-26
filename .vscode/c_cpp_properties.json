@@ -3,17 +3,21 @@
     {
       "name": "Linux",
       "includePath": [
-        // "/usr/include/gstreamer-1.0",
-        // "/usr/include/glib-2.0/",
-        // "/usr/lib/arm-linux-gnueabihf/glib-2.0/include/",
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "/usr/include/gstreamer-1.0",
+        "/usr/include/glib-2.0/",
+        "/usr/include/gstreamer-1.0/gst",
+        "/usr/include/x86_64-linux-gnu",
+        "/usr/include/x86_64-linux-gnu/c++/8",
+        "/app/uavcast/bin/",
+        "/app/uavcast/bin/includes"
       ],
       "defines": [],
-      // "compilerPath": "/usr/bin/gcc",
-      "compilerPath": "",
+      "compilerPath": "/usr/bin/gcc",
+      // "compilerPath": "",
       "cStandard": "gnu17",
-      "cppStandard": "gnu++14",
-      "intelliSenseMode": "linux-gcc-arm"
+      "cppStandard": "gnu++14"
+      //   "intelliSenseMode": ""
     }
   ],
   "version": 4
