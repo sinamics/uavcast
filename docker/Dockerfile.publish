@@ -97,11 +97,8 @@ ARG USER_GID=$USER_UID
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    #
-    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
-
 
 COPY --from=gcc /gcc/build ./bin/build
 COPY --from=frontend /frontend/build ./frontend/build
@@ -109,7 +106,6 @@ COPY --from=frontend /frontend/build ./frontend/build
 COPY --from=backend /backend/dist ./backend/dist
 COPY --from=backend /backend/node_modules ./backend/node_modules
 COPY --from=backend /backend/ormconfig.js ./backend
-# COPY --from=backend /backend/node_sqlite3.node ./backend
 
 RUN apt-get update && apt-get install -y \
                    libcppunit-dev \
@@ -120,16 +116,17 @@ RUN apt-get update && apt-get install -y \
                    sqlite3 \
                    libsqlite3-dev
 
-# TODO re-run installation of sqlite3, it fails for some reason if not.               
-RUN cd backend && npm i sqlite3
-
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
 COPY init/systemctl3.py /bin/systemctl3.py
 COPY init/journalctl3.py /bin/journalctl
 
+# Create mavlink directory
+RUN mkdir -p /etc/mavlink-router
+
 ## copy in files and folder
 COPY ["bin/mavlink/mavlink-routerd-${TARGETARCH}", "./bin/mavlink/mavlink-routerd"]
+COPY ["etc/mavlink-router-example.conf", "/etc/mavlink-router/main.conf"]
 COPY ["bin/python", "./bin/python"]
 COPY ["etc", "./etc"]
 COPY ["docker", "./docker"]
@@ -142,18 +139,31 @@ RUN chmod +x -R ./docker/bin \
 
 RUN sudo touch /var/run/docker.sock
 RUN sudo chmod 666 /var/run/docker.sock
-
 # #changes the ownership of /var/run/docker.sock
 RUN sudo chown uavcast:docker /var/run/docker.sock
+
+# zerotier installation
+RUN sudo curl -s https://install.zerotier.com/ | sudo bash
+
+# Copy systemd files
+COPY ["init/mavlink-router.service", \
+      "init/uavcast-camera.service", \
+      "init/uavcast-vpn.service", \
+      "init/uavcast-web.service", \
+      "init/uavcast.service", "/etc/systemd/system/"]
 
 #gives uavcast user permissions to access /var/run/docker.sock
 RUN sudo usermod -a -G docker root
 
+# enable web interface and mavlink as default
+RUN systemctl enable uavcast-web
+RUN systemctl enable mavlink-router
+
+# set container env production
 ENV NODE_ENV=production
 
-RUN ["/app/uavcast/docker/bin/./install.sh"]
-RUN ["/app/uavcast/docker/bin/./install-prod-addon.sh"]
+RUN ["docker/bin/./install-prod-addon.sh"]
 
-ENTRYPOINT ["/app/uavcast/docker/bin/entrypoint.sh"]
+ENTRYPOINT ["docker/bin/entrypoint.sh"]
 CMD ["/bin/systemctl"]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
+

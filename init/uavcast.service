@@ -1,0 +1,19 @@
+[Unit]
+Description=uavcast, casting controller
+Requires=network-online.target
+Wants=network-online.target
+After=network-online.target
+[Service]
+WorkingDirectory=/app/uavcast
+Type=simple
+GuessMainPID=no
+ExecStart=/app/uavcast/bin/build/uav_main -a
+ExecStop=/app/uavcast/bin/build/uav_main -s
+RemainAfterExit=yes
+KillMode=control-group
+SyslogIdentifier=uavcast
+StandardOutput=journal+console
+StandardError=inherit
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target

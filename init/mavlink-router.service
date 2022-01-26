@@ -1,0 +1,11 @@
+[Unit]
+Description=MAVLink Router
+[Service]
+Type=simple
+ExecStart=/app/uavcast/bin/mavlink/mavlink-routerd
+StandardOutput=journal+console
+StandardError=inherit
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target

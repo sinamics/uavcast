@@ -5,6 +5,7 @@
 #include "db.h"
 #include "utils.h"
 #include "app.h"
+#include <cstdlib>
 
 int App::serverport()
 {
@@ -27,8 +28,5 @@ int App::serverport()
     utils.exec_p(sed.c_str());
     std::cout << ">> WebPort changed " << app.webPort << '\n';
 
-    //restart docker container
-    // std::string systemd = "docker restart uavcast";
-    // utils.exec_p(systemd.c_str());
     return 0;
 }

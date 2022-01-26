@@ -45,5 +45,5 @@
     "mikestead.dotenv"
   ],
   // Uncomment the next line to run commands after the container is created - for example installing curl.
-  "postCreateCommand": "sudo docker/bin/./install.sh && sudo docker/bin/./install-dev-addon.sh"
+  "postCreateCommand": "sudo docker/bin/./install-dev-addon.sh"
 }

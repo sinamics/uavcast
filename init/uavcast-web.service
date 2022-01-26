@@ -1,0 +1,16 @@
+[Unit]
+Description=Webinterface for UAVcast
+[Service]
+WorkingDirectory=/app/uavcast
+Type=simple
+GuessMainPID=no
+ExecStart=/usr/bin/node /app/uavcast/backend/dist/index.js
+KillMode=control-group
+SyslogIdentifier=uavcast-webinterface
+StandardOutput=journal+console
+StandardError=inherit
+Restart=on-failure
+RestartSec=10
+Environment="NODE_ENV=production" "SERVER_PORT=80"
+[Install]
+WantedBy=multi-user.target

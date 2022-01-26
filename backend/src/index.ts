@@ -67,7 +67,7 @@ const server = async () => {
   app.use(cors());
 
   if (process.env.NODE_ENV === 'production') {
-    console.log('Running Production Server'); // eslint-disable-line no-console
+    console.log('Running Production Server port:' + process.env.SERVER_PORT); // eslint-disable-line no-console
     app.use(compression());
     app.use(express.static(path.join(__dirname, '../../frontend/build')));
 

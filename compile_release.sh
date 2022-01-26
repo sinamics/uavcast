@@ -104,7 +104,7 @@ if (( $docker_local > 0 )); then
     docker buildx create --name uavcast_builder
     docker buildx use uavcast_builder
     docker buildx build --pull --rm -f "docker/Dockerfile.publish" \
-    --platform linux/arm \
+    --platform linux/arm/v7 \
     -t sinamics/uavcast:$version_arg "." --output "type=docker,name=sinamics/uavcast:${version_arg}"
 
     # docker build --pull --rm -f "Dockerfile" -t sinamics/uavcast:$version_arg "."
@@ -123,7 +123,7 @@ if (( $docker_publish > 0 )); then
     docker run --privileged --rm tonistiigi/binfmt --install all
 
     docker buildx build --pull --rm -f "docker/Dockerfile.publish" \
-    --platform linux/arm,linux/arm64,linux/amd64 \
+    --platform linux/arm/v7,linux/arm64,linux/amd64 \
     -t $image_name:$version_arg "." --push
 
     # docker login #-u $DOCKER_USER -p $DOCKER_PASS

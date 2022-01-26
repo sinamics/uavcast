@@ -18,6 +18,8 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
+RUN sudo usermod -a -G docker uavcast
+
 RUN apt-get update && apt-get install -y \
                    libcppunit-dev \
                    libjsoncpp-dev \
@@ -26,16 +28,30 @@ RUN apt-get update && apt-get install -y \
                    libcurl4-nss-dev \
                    sqlite3 \
                    libsqlite3-dev
-                   
+
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
 COPY init/systemctl3.py /bin/systemctl3.py
 COPY init/journalctl3.py /bin/journalctl
 
+# Copy systemd files
+COPY ["init/mavlink-router.service", \
+      "init/uavcast-camera.service", \
+      "init/uavcast-vpn.service", \
+      "init/uavcast-web.service", \
+      "init/uavcast.service", "/etc/systemd/system/"]
+
 RUN mkdir -p /app/uavcast/data && chown -R uavcast /app/uavcast/data
+
+RUN sudo touch /var/run/docker.sock
+RUN sudo chmod 666 /var/run/docker.sock
+RUN sudo chown uavcast:docker /var/run/docker.sock
 
 RUN chmod +x  /bin/systemctl \
               /bin/systemctl3.py \
               /bin/journalctl
+
+# zerotier installation
+RUN sudo curl -s https://install.zerotier.com/ | sudo bash
 
 ENV NODE_ENV=development
