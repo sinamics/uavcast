@@ -10,6 +10,7 @@
       ],
       "defines": [],
       // "compilerPath": "/usr/bin/gcc",
+      "compilerPath": "",
       "cStandard": "gnu17",
       "cppStandard": "gnu++14",
       "intelliSenseMode": "linux-gcc-arm"

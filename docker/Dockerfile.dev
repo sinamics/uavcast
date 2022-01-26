@@ -27,7 +27,8 @@ RUN apt-get update && apt-get install -y \
                    libgstreamer1.0-dev \
                    libcurl4-nss-dev \
                    sqlite3 \
-                   libsqlite3-dev
+                   libsqlite3-dev \
+                   git
 
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
@@ -43,9 +44,6 @@ COPY ["init/mavlink-router.service", \
 
 RUN mkdir -p /app/uavcast/data && chown -R uavcast /app/uavcast/data
 
-RUN sudo touch /var/run/docker.sock
-RUN sudo chmod 666 /var/run/docker.sock
-RUN sudo chown uavcast:docker /var/run/docker.sock
 
 RUN chmod +x  /bin/systemctl \
               /bin/systemctl3.py \
