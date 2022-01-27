@@ -8,15 +8,21 @@ Latest build of this repository can be found at:
 
 - https://hub.docker.com/repository/docker/sinamics/uavcast
 
+<br />
+
 ## :whale: Installation
 
 To install developer version (supervisor & uavcast) on Rasperry PI, Jetson, or any <kbd>arm/v7</kbd> <kbd>arm64</kbd> <kbd>amd64</kbd> device:
 
 - `curl -s http://install.uavmatrix.com/next/ | sudo bash`
 
+<br />
+
 ## :notebook: Documentation
 
 https://docs.uavmatrix.com/5.x/
+
+<br />
 
 ## :hammer: Codebase
 
