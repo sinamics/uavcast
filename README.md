@@ -27,6 +27,7 @@ https://docs.uavmatrix.com/5.x/
 :white_check_mark: graphql / type-graphql && codegen
 
 <br />
+
 ## :wrench: Developer Instructions
 
 ### Prerequisites
