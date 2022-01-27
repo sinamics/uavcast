@@ -10,7 +10,7 @@ Latest build of this repository can be found at:
 
 ## :whale: Installation
 
-To install developer version (supervisor & uavcast) on Rasperry PI, Jetson, or any arm/v7, arm64, amd64 device:
+To install developer version (supervisor & uavcast) on Rasperry PI, Jetson, or any <kbd>arm/v7</kbd> <kbd>arm64</kbd> <kbd>amd64</kbd> device:
 
 - `curl -s http://install.uavmatrix.com/next/ | sudo bash`
 
