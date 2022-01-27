@@ -47,6 +47,8 @@ If vscode does not start the remote container automatically, use hotkeys: <kbd>C
 After starting the container for the first time, it will install some additional package, give it few minutes to complete.
 ![install](https://i.ibb.co/6XWg1sV/Skjermbilde-2022-01-19-202346.png)
 
+<br />
+
 ### Run uavcast from the command line
 
 VSCode will start the docker compose file for you and open a terminal window connected to `/app/uavcast` folder.
@@ -96,6 +98,8 @@ docker run --restart unless-stopped --name uavcast -d \
 
 ![Map](https://i.ibb.co/1zZTysD/Skjermbilde-2022-01-19-204037.png)
 ![Dashboard](https://i.ibb.co/7CpNwQS/Skjermbilde-2022-01-19-204107.png)
+
+<br />
 
 ### Copyright and License
 
