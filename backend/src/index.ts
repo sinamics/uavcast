@@ -15,7 +15,7 @@ import { KernelResolver } from './resolvers/KernelResolver';
 import compression from 'compression';
 import dotv from 'dotenv';
 import cors from 'cors';
-import pubsub, { setConStaus } from './utils/pubsub';
+import PubSub, { setConStaus } from './utils/pubsub';
 import { ModemResolver } from './resolvers/ModemResolver';
 import { Supervisor } from './resolvers/SupervisorResolver';
 import { ApplicationResolver } from './resolvers/ApplicationResolver';
@@ -111,7 +111,7 @@ const server = async () => {
       }
       // other options and hooks, like `onConnect`
     },
-    context: ({ req, res }) => ({ req, res, pubsub }),
+    context: ({ req, res }) => ({ req, res, PubSub }),
     playground: {
       settings: {
         'request.credentials': 'include'

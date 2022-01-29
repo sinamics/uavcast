@@ -4,7 +4,8 @@ import { useCameraDataQuery, useUpdateCameraMutation } from '../../../graphql/ge
 
 export const protocolArr = [
   { key: 'tcp', value: 'tcp', text: 'TCP' },
-  { key: 'udp', value: 'udp', text: 'UDP' }
+  { key: 'udp', value: 'udp', text: 'UDP' },
+  { key: 'rtsp', value: 'rtsp', text: 'RTSP' }
 ];
 
 const CameraProtocol = () => {

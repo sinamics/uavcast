@@ -1,13 +1,15 @@
-import { CameraResponse } from '../graphql-response-types/CameraResponse';
-import { Args, Query, Mutation, Resolver } from 'type-graphql';
+import { CameraActionResponse, CameraResponse } from '../graphql-response-types/CameraResponse';
+import { Args, Query, Mutation, Resolver, Subscription, Root, PubSub, PubSubEngine } from 'type-graphql';
 import { Camera, getCameraRepository } from '../entity/Camera';
-import { CameraInput } from '../graphql-input-types/CameraInput';
+import { CameraActionInput, CameraInput } from '../graphql-input-types/CameraInput';
 import { spawn } from 'child_process';
 import { paths } from '../config/paths';
 import { runSeeder } from 'typeorm-seeding';
 import { CreateCamera } from '../seeds/camera.seed';
 import winston from 'winston';
 import path from 'path';
+import { startRtspServer, stopRtspServer } from '../docker/rtsp';
+import { KernelResponse } from '../graphql-response-types/KernelResponse';
 
 // status file
 const cameraDeviceFile = path.join(paths.pythonFolder, 'devices.py');
@@ -25,13 +27,33 @@ export class CameraResolver {
     const database = await getCameraRepository().findOne(1);
     return { database };
   }
+  @Mutation(() => CameraActionResponse)
+  async cameraActions(@PubSub() pubSub: PubSubEngine, @Args() { properties }: CameraActionInput): Promise<any> {
+    const camera = await getCameraRepository().findOne(1);
 
+    if (!('playStream' in properties)) return { playStream: false };
+    switch (camera?.protocol) {
+      case 'rtsp':
+        if (properties.playStream) {
+          await pubSub.publish('CAMERA_KERNEL_MESSAGE', { message: '>>> start playing stream' });
+          return await startRtspServer(pubSub, camera);
+        }
+        if (!properties.playStream) {
+          await pubSub.publish('CAMERA_KERNEL_MESSAGE', { message: '>>> stopping playing stream' });
+          return await stopRtspServer(pubSub);
+        }
+        break;
+
+      default:
+        return { playStream: false };
+    }
+  }
   @Query(() => CameraResponse)
   // @UseMiddleware(isAuth)
   async cameraData(): Promise<any> {
     const availableCams: object[] = await new Promise((resolve, reject) => {
       try {
-        const child = spawn('python3', [cameraDeviceFile], { shell: true });
+        const child = spawn('sudo python3', [cameraDeviceFile], { shell: true });
         child.stdout.on('data', (data) => {
           if (data) {
             resolve(JSON.parse(data.toString('utf8')));
@@ -69,5 +91,16 @@ export class CameraResolver {
 
     const database = await getCameraRepository().findOne(1);
     return { database };
+  }
+  @Subscription(() => KernelResponse, {
+    topics: 'CAMERA_KERNEL_MESSAGE' // single topic
+    // topics: ({ args, payload, context }) => args.topic // or dynamic topic function
+    // filter: ():any => {
+    //     console.log('object')
+    // }
+  })
+  async stdout(@Root() stdout: any): Promise<any> {
+    // console.log('stdout', stdout);
+    return { message: stdout.message, errors: stdout.errors };
   }
 }

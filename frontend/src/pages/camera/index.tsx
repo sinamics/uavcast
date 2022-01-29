@@ -1,7 +1,7 @@
 import { useSubscription } from '@apollo/client';
 import { Card, Container, Grid, Header } from 'semantic-ui-react';
 import RaspberryConsole from '../../components/CodeMirror';
-import { StdoutDocument } from '../../graphql/generated/dist';
+import { Camera_StdoutDocument } from '../../graphql/generated/dist';
 import VideoHelp from './components/help';
 import BitratePrSecond from './containers/bitratePrSecond';
 import CameraType from './containers/cameraType';
@@ -15,8 +15,8 @@ import CameraFlip from './containers/flip';
 import CameraBrightness from './containers/brightness';
 
 const Camera = () => {
-  const { data: { stdout = { message: '', errors: {} } } = {} } = useSubscription(StdoutDocument);
-
+  const { data: { stdout = { message: '', errors: {} } } = {} } = useSubscription(Camera_StdoutDocument);
+  console.log(stdout);
   return (
     <Container fluid>
       <Grid stackable padded columns={2} divided>

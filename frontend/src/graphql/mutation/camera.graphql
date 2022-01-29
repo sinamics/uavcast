@@ -61,3 +61,10 @@ mutation resetCameraDatabase {
     }
   }
 }
+
+mutation cameraActions($properties: CameraActionProperties!) {
+  cameraActions(properties: $properties) {
+    playStream
+    stopStream
+  }
+}

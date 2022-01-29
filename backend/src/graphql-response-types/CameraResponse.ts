@@ -4,45 +4,52 @@ import { ObjectType, Field } from 'type-graphql';
 @ObjectType()
 export class Caps {
   @Field(() => String)
-    value: string;
+  value: string;
 
   @Field(() => String)
-    text: string;
+  text: string;
 
   @Field(() => Number)
-    height: number;
+  height: number;
 
   @Field(() => Number)
-    width: number;
+  width: number;
 
   @Field(() => String)
-    format: string;
+  format: string;
 }
 
 @ObjectType()
 export class AvailableCams {
   @Field(() => String)
-    device: string;
+  device: string;
 
   @Field(() => String)
-    value: string;
+  value: string;
 
   @Field(() => String)
-    text: string;
+  text: string;
 
   @Field(() => Caps, { nullable: true })
-    caps?: Caps[];
+  caps?: Caps[];
 }
 
 @ObjectType()
 export class CameraResponse {
   @Field(() => Camera, { nullable: true })
-    database?: Camera;
+  database?: Camera;
 
   @Field(() => AvailableCams, { nullable: true })
-    availableCams?: AvailableCams[];
+  availableCams?: AvailableCams[];
 }
+@ObjectType()
+export class CameraActionResponse {
+  @Field(() => Boolean, { nullable: true })
+  playStream?: boolean;
 
+  @Field(() => Boolean, { nullable: true })
+  stopStream?: boolean;
+}
 // const test = [
 //   {
 //     device: 'rpicam',

@@ -14,7 +14,7 @@ services:
       - uavdata:/app/uavcast/data
       - /var/lib/zerotier-one:/var/lib/zerotier-one
       - /var/run/docker.sock:/var/run/docker.sock
-      - /dev:/dev:ro
+      - /dev:/dev
     entrypoint:
       - '/bin/systemctl'
 volumes:

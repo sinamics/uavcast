@@ -44,6 +44,9 @@ COPY ["init/mavlink-router.service", \
 
 RUN mkdir -p /app/uavcast/data && chown -R uavcast /app/uavcast/data
 
+# Create mavlink directory
+RUN mkdir -p /etc/mavlink-router
+COPY ["etc/mavlink-router-example.conf", "/etc/mavlink-router/main.conf"]
 
 RUN chmod +x  /bin/systemctl \
               /bin/systemctl3.py \

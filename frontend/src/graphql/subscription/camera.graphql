@@ -1,0 +1,9 @@
+subscription camera_stdout {
+  stdout {
+    message
+    errors {
+      path
+      message
+    }
+  }
+}

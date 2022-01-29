@@ -17,8 +17,14 @@ one: main.o includes/db.o includes/modem.o includes/mavlink.o includes/utils.o i
 two: status.o includes/db.o includes/modem.o includes/utils.o
 	$(CC) $(CXXFLAGS) status.o includes/db.o includes/modem.o includes/utils.o -o build/uav_status $(LINK)
 
-camera: camera.o includes/db.o includes/utils.o
-	$(CC) $(CXXFLAGS) camera.o includes/db.o includes/utils.o -o build/uav_camera $(LINK)
+camera: camera.o includes/gst.o includes/rtsp.o includes/db.o includes/utils.o
+	$(CC) $(CXXFLAGS) camera.o includes/gst.o includes/rtsp.o includes/db.o includes/utils.o -o build/uav_camera $(LINK)
+
+# gst: includes/gst.o includes/db.o includes/utils.o
+# 	$(CC) $(CXXFLAGS) includes/gst.o includes/db.o includes/utils.o -o build/gst $(LINK)
+
+# rtsp: includes/rtsp.o includes/db.o includes/utils.o
+# 	$(CC) $(CXXFLAGS) includes/rtsp.o includes/db.o includes/utils.o -o build/rtsp $(LINK)
 
 vpn: vpn.o includes/db.o includes/utils.o
 	$(CC) $(CXXFLAGS) vpn.o includes/db.o includes/utils.o -o build/uav_vpn $(LINK)

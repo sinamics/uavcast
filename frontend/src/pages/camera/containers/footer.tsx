@@ -1,21 +1,30 @@
+import { useSubscription } from '@apollo/client';
 import { Button, Grid, Icon } from 'semantic-ui-react';
-import { useKernelMessageMutation, useResetCameraDatabaseMutation } from '../../../graphql/generated/dist';
+import {
+  StdoutDocument,
+  useCameraActionsMutation,
+  useKernelMessageMutation,
+  useResetCameraDatabaseMutation
+} from '../../../graphql/generated/dist';
 
 const CameraFooter = () => {
   const [kernelCommand] = useKernelMessageMutation();
   const [clearData] = useResetCameraDatabaseMutation();
-
+  const [cameraAction, { loading }] = useCameraActionsMutation({
+    errorPolicy: 'all'
+  });
+  const { data: { stdout = { message: '', errors: {} } } = {} } = useSubscription(StdoutDocument);
+  console.log(stdout);
   return (
     <Grid padded>
       <Grid.Column computer='14'>
         <Button.Group size='mini'>
           <Button
+            loading={loading}
             onClick={() =>
-              kernelCommand({
+              cameraAction({
                 variables: {
-                  path: '/',
-                  // eslint-disable-next-line max-len
-                  cmd: 'sudo systemctl restart uavcast-camera && sleep 1s && sudo journalctl -u uavcast-camera.service | tail'
+                  properties: { playStream: true }
                 }
               })
             }
@@ -27,13 +36,12 @@ const CameraFooter = () => {
           </Button>
           <Button.Or />
           <Button
+            loading={loading}
             negative
             onClick={() =>
-              kernelCommand({
+              cameraAction({
                 variables: {
-                  path: '/',
-                  // eslint-disable-next-line max-len
-                  cmd: 'sudo systemctl stop uavcast-camera && sleep 1s && sudo journalctl -u uavcast-camera.service | tail'
+                  properties: { playStream: false }
                 }
               })
             }
