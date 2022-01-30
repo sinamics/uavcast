@@ -15,7 +15,8 @@ import DockerUtils from '../docker/dockerUtil';
 const cameraDeviceFile = path.join(paths.pythonFolder, 'devices.py');
 const ServerLog = winston.loggers.get('server');
 
-const dockerManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:latest', name: 'rtsp_server' });
+const rtspManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:latest', name: 'rtsp_server' });
+// const gstreamerManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:latest', name: 'rtsp_server' });
 
 @Resolver()
 export class CameraResolver {
@@ -35,7 +36,7 @@ export class CameraResolver {
     @Args() { properties }: CameraActionInput
   ): Promise<any> {
     const camera = await getCameraRepository().findOne(1);
-    dockerManager.notify(publish);
+    rtspManager.notify(publish);
 
     if (!('playStream' in properties)) return { playStream: false };
     switch (camera?.protocol) {
@@ -43,11 +44,11 @@ export class CameraResolver {
         if (properties.playStream) {
           const cmd = ['-u', 'uavcast', '-G', `${camera?.resolution}x${camera?.framesPrSecond}`, camera?.cameraType];
 
-          dockerManager.start(cmd);
+          rtspManager.start(cmd);
         }
         if (!properties.playStream) {
           publish({ message: '[INFO] stopping playing stream' });
-          dockerManager.stop();
+          rtspManager.stop();
         }
         break;
 
