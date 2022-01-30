@@ -1,7 +1,5 @@
-import { useSubscription } from '@apollo/client';
 import { Button, Grid, Icon } from 'semantic-ui-react';
 import {
-  StdoutDocument,
   useCameraActionsMutation,
   useKernelMessageMutation,
   useResetCameraDatabaseMutation
@@ -13,8 +11,7 @@ const CameraFooter = () => {
   const [cameraAction, { loading }] = useCameraActionsMutation({
     errorPolicy: 'all'
   });
-  const { data: { stdout = { message: '', errors: {} } } = {} } = useSubscription(StdoutDocument);
-  console.log(stdout);
+
   return (
     <Grid padded>
       <Grid.Column computer='14'>

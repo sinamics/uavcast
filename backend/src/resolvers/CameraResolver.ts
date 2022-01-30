@@ -15,7 +15,7 @@ import DockerUtils from '../docker/manager';
 const cameraDeviceFile = path.join(paths.pythonFolder, 'devices.py');
 const ServerLog = winston.loggers.get('server');
 
-const rtspManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:latest', name: 'rtsp_server' });
+const rtspManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:v0.2.4', name: 'rtsp_server' });
 // const gstreamerManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:latest', name: 'rtsp_server' });
 
 @Resolver()
