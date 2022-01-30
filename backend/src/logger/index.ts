@@ -5,6 +5,7 @@ import CpuLogger from './cpu';
 import NetworkLogger from './network';
 import TemperatureLogger from './temperature';
 import ServerLogger from './server';
+import DockerLogger from './docker';
 
 const SystemLogger = {
   logFolder: paths.logFolder,
@@ -12,12 +13,14 @@ const SystemLogger = {
   networkLogger: null as any,
   temperatureLogger: null as any,
   serverLogger: null as any,
+  dockerLogger: null as any,
 
   initilize: function () {
     this.cpuLogger = new CpuLogger();
     this.networkLogger = new NetworkLogger();
     this.temperatureLogger = new TemperatureLogger();
     this.serverLogger = new ServerLogger();
+    this.dockerLogger = new DockerLogger();
   },
   pruneLogFiles: function (service: string) {
     return new Promise((resolve, reject) => {

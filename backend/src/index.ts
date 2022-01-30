@@ -38,18 +38,21 @@ const LogServer = winston.loggers.get('server');
 // hack to get unix root.
 // const unixRootPath = path.join(process.cwd(), '../../../../../../');
 
+// process.on('SIGTERM', () => process.exit());
 process
   .on('uncaughtException', function (exception) {
     LogServer.error({ message: exception, path: __filename });
+    process.exit();
     // ServLog.getLogger().error(exception);
     // console.log(exception); // to see your exception details in the console
     // if you are on production, maybe you can send the exception details to your
     // email as well ?
   })
   .on('unhandledRejection', (reason, path) => {
-    LogServer.error({ message: reason, data: path, path: __filename });
+    // console.error(reason, 'Unhandled Rejection at Promise', path);
+    LogServer.error({ message: path, data: reason, path: __filename });
+    process.exit();
     // ServLog.getLogger().error(reason);
-    // console.error(reason, 'Unhandled Rejection at Promise', p);
   });
 const server = async () => {
   createTypeormConn().then(() => {

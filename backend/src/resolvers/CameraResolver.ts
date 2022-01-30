@@ -1,5 +1,5 @@
 import { CameraActionResponse, CameraResponse } from '../graphql-response-types/CameraResponse';
-import { Args, Query, Mutation, Resolver, Subscription, Root, PubSub, PubSubEngine } from 'type-graphql';
+import { Args, Query, Mutation, Resolver, Subscription, Root, PubSub, Publisher } from 'type-graphql';
 import { Camera, getCameraRepository } from '../entity/Camera';
 import { CameraActionInput, CameraInput } from '../graphql-input-types/CameraInput';
 import { spawn } from 'child_process';
@@ -8,12 +8,14 @@ import { runSeeder } from 'typeorm-seeding';
 import { CreateCamera } from '../seeds/camera.seed';
 import winston from 'winston';
 import path from 'path';
-import { startRtspServer, stopRtspServer } from '../docker/rtsp';
 import { KernelResponse } from '../graphql-response-types/KernelResponse';
+import DockerUtils from '../docker/dockerUtil';
 
 // status file
 const cameraDeviceFile = path.join(paths.pythonFolder, 'devices.py');
 const ServerLog = winston.loggers.get('server');
+
+const dockerManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:latest', name: 'rtsp_server' });
 
 @Resolver()
 export class CameraResolver {
@@ -28,19 +30,24 @@ export class CameraResolver {
     return { database };
   }
   @Mutation(() => CameraActionResponse)
-  async cameraActions(@PubSub() pubSub: PubSubEngine, @Args() { properties }: CameraActionInput): Promise<any> {
+  async cameraActions(
+    @PubSub('CAMERA_KERNEL_MESSAGE') publish: Publisher<any>,
+    @Args() { properties }: CameraActionInput
+  ): Promise<any> {
     const camera = await getCameraRepository().findOne(1);
+    dockerManager.notify(publish);
 
     if (!('playStream' in properties)) return { playStream: false };
     switch (camera?.protocol) {
       case 'rtsp':
         if (properties.playStream) {
-          await pubSub.publish('CAMERA_KERNEL_MESSAGE', { message: '>>> start playing stream' });
-          return await startRtspServer(pubSub, camera);
+          const cmd = ['-u', 'uavcast', '-G', `${camera?.resolution}x${camera?.framesPrSecond}`, camera?.cameraType];
+
+          dockerManager.start(cmd);
         }
         if (!properties.playStream) {
-          await pubSub.publish('CAMERA_KERNEL_MESSAGE', { message: '>>> stopping playing stream' });
-          return await stopRtspServer(pubSub);
+          publish({ message: '[INFO] stopping playing stream' });
+          dockerManager.stop();
         }
         break;
 

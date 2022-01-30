@@ -2,11 +2,11 @@ import winston from 'winston';
 import { paths } from '../config/paths';
 import 'winston-daily-rotate-file';
 
-class ServerLogger {
+class DockerLogger {
   name: string;
   logger: winston.Logger;
   constructor() {
-    this.name = 'server';
+    this.name = 'docker';
     this.logger = this.createLogger();
     this.addConsole();
   }
@@ -94,4 +94,4 @@ class ServerLogger {
   }
 }
 
-export default ServerLogger;
+export default DockerLogger;

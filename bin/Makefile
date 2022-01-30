@@ -10,15 +10,15 @@ LINK = -lpthread -lsqlite3 -ljsoncpp -lcurl `pkg-config --libs gstreamer-1.0 `
 # `pkg-config --libs opencv`
 # ****************************************************
 # Targets needed to bring the executable up to date
-all: build_dir one two camera vpn diskid versionControl
+all: build_dir one two vpn diskid versionControl
 one: main.o includes/db.o includes/modem.o includes/mavlink.o includes/utils.o includes/flight_controller.o includes/app.o includes/logger.o
 	$(CC) $(CXXFLAGS) main.o includes/db.o includes/modem.o includes/mavlink.o includes/utils.o includes/flight_controller.o includes/app.o includes/logger.o -o build/uav_main $(LINK)
 
 two: status.o includes/db.o includes/modem.o includes/utils.o
 	$(CC) $(CXXFLAGS) status.o includes/db.o includes/modem.o includes/utils.o -o build/uav_status $(LINK)
 
-camera: camera.o includes/gst.o includes/rtsp.o includes/db.o includes/utils.o
-	$(CC) $(CXXFLAGS) camera.o includes/gst.o includes/rtsp.o includes/db.o includes/utils.o -o build/uav_camera $(LINK)
+# camera: camera.o includes/gst.o includes/rtsp.o includes/db.o includes/utils.o
+# 	$(CC) $(CXXFLAGS) camera.o includes/gst.o includes/rtsp.o includes/db.o includes/utils.o -o build/uav_camera $(LINK)
 
 # gst: includes/gst.o includes/db.o includes/utils.o
 # 	$(CC) $(CXXFLAGS) includes/gst.o includes/db.o includes/utils.o -o build/gst $(LINK)
