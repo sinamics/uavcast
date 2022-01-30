@@ -1,7 +1,6 @@
 [![GithubCI](https://github.com/sinamics/uavcast/workflows/Build%20Container/badge.svg)](https://github.com/sinamics/uavcast/actions)
 
 [![Release](https://img.shields.io/github/v/release/sinamics/uavcast.svg)](https://github.com/sinamics/uavcast/releases/latest)
-[![Download](https://img.shields.io/github/downloads/sinamics/uavcast/total.svg)](https://github.com/sinamics/uavcast/releases/latest)
 [![Docker Pulls](https://img.shields.io/docker/pulls/sinamics/uavcast.svg)](https://hub.docker.com/r/sinamics/uavcast/)
 
 # uavcast - companion software for remote :helicopter: :boat: :red_car:
