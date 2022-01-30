@@ -41,7 +41,7 @@ const LogServer = winston.loggers.get('server');
 // process.on('SIGTERM', () => process.exit());
 process
   .on('uncaughtException', function (exception) {
-    LogServer.error({ message: exception, path: __filename });
+    LogServer.error({ message: exception.stack, path: __filename });
     process.exit();
     // ServLog.getLogger().error(exception);
     // console.log(exception); // to see your exception details in the console

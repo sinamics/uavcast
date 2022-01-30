@@ -51,26 +51,6 @@ int main()
     status["vpn"] = false;
     status["undervoltage"] = false;
 
-    //!armv6l armv7l armv8l
-    // We ahve a raspbian most likely
-    // if (status["arch"].asString().find("armv") != std::string::npos)
-    // {
-    //     // Get undervoltage
-    //     string vcgencmd = utils.exec("sudo vcgencmd get_throttled");
-    //     int vcgencmdCapped = std::stoi(vcgencmd.substr(vcgencmd.find("=") + 1), NULL, 16);
-    //     if (vcgencmdCapped & 1 << 0 || vcgencmdCapped & 1 << 18)
-    //     {
-    //         status["undervoltage"] = true;
-    //     }
-
-    //     // Get undervoltage
-    //     string get_camera = utils.exec("vcgencmd get_camera | grep detected=1");
-    //     if (get_camera.length() != 0)
-    //     {
-    //         status["has_camera"] = true;
-    //     }
-    // }
-
     //!aarch64
     // We ahve a 64bit ubuntu most likely
     if (status["arch"].asString().find("aarch64") != std::string::npos)
@@ -85,8 +65,8 @@ int main()
     }
 
     // Check if video is running
-    string camera_enabled = utils.exec("sudo systemctl is-active uavcast-camera");
-    if (utils.isWordPresent(camera_enabled, "active"))
+    string camera_enabled = utils.exec("sudo docker inspect -f {{.State.Running}} rtsp_server");
+    if (utils.isWordPresent(camera_enabled, "true"))
     {
         status["video"] = true;
     }

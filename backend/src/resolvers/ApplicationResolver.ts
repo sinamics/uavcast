@@ -45,8 +45,8 @@ export class ApplicationResolver {
   //Application status
   @Subscription(() => StatusResponse, {
     subscribe: (_root, _args, context) => {
-      getStatus(context.pubsub);
-      return context.pubsub.asyncIterator('APPLICATION_STATUS');
+      getStatus(context.PubSub);
+      return context.PubSub.asyncIterator('APPLICATION_STATUS');
     }
   })
   async status(@Root() status: StatusResponse): Promise<any> {

@@ -9,7 +9,7 @@ import { CreateCamera } from '../seeds/camera.seed';
 import winston from 'winston';
 import path from 'path';
 import { KernelResponse } from '../graphql-response-types/KernelResponse';
-import DockerUtils from '../docker/dockerUtil';
+import DockerUtils from '../docker/manager';
 
 // status file
 const cameraDeviceFile = path.join(paths.pythonFolder, 'devices.py');
@@ -39,6 +39,7 @@ export class CameraResolver {
     rtspManager.notify(publish);
 
     if (!('playStream' in properties)) return { playStream: false };
+
     switch (camera?.protocol) {
       case 'rtsp':
         if (properties.playStream) {
@@ -47,7 +48,6 @@ export class CameraResolver {
           rtspManager.start(cmd);
         }
         if (!properties.playStream) {
-          publish({ message: '[INFO] stopping playing stream' });
           rtspManager.stop();
         }
         break;

@@ -3,10 +3,10 @@
 # Variables to control Makefile operation
 MKDIR_P = mkdir -p
 CC = g++
-INCLUDES = `pkg-config --cflags gstreamer-1.0`
-CXXFLAGS = -g -Wall ${INCLUDES}
+CXXFLAGS = -g -Wall
 
-LINK = -lpthread -lsqlite3 -ljsoncpp -lcurl `pkg-config --libs gstreamer-1.0 `
+# LINK = -lpthread -lsqlite3 -ljsoncpp -lcurl `pkg-config --libs gstreamer-1.0 `
+LINK = -lpthread -lsqlite3 -ljsoncpp -lcurl
 # `pkg-config --libs opencv`
 # ****************************************************
 # Targets needed to bring the executable up to date
@@ -16,15 +16,6 @@ one: main.o includes/db.o includes/modem.o includes/mavlink.o includes/utils.o i
 
 two: status.o includes/db.o includes/modem.o includes/utils.o
 	$(CC) $(CXXFLAGS) status.o includes/db.o includes/modem.o includes/utils.o -o build/uav_status $(LINK)
-
-# camera: camera.o includes/gst.o includes/rtsp.o includes/db.o includes/utils.o
-# 	$(CC) $(CXXFLAGS) camera.o includes/gst.o includes/rtsp.o includes/db.o includes/utils.o -o build/uav_camera $(LINK)
-
-# gst: includes/gst.o includes/db.o includes/utils.o
-# 	$(CC) $(CXXFLAGS) includes/gst.o includes/db.o includes/utils.o -o build/gst $(LINK)
-
-# rtsp: includes/rtsp.o includes/db.o includes/utils.o
-# 	$(CC) $(CXXFLAGS) includes/rtsp.o includes/db.o includes/utils.o -o build/rtsp $(LINK)
 
 vpn: vpn.o includes/db.o includes/utils.o
 	$(CC) $(CXXFLAGS) vpn.o includes/db.o includes/utils.o -o build/uav_vpn $(LINK)

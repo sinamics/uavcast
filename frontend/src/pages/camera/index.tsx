@@ -3,20 +3,20 @@ import { Card, Container, Grid, Header } from 'semantic-ui-react';
 import RaspberryConsole from '../../components/CodeMirror';
 import { Camera_StdoutDocument } from '../../graphql/generated/dist';
 import VideoHelp from './components/help';
-import BitratePrSecond from './containers/bitratePrSecond';
+// import BitratePrSecond from './containers/bitratePrSecond';
 import CameraType from './containers/cameraType';
 import CameraFooter from './containers/footer';
 import FramesPrSecond from './containers/framesPrSecond';
 import CameraProtocol from './containers/protocol';
 import CameraResolution from './containers/resolution';
-import CameraRotation from './containers/rotation';
-import CameraContrast from './containers/contrast';
-import CameraFlip from './containers/flip';
-import CameraBrightness from './containers/brightness';
+// import CameraRotation from './containers/rotation';
+// import CameraContrast from './containers/contrast';
+// import CameraFlip from './containers/flip';
+// import CameraBrightness from './containers/brightness';
 
 const Camera = () => {
   const { data: { stdout = { message: '', errors: {} } } = {} } = useSubscription(Camera_StdoutDocument);
-  console.log(stdout);
+
   return (
     <Container fluid>
       <Grid stackable padded columns={2} divided>
@@ -39,22 +39,22 @@ const Camera = () => {
               <CameraResolution />
 
               {/* Flip Camera */}
-              <CameraFlip />
+              {/* <CameraFlip /> */}
 
               {/* Frames pr. sec  */}
               <FramesPrSecond />
 
               {/* Bitrate pr. sec  */}
-              <BitratePrSecond />
+              {/* <BitratePrSecond /> */}
 
               {/* Rotation  */}
-              <CameraRotation />
+              {/* <CameraRotation /> */}
 
               {/* Contrast */}
-              <CameraContrast />
+              {/* <CameraContrast /> */}
 
               {/* Brightness*/}
-              <CameraBrightness />
+              {/* <CameraBrightness /> */}
 
               {/* Footer  */}
               <CameraFooter />

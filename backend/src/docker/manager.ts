@@ -1,5 +1,5 @@
 'use strict';
-//inspired by https://github.com/pterodactyl/daemon/blob/ab4b5254c9daa8a2e4f8ff04ed6797d17ca6d80d/src/controllers/docker.js#L113
+//inspired by https://github.com/pterodactyl/daemon/blob/ab4b5254c9daa8a2e4f8ff04ed6797d17ca6d80d/src/controllers/docker.js
 
 import Dockerode from 'dockerode';
 import Async from 'async';
@@ -30,6 +30,10 @@ class DockerUtils {
 
     this.init();
   }
+  /**
+   * Attach image if already running and initilize this.container.
+   * @return this.container
+   */
   async init() {
     const opts = {
       all: true,

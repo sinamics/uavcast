@@ -3,8 +3,8 @@ import { Dropdown, Grid, Header } from 'semantic-ui-react';
 import { useCameraDataQuery, useUpdateCameraMutation } from '../../../graphql/generated/dist';
 
 export const protocolArr = [
-  { key: 'tcp', value: 'tcp', text: 'TCP' },
-  { key: 'udp', value: 'udp', text: 'UDP' },
+  { key: 'tcp', value: 'tcp', text: 'TCP', disabled: true },
+  { key: 'udp', value: 'udp', text: 'UDP', disabled: true },
   { key: 'rtsp', value: 'rtsp', text: 'RTSP' }
 ];
 
@@ -38,6 +38,11 @@ const CameraProtocol = () => {
           options={protocolArr}
           placeholder='Camera Protocol'
         />
+        {/* <Header as='p' subheader='access video stream by using rtsp://<rpi_ip>:8554/uavcast' /> */}
+        <span className='themeText'>
+          access video stream by using <span style={{ color: 'yellow' }}>rtsp://rpi_ip:8554/uavcast</span>
+        </span>
+        {/* <Label basic>Default selectOnNavigation</Label> */}
       </Grid.Column>
     </Grid>
   );
