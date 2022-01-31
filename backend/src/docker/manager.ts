@@ -6,10 +6,10 @@ import Async from 'async';
 import winston from 'winston';
 import stream from 'stream';
 
-const ServerLog = winston.loggers.get('docker');
+const CameraLogger = winston.loggers.get('docker');
 const DockerController = new Dockerode({ socketPath: '/var/run/docker.sock' });
 
-const logStream = new stream.PassThrough();
+const stdout = new stream.PassThrough();
 
 class DockerUtils {
   stream: any;
@@ -96,49 +96,43 @@ class DockerUtils {
    */
   attach() {
     return new Promise((resolve, reject) => {
-      // Check if we are currently running exec(). If we don't do this then we encounter issues
-      // where the daemon thinks the container is crashed even if it is not. Mostly an issue
-      // with exec(), but still worth checking out here.
       if (this.stream) {
         return reject(new Error('An active stream is already in use for this container.'));
       }
 
       let logdata = '';
       const pub = this.pubsub;
-      logStream.on('data', async function (chunk) {
-        ServerLog.info({ message: chunk.toString('utf8'), path: __filename });
-        logdata = logdata + chunk.toString('utf8');
-        pub({ message: logdata });
-      });
 
-      logStream.on('error', async function (chunk) {
-        ServerLog.error({ message: chunk.toString(), path: __filename });
-        logdata = logdata + chunk.toString();
-        pub({ message: logdata });
-      });
       this.container
         .attach({
           stream: true,
-          stdin: true,
+          // stdin: true,
           stdout: true,
           stderr: true
+          // logs: true
         })
         .then((stream: any) => {
           if (!stream) return;
-
+          stdout.pipe(process.stdout, { end: false });
           this.stream = stream;
-          this.container.modem.demuxStream(this.stream, logStream, logStream);
           // this.stream.setEncoding('utf8');
+
+          // this.container.modem.demuxStream(this.stream, stdout, stderr);
 
           // In this case we're still using the logs to actually output contents, but we will use the
           // attached stream to monitor for excessive data sending.
           this.stream
+            .on('data', (data: string) => {
+              CameraLogger.info({ message: data.toString(), path: __filename });
+              logdata = `${logdata}${data.toString()}\n`;
+              pub({ message: logdata });
+            })
             .on('end', () => {
+              CameraLogger.debug({ message: 'container attached ended', path: __filename });
               this.stream = undefined;
-              // this.server.streamClosed();
             })
             .on('error', (streamError: any) => {
-              ServerLog.error({ message: streamError, path: __filename });
+              CameraLogger.error({ message: streamError, path: __filename });
             });
 
           resolve(true);
@@ -154,21 +148,21 @@ class DockerUtils {
   start(cmd: any) {
     Async.auto({
       build_image: (callback: () => any) => {
-        ServerLog.info({ message: '>>> building image..', path: __filename });
+        CameraLogger.info({ message: '>>> building image..', path: __filename });
         this.pubsub({ message: '[INFO] building image..' });
         this.build(callback, cmd);
       },
       start_image: [
         'build_image',
-        (r: any, callback: () => any) => {
-          ServerLog.info({ message: '>>> starting image', path: __filename });
+        (_r: any, callback: () => any) => {
+          CameraLogger.info({ message: '>>> starting image', path: __filename });
           this.pubsub({ message: '[INFO] starting image..' });
 
           this.container
             .start()
             .then(() => {
               // this.server.setStatus(St
-              ServerLog.info({ message: '>>> attaching to image', path: __filename });
+              CameraLogger.info({ message: '>>> attaching to image', path: __filename });
               this.pubsub({ message: '[INFO] attaching to image..' });
 
               Promise.all([this.attach()]).catch(callback);
@@ -177,7 +171,7 @@ class DockerUtils {
               if (err && err.message.includes('container already started')) {
                 //this.server.setStatus(Status.ON);
                 this.pubsub({ message: '[INFO] container has already started' });
-                ServerLog.info({ message: err, path: __filename });
+                CameraLogger.info({ message: err, path: __filename });
               }
 
               // callback(err);
@@ -185,7 +179,7 @@ class DockerUtils {
         }
       ]
     }).catch((err) => {
-      ServerLog.info({ message: err, path: __filename });
+      CameraLogger.info({ message: err, path: __filename });
     });
   }
   /**
@@ -204,11 +198,11 @@ class DockerUtils {
           this.exists(this.config.image, (err: any) => {
             if (!err) return callback();
 
-            ServerLog.info({ message: "Pulling image %s because it doesn't exist on the system.", path: __filename });
+            CameraLogger.info({ message: "Pulling image %s because it doesn't exist on the system.", path: __filename });
 
             this.pull(this.config.image, (pullErr: any) => {
               if (pullErr) {
-                ServerLog.error({
+                CameraLogger.error({
                   message: 'Encountered an error while attempting to fetch a fresh image. Continuing with existing system image.',
                   data: pullErr,
                   path: __filename
@@ -222,8 +216,8 @@ class DockerUtils {
         create_container: [
           'update_images',
 
-          (r: any, callback: any) => {
-            ServerLog.info({ message: '>>> Creating new container...', path: __filename });
+          (_r: any, callback: any) => {
+            CameraLogger.info({ message: '>>> Creating new container...', path: __filename });
             if (!this.config.image || !this.config.name) {
               return callback(new Error('No docker image or name was passed to the script. Unable to create container!'));
             }
@@ -235,8 +229,9 @@ class DockerUtils {
               AttachStdin: true,
               AttachStdout: true,
               AttachStderr: true,
-              OpenStdin: true,
-              Tty: false,
+              // OpenStdin: false,
+              StdinOnce: false,
+              Tty: true,
               Cmd: cmd,
               //   Env: environment,
               //   ExposedPorts: exposed,
@@ -248,16 +243,20 @@ class DockerUtils {
             };
 
             DockerController.createContainer(Container, (err: any, container: any) => {
+              if (err) {
+                this.pubsub({ message: `[ERROR] ${err}` });
+                return CameraLogger.debug({ message: err, data: err, path: __filename });
+              }
               this.container = container;
-              callback(err, container);
+              return callback(err, container);
             });
           }
         ]
       },
       (err: any) => {
         if (err) {
-          ServerLog.info({ message: '>>> Image exsist', data: err, path: __filename });
-          ServerLog.debug({ message: err, data: err, path: __filename });
+          CameraLogger.info({ message: '>>> Image exsist', data: err, path: __filename });
+          CameraLogger.debug({ message: err, data: err, path: __filename });
           this.pubsub({ message: '[ERROR] image already running!, stop first.' });
           return next('>>> Image exsist');
         }
@@ -326,10 +325,15 @@ class DockerUtils {
         }
 
         if (!SendOutput) {
-          ServerLog.info({ message: `Pulling image ${image} ... this could take a few minutes.`, path: __filename });
+          CameraLogger.info({ message: `Pulling image ${image} ... this could take a few minutes.`, path: __filename });
+          this.pubsub({ message: `[INFO] Pulling image ${image} ... this could take a few minutes.` });
           const TimeInterval = 2;
           SendOutput = setInterval(() => {
-            ServerLog.info({ message: `Pulling image ${image} ... this could take a few minutes.`, path: __filename });
+            CameraLogger.info({
+              message: `Pulling image ${image} ... Please wait, this could take a few minutes.`,
+              path: __filename
+            });
+            this.pubsub({ message: `[INFO] Pulling image ${image} ... this could take a few minutes.` });
           }, TimeInterval * 1000);
         }
       });

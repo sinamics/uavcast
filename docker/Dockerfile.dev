@@ -24,7 +24,6 @@ RUN apt-get update && apt-get install -y \
                    libcppunit-dev \
                    libjsoncpp-dev \
                    libv4l-dev \
-                   libgstreamer1.0-dev \
                    libcurl4-nss-dev \
                    sqlite3 \
                    libsqlite3-dev \

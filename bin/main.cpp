@@ -10,15 +10,18 @@
 #include "includes/logger.h"
 #include <chrono>
 #include <thread>
+#include "includes/camera.h"
 
 Utils utils;
 Mavlink mavlink;
+Camera cam;
 Modem modem;
 App app;
 
 int auto_start()
 {
     Logger log;
+    Camera cam;
     // Database db;
 
     // check if devices is online
@@ -38,30 +41,28 @@ int auto_start()
     //     // LOG(res << '")
     // }
 
-    /* 
-        
+    /*
+
         Start mavlink
 
     */
     mavlink.connect();
 
 
-    /* 
-        
+    /*
+
         Start Modem
 
     */
     modem.connect();
 
-    /* 
-        
+    /*
+
         Start Camera
 
     */
-    utils.exec("sudo systemctl restart uavcast-camera");
+    cam.initialize();
 
-    // Camera camera;
-    // std::thread t1(&Camera::video_udp_parse_launch, camera);
 
     // LOG("Called after camera is launched!" << '")
 
@@ -73,8 +74,7 @@ int stop_all()
 {
 
     mavlink.disconnect();
-    utils.exec("sudo systemctl stop uavcast-camera");
-    //Camera is runing this thread. Will be stopped when closing this thread.
+    cam.teardown();
     return 0;
 }
 
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
             // LOG("No option was passed!  USAGE: -t <start | stop> to start/stop telemetry" <<  "")
             return 0;
         }
-        /* 
+        /*
         Start video
         */
         if (std::string(argv[i]) == "-v" || std::string(argv[i]) == "--v")
@@ -145,14 +145,12 @@ int main(int argc, char *argv[])
 
             if (strcmp(argv[i + 1], "start") == 0)
             {
-                utils.exec("sudo systemctl start uavcast-camera");
-                log.Info("Video started!");
+                cam.initialize();
             }
 
             if (strcmp(argv[i + 1], "stop") == 0)
             {
-                utils.exec("sudo systemctl stop uavcast-camera");
-                log.Info("Video stopped!");
+                cam.teardown();
             }
 
             // LOG("No option was passed!  USAGE: -t <start | stop> to start/stop telemetry" <<  "")
