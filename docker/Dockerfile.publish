@@ -3,7 +3,7 @@
 #  !GCC
 #
 ###
-FROM --platform=$TARGETPLATFORM gcc:9.2 as gcc
+FROM --platform=$TARGETPLATFORM gcc:8.3 as gcc
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /gcc
@@ -112,6 +112,9 @@ RUN apt-get update && apt-get install -y \
                    sqlite3 \
                    libsqlite3-dev
 
+#tools
+RUN apt-get install -y net-tools
+
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
 COPY init/systemctl3.py /bin/systemctl3.py
@@ -143,10 +146,10 @@ RUN sudo curl -s https://install.zerotier.com/ | sudo bash
 
 # Copy systemd files
 COPY ["init/mavlink-router.service", \
-      "init/uavcast-camera.service", \
       "init/uavcast-vpn.service", \
       "init/uavcast-web.service", \
       "init/uavcast.service", "/etc/systemd/system/"]
+      # "init/uavcast-camera.service", \
 
 #gives uavcast user permissions to access /var/run/docker.sock
 RUN sudo usermod -a -G docker root

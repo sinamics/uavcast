@@ -14,8 +14,8 @@ all: build_dir main status vpn diskid versionControl
 main: main.o includes/camera.o includes/db.o includes/docker.o includes/modem.o includes/mavlink.o includes/utils.o includes/flight_controller.o includes/app.o includes/logger.o
 	$(CC) $(CXXFLAGS) main.o includes/camera.o includes/db.o includes/docker.o includes/modem.o includes/mavlink.o includes/utils.o includes/flight_controller.o includes/app.o includes/logger.o -o build/uav_main $(LINK)
 
-status: status.o includes/db.o includes/modem.o includes/utils.o
-	$(CC) $(CXXFLAGS) status.o includes/db.o includes/modem.o includes/utils.o -o build/uav_status $(LINK)
+status: status.o includes/db.o includes/modem.o includes/utils.o includes/logger.o
+	$(CC) $(CXXFLAGS) status.o includes/db.o includes/modem.o includes/utils.o includes/logger.o -o build/uav_status $(LINK)
 
 vpn: vpn.o includes/db.o includes/utils.o
 	$(CC) $(CXXFLAGS) vpn.o includes/db.o includes/utils.o -o build/uav_vpn $(LINK)
