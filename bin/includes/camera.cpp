@@ -206,7 +206,7 @@ int Camera::gst_docker_start()
     document.AddMember("AttachStdout", true, allocator);
     document.AddMember("AttachStderr", true, allocator);
     document.AddMember("OpenStdin", false, allocator);
-    document.AddMember("StdinOnce", false, allocator);
+    document.AddMember("StdinOnce", true, allocator);
     document.AddMember("Tty", true, allocator);
     document.AddMember("Cmd", cmd, allocator);
 
@@ -244,11 +244,11 @@ int Camera::initialize()
     }
 
     if(camera_val.protocol == "rtsp") {
-        log.Info("rtsp selected");
+        log.Info("rtsp, starting v4l2rtspserver");
         camera.rtsp_docker_start();
     }
     if(camera_val.protocol == "udp") {
-        log.Info("rtsp selected");
+        log.Info("udp, starting gstreamer");
         camera.gst_docker_start();
     }
     return 0;

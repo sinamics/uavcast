@@ -27,7 +27,9 @@ RUN apt-get update && apt-get install -y \
                    libcurl4-nss-dev \
                    sqlite3 \
                    libsqlite3-dev \
-                   git
+                   git \
+                   make \
+                   g++
 
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl

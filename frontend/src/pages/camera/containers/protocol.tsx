@@ -19,6 +19,7 @@ const CameraProtocol = () => {
 
   const { protocol } = cameraData?.database || {};
   const url = extractHostname(window.location.href);
+
   return (
     <Grid doubling padded columns={2}>
       <Grid.Column>
@@ -39,9 +40,11 @@ const CameraProtocol = () => {
           options={protocolArr}
           placeholder='Camera Protocol'
         />
-        <span className='themeText'>
-          access video stream by using <span style={{ color: 'yellow' }}>rtsp://{url}:8554/uavcast</span>
-        </span>
+        {protocol === 'rtsp' && (
+          <span className='themeText'>
+            access video stream by using <span style={{ color: 'yellow' }}>rtsp://{url}:8554/uavcast</span>
+          </span>
+        )}
         {/* <Label basic>Default selectOnNavigation</Label> */}
       </Grid.Column>
     </Grid>

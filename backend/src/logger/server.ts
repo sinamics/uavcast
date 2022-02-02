@@ -63,7 +63,13 @@ class ServerLogger {
             winston.format.timestamp({
               format: 'YYYY-MM-DD HH:mm:ss'
             }),
-            winston.format.printf((info: any) => `${info.level}: ${info.message}`)
+            winston.format.printf((info: any) => {
+              // eslint-disable-next-line no-control-regex
+              if (info.level.replace(/\u001b\[.*?m/g, '') === 'error') {
+                return `${info.level}: ${info.message} FILE:${info.path}`;
+              }
+              return `${info.level}: ${info.message}`;
+            })
           ),
           //@ts-ignore
           prettyPrint: (object: any): any => {

@@ -6,7 +6,7 @@ import { ApolloError } from 'apollo-server-express';
 import { kernelCommands } from '../utils/kernelCommands';
 import winston from 'winston';
 
-const ServerLog = winston.loggers.get('server');
+const DockerLog = winston.loggers.get('docker');
 
 @Resolver()
 export class EndpointResolver {
@@ -33,9 +33,18 @@ export class EndpointResolver {
     Object.assign(data, endpoint);
     getEndpointRepository().save(data);
 
-    kernelCommands('sudo systemctl restart uavcast').catch((err) =>
-      ServerLog.error({ message: err, data: 'sudo systemctl restart uavcast', path: __filename })
-    );
+    if ('videoEnable' in endpoint) {
+      if (endpoint.videoEnable) {
+        kernelCommands('/app/uavcast/bin/build/uav_main -v start').catch((err) =>
+          DockerLog.error({ message: err, data: '/app/uavcast/bin/build/uav_main -v start', path: __filename })
+        );
+      }
+      if (!endpoint.videoEnable) {
+        kernelCommands('/app/uavcast/bin/build/uav_main -v stop').catch((err) =>
+          DockerLog.error({ message: err, data: '/app/uavcast/bin/build/uav_main -v stop', path: __filename })
+        );
+      }
+    }
 
     return { data };
   }

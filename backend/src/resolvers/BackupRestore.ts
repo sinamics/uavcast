@@ -33,11 +33,16 @@ export class BackupRestoreResolver {
       createReadStream()
         .pipe(fs.createWriteStream(path.join('/../../../../', restoreFileName)))
         .on('finish', async () => {
-          await kernelCommandsCallback(`tar -xvf ${restoreFileName}`, sqlFolder, async () => {
-            await kernelCommandsCallback(`sqlite3 ${sqlFolder}/uavcast.db ".restore 'backup_uavcast.db'"`, sqlFolder, () => {
-              fs.unlinkSync(restoreFileName);
-              fs.unlinkSync(bckDbName);
-            });
+          await kernelCommandsCallback(`tar -xvf ${restoreFileName}`, sqlFolder, false, async () => {
+            await kernelCommandsCallback(
+              `sqlite3 ${sqlFolder}/uavcast.db ".restore 'backup_uavcast.db'"`,
+              sqlFolder,
+              false,
+              () => {
+                fs.unlinkSync(restoreFileName);
+                fs.unlinkSync(bckDbName);
+              }
+            );
           });
 
           resolve(true);

@@ -48,9 +48,10 @@ process
     // if you are on production, maybe you can send the exception details to your
     // email as well ?
   })
-  .on('unhandledRejection', (reason, path) => {
-    // console.error(reason, 'Unhandled Rejection at Promise', path);
-    LogServer.error({ message: path, data: reason, path: __filename });
+  .on('unhandledRejection', async (reason: any, promise: any) => {
+    // console.error(event.message, 'Unhandled Rejection at Promise', path);
+    console.error('Unhandled Rejection at Promise', path);
+    LogServer.error({ message: reason.message, data: promise, path: __filename });
     process.exit();
     // ServLog.getLogger().error(reason);
   });

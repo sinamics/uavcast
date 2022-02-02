@@ -383,23 +383,20 @@ int Docker::start_container_by_name(rapidjson::Document &create, bool verbose, c
 
         log.Info("container successfully created");
         JSON_DOCUMENT start = client.start_container(container["data"]["Id"].GetString());
+        // log.Info(jsonToString(start).c_str());
 
         assert(start.IsObject());
         assert(start.HasMember("success"));
         if(start["success"].GetBool() == 1){
-            log.Info("container successfully started");
+            log.Info("container started");
 
             //attach_to_container(const std::__cxx11::string &container_id, bool logs = false,
             // bool stream = false, bool o_stdin = false, bool o_stdout = false, bool o_stderr = false)
             create_log = client.attach_to_container(container["data"]["Id"].GetString(), logs,stream,o_stdin,o_stdout,o_stderr);
-            // for (int i = 0; i < 100; i++){
-            //     log.Info(jsonToString(create_log).c_str());
-            //     std::this_thread::sleep_for(std::chrono::seconds(2));
-            // }
+            log.Info(jsonToString(create_log).c_str());
 
             return 0;
         }
-        log.Info(jsonToString(start).c_str());
         return 1;
     }
     return 1;
@@ -430,9 +427,9 @@ JSON_DOCUMENT Docker::stop_container_by_name(bool debugger, const std::string& n
 
             }
         }
-
-         log.Error("No streaming active!");
-         return 0;
+        std::string msg = name + " not running, nothing to stop.";
+        log.Error(msg.c_str());
+        return 0;
     }
 
     if(debugger){

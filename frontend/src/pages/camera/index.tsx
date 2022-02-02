@@ -1,22 +1,24 @@
 import { useSubscription } from '@apollo/client';
 import { Card, Container, Grid, Header } from 'semantic-ui-react';
 import RaspberryConsole from '../../components/CodeMirror';
-import { Camera_StdoutDocument } from '../../graphql/generated/dist';
+import { Camera_StdoutDocument, useCameraDataQuery } from '../../graphql/generated/dist';
 import VideoHelp from './components/help';
-// import BitratePrSecond from './containers/bitratePrSecond';
+import BitratePrSecond from './containers/bitratePrSecond';
 import CameraType from './containers/cameraType';
 import CameraFooter from './containers/footer';
 import FramesPrSecond from './containers/framesPrSecond';
 import CameraProtocol from './containers/protocol';
 import CameraResolution from './containers/resolution';
-// import CameraRotation from './containers/rotation';
-// import CameraContrast from './containers/contrast';
-// import CameraFlip from './containers/flip';
-// import CameraBrightness from './containers/brightness';
+import CameraRotation from './containers/rotation';
+import CameraContrast from './containers/contrast';
+import CameraFlip from './containers/flip';
+import CameraBrightness from './containers/brightness';
 
 const Camera = () => {
   const { data: { stdout = { message: '', errors: {} } } = {} } = useSubscription(Camera_StdoutDocument);
+  const { data: { cameraData = {} } = {} }: any = useCameraDataQuery();
 
+  const { protocol } = cameraData?.database || {};
   return (
     <Container fluid>
       <Grid stackable padded columns={2} divided>
@@ -38,23 +40,27 @@ const Camera = () => {
               {/* Select resolution */}
               <CameraResolution />
 
-              {/* Flip Camera */}
-              {/* <CameraFlip /> */}
-
               {/* Frames pr. sec  */}
               <FramesPrSecond />
 
-              {/* Bitrate pr. sec  */}
-              {/* <BitratePrSecond /> */}
+              {protocol !== 'rtsp' && (
+                <>
+                  {/* Flip Camera */}
+                  <CameraFlip />
 
-              {/* Rotation  */}
-              {/* <CameraRotation /> */}
+                  {/* Bitrate pr. sec  */}
+                  <BitratePrSecond />
 
-              {/* Contrast */}
-              {/* <CameraContrast /> */}
+                  {/* Rotation  */}
+                  <CameraRotation />
 
-              {/* Brightness*/}
-              {/* <CameraBrightness /> */}
+                  {/* Contrast */}
+                  <CameraContrast />
+
+                  {/* Brightness*/}
+                  <CameraBrightness />
+                </>
+              )}
 
               {/* Footer  */}
               <CameraFooter />
