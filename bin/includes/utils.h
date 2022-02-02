@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <jsoncpp/json/json.h> 
+#include <jsoncpp/json/json.h>
 #include <curl/curl.h>
 
 class Utils
@@ -16,4 +16,5 @@ public:
     bool to_bool(std::string const &s);
     bool file_exsist(const std::string &name);
     std::vector<std::string> split(const std::string str, char delim);
+    std::vector<std::string> local_ip();
 };

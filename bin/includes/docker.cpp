@@ -46,7 +46,8 @@ e.g.
 #include <cstdlib>
 #include "rapidjson/pointer.h"
 #include "rapidjson/rapidjson.h"
-
+#include <chrono>
+#include <thread>
 /*
 *
 * START Docker Implementation
@@ -356,7 +357,7 @@ std::string jsonToString(JSON_VALUE & doc){
     doc.Accept(writer);
     return std::string(buffer.GetString());
 }
-JSON_DOCUMENT Docker::docker_run(rapidjson::Document &create, bool verbose, const std::string& name, bool logs, bool stream, bool o_stdin, bool o_stdout, bool o_stderr)
+int Docker::start_container_by_name(rapidjson::Document &create, bool verbose, const std::string& name, bool logs, bool stream, bool o_stdin, bool o_stdout, bool o_stderr)
 {
     Logger log;
     Docker client = Docker();
@@ -391,14 +392,17 @@ JSON_DOCUMENT Docker::docker_run(rapidjson::Document &create, bool verbose, cons
             //attach_to_container(const std::__cxx11::string &container_id, bool logs = false,
             // bool stream = false, bool o_stdin = false, bool o_stdout = false, bool o_stderr = false)
             create_log = client.attach_to_container(container["data"]["Id"].GetString(), logs,stream,o_stdin,o_stdout,o_stderr);
-            log.Info(jsonToString(create_log).c_str());
+            // for (int i = 0; i < 100; i++){
+            //     log.Info(jsonToString(create_log).c_str());
+            //     std::this_thread::sleep_for(std::chrono::seconds(2));
+            // }
+
             return 0;
         }
         log.Info(jsonToString(start).c_str());
-
+        return 1;
     }
-
-    return 0;
+    return 1;
 }
 JSON_DOCUMENT Docker::stop_container_by_name(bool debugger, const std::string& name)
 {

@@ -18,9 +18,10 @@ int Camera::rtsp_docker_start()
 {
     const std::string container_image = "mpromonet/v4l2rtspserver:v0.2.4";
     const std::string container_name = "rtsp_server";
-    bool debugger = true;
+    bool debugger = false;
 
     Logger log;
+    Utils utils;
     Docker client = Docker();
     Database db;
     camera_values camera_val;
@@ -63,7 +64,20 @@ int Camera::rtsp_docker_start()
     // add hostconfig to doc
     document.AddMember("HostConfig", hostConfig, allocator);
 
-    client.docker_run(document, debugger, container_name);
+    if(client.start_container_by_name(document, debugger, container_name) == 0)
+    {
+        std::vector<std::string> ip_lists;
+        log.Info("get stream by using the following rtsp url:\n");
+        ip_lists = utils.local_ip();
+
+        if(ip_lists.size() == 0)
+            return 0;
+
+        for (auto &ip_list : ip_lists)
+        {
+            printf("rtsp://%s%s", ip_list.c_str(), ":8554/uavcast\n");
+        }
+    }
 
     return 0;
 }
@@ -80,7 +94,6 @@ int Camera::gst_docker_start()
 {
     const std::string container_image = "sinamics/gstreamer:latest";
     const std::string container_name = "gst_server";
-    bool debugger = true;
 
     Logger log;
     Utils utils;
@@ -189,11 +202,11 @@ int Camera::gst_docker_start()
     // TODO add container Image tag in db
     document.AddMember("Image", container_image, allocator);
     document.AddMember("Name", container_name, allocator);
-    document.AddMember("AttachStdin", true, allocator);
+    document.AddMember("AttachStdin", false, allocator);
     document.AddMember("AttachStdout", true, allocator);
     document.AddMember("AttachStderr", true, allocator);
-    document.AddMember("OpenStdin", true, allocator);
-    document.AddMember("StdinOnce", true, allocator);
+    document.AddMember("OpenStdin", false, allocator);
+    document.AddMember("StdinOnce", false, allocator);
     document.AddMember("Tty", true, allocator);
     document.AddMember("Cmd", cmd, allocator);
 
@@ -206,7 +219,14 @@ int Camera::gst_docker_start()
     // add hostconfig to doc
     document.AddMember("HostConfig", hostConfig, allocator);
 
-    client.docker_run(document, debugger, container_name);
+    bool container_logs = true;
+    bool container_stream = true;
+    bool container_o_stdin = false;
+    bool container_o_stdout = true;
+    bool container_o_stderr = true;
+    bool debugger = false;
+
+    client.start_container_by_name(document, debugger, container_name, container_logs, container_stream,container_o_stdin, container_o_stdout, container_o_stderr);
 
     return 0;
 }
@@ -237,6 +257,7 @@ int Camera::teardown()
 {
     bool debugger = true;
     Docker client = Docker();
+
     // TODO store running ct in db and stop the correct one. stopping all for now.
     const std::string gstname = "gst_server";
     client.stop_container_by_name(debugger, gstname);
