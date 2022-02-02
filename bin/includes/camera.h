@@ -6,7 +6,7 @@ class Camera
 
 public:
     int rtsp_docker_start();
-    int rtsp_docker_stop();
+    int gst_docker_start();
     int initialize();
     int teardown();
 };

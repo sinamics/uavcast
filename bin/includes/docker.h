@@ -30,6 +30,8 @@ class Docker{
         explicit Docker(std::string host);
         ~Docker();
 
+        JSON_DOCUMENT docker_run(JSON_DOCUMENT& create, bool verbose=false, const std::string& name="",  bool logs=false, bool stream=false, bool o_stdin=false, bool o_stdout=false, bool o_stderr=false);
+        JSON_DOCUMENT stop_container_by_name(bool debugger, const std::string& name="");
         /*
         * System
         */
@@ -76,4 +78,6 @@ class Docker{
             ((std::string*)userp)->append((char*)contents, size * nmemb);
             return size * nmemb;
         }
+
+
 };

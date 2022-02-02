@@ -16,6 +16,10 @@
 
 int Camera::rtsp_docker_start()
 {
+    const std::string container_image = "mpromonet/v4l2rtspserver:v0.2.4";
+    const std::string container_name = "rtsp_server";
+    bool debugger = true;
+
     Logger log;
     Docker client = Docker();
     Database db;
@@ -43,9 +47,8 @@ int Camera::rtsp_docker_start()
     cmd.PushBack(resolution, allocator);
 
     // create main object docker config
-    // TODO add container Image tag in db
-    document.AddMember("Image", "mpromonet/v4l2rtspserver:v0.2.4", allocator);
-    document.AddMember("Name", "rtsp_server", allocator);
+    document.AddMember("Image", container_image, allocator);
+    document.AddMember("Name", container_name, allocator);
     document.AddMember("AttachStdin", true, allocator);
     document.AddMember("AttachStdout", true, allocator);
     document.AddMember("AttachStderr", true, allocator);
@@ -60,36 +63,7 @@ int Camera::rtsp_docker_start()
     // add hostconfig to doc
     document.AddMember("HostConfig", hostConfig, allocator);
 
-    // pretty print
-    rapidjson::StringBuffer buffer;
-    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
-    document.Accept(writer);
-    // const char* charBuffer = buffer.GetString();
-    // printf(charBuffer);
-
-    JSON_DOCUMENT create = client.create_container(document, std::string("rtsp_server"));
-
-    assert(create.IsObject());
-    assert(create.HasMember("success"));
-
-    if(create["success"].GetBool() == 1){
-
-        log.Info("container successfully created");
-        JSON_DOCUMENT start = client.start_container(create["data"]["Id"].GetString());
-
-        assert(start.IsObject());
-        assert(start.HasMember("success"));
-        if(start["success"].GetBool() == 1){
-            log.Info("container successfully started");
-            //attach_to_container(const std::__cxx11::string &container_id, bool logs = false,
-            // bool stream = false, bool o_stdin = false, bool o_stdout = false, bool o_stderr = false)
-            logs = client.attach_to_container(create["data"]["Id"].GetString(), false,false,false,false,false);
-            log.Info(jsonToString(logs).c_str());
-            return 0;
-        }
-        log.Info(jsonToString(start).c_str());
-
-    }
+    client.docker_run(document, debugger, container_name);
 
     return 0;
 }
@@ -102,50 +76,138 @@ void find(rapidjson::Value &v, const char* name) {
         log.Info("Not found");
 }
 
-int Camera::rtsp_docker_stop()
+int Camera::gst_docker_start()
 {
-    Docker client = Docker();
+    const std::string container_image = "sinamics/gstreamer:latest";
+    const std::string container_name = "gst_server";
+    bool debugger = true;
+
     Logger log;
+    Utils utils;
+    Docker client = Docker();
+    Database db;
+    camera_values camera_val;
+    db.get_camera(&camera_val);
 
-    // rapidjson::Document document;
-    // document.SetObject();
+    rapidjson::Document document;
+    JSON_DOCUMENT logs;
+    document.SetObject();
 
-    JSON_DOCUMENT all_ct = client.list_containers(true);
-    rapidjson::Value &v = all_ct;
+    rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
 
-    // rapidjson::Pointer namePtr("/rtsp_server");
-    if (v["data"].IsArray()) {
-        for (rapidjson::SizeType i = 0; i < v["data"].Size(); i++) {
-            // std::cout << jsonToString(v["data"][0]["Names"]) << std::endl;
+    rapidjson::Value cmd(rapidjson::kArrayType);
 
-            auto it = v["data"][i].FindMember("Names");
-            if (it != v["data"][i].MemberEnd()){
-
-                if(v["data"][i]["Names"][0] == "/rtsp_server"){
-
-                    log.Info("rtsp server running, stopping...");
-                    // std::cout << jsonToString(v["data"][i]["Id"]) << std::endl;
-
-                    // TODO kill or stop command?
-                    client.kill_container(v["data"][i]["Id"].GetString());
-                    return 0;
-                    // client.stop_container(v["data"][i]["Id"].GetString());
-                }
-
-            }
-        }
-
-         std::cout << "No streaming active!" << std::endl;
-         return 0;
+    std::string pipeline_str;
+    if (camera_val.cameraType == "custom")
+    {
+        pipeline_str = camera_val.customPipeline;
     }
 
-  // pretty print
-    rapidjson::StringBuffer buffer;
-    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
-    all_ct.Accept(writer);
+    EndpointRecords endpoints = db.get_endpoints();
+    std::string clients;
+    // map clients
+    for (auto i = 0u; i < endpoints.size(); i++)
+    {
+        if (endpoints[i].videoEnable == 0)
+            continue;
 
-    // const char* charBuffer = buffer.GetString();
-    // printf(charBuffer);
+        clients += endpoints[i].endpointIPaddress + ":" + std::to_string(endpoints[i].videoPort);
+
+        if (i < endpoints.size() - 1)
+        {
+            clients += ",";
+        }
+    }
+
+    if (clients.empty())
+    {
+        log.Error("no camera clients found!.. process stopped!");
+        log.Error("make sure you have selected a destination in Ground Controller Page!");
+        return -1;
+    }
+
+    char delimiter = 'x';
+    std::vector<std::string> res_arr = utils.split(camera_val.resolution, delimiter);
+
+    char res_width[res_arr[0].length()];
+    strcpy(res_width, res_arr[0].c_str());
+
+
+    char res_height[res_arr[1].length()];
+    strcpy(res_height, res_arr[1].c_str());
+
+    cmd.PushBack("v4l2src", allocator);
+    cmd.PushBack(rapidjson::Value("device=" + camera_val.cameraType, document.GetAllocator()).Move(), allocator);
+    cmd.PushBack("!", allocator);
+    cmd.PushBack("rotate", allocator);
+    cmd.PushBack(rapidjson::Value("angle=" + std::to_string(camera_val.rotation * 0.01745329252), document.GetAllocator()).Move(), allocator);
+    cmd.PushBack("!", allocator);
+    cmd.PushBack("videobalance", allocator);
+    cmd.PushBack(rapidjson::Value("contrast=" + std::to_string(camera_val.contrast), document.GetAllocator()).Move(), allocator);
+    cmd.PushBack(rapidjson::Value("brightness=" + std::to_string(camera_val.brightness), document.GetAllocator()).Move(), allocator);
+    cmd.PushBack("!", allocator);
+    cmd.PushBack(rapidjson::Value("video/x-raw,framerate=30/1,width=" + res_arr[0] + ",height=" + res_arr[1], document.GetAllocator()).Move(), allocator);
+    cmd.PushBack("!", allocator);
+    cmd.PushBack("videoflip", allocator);
+    cmd.PushBack("video-direction=identity", allocator);
+    cmd.PushBack("!", allocator);
+    cmd.PushBack("videoconvert", allocator);
+    cmd.PushBack("!", allocator);
+    cmd.PushBack("video/x-raw,format=I420", allocator);
+    cmd.PushBack("!", allocator);
+    cmd.PushBack("queue", allocator);
+    cmd.PushBack("max-size-buffers=1", allocator);
+    cmd.PushBack("name=q_enc", allocator);
+    cmd.PushBack("!", allocator);
+    cmd.PushBack("x264enc", allocator);
+    cmd.PushBack("tune=zerolatency", allocator);
+    cmd.PushBack(rapidjson::Value("bitrate=" + std::to_string(camera_val.bitratePrSecond / 1000), document.GetAllocator()).Move(), allocator);
+    cmd.PushBack("speed-preset=superfast", allocator);
+    cmd.PushBack("!", allocator);
+    cmd.PushBack("rtph264pay", allocator);
+    cmd.PushBack("name=pay0", allocator);
+    cmd.PushBack("pt=96", allocator);
+    cmd.PushBack("!", allocator);
+    cmd.PushBack("multiudpsink", allocator);
+    cmd.PushBack(rapidjson::Value("clients=" + clients, document.GetAllocator()).Move(), allocator);
+
+
+    // cmd.PushBack("videotestsrc", allocator);
+    // cmd.PushBack("!", allocator);
+    // cmd.PushBack("x264enc", allocator);
+    // cmd.PushBack("!", allocator);
+    // cmd.PushBack("video/x-h264,", allocator);
+    // cmd.PushBack("stream-format=byte-stream", allocator);
+    // cmd.PushBack("!", allocator);
+    // cmd.PushBack("rtph264pay", allocator);
+    // cmd.PushBack("!", allocator);
+    // cmd.PushBack("udpsink", allocator);
+    // cmd.PushBack("host=10.0.0.49", allocator);
+    // cmd.PushBack("port=5600", allocator);
+
+    // create main object docker config
+    // TODO add container Image tag in db
+    document.AddMember("Image", container_image, allocator);
+    document.AddMember("Name", container_name, allocator);
+    document.AddMember("AttachStdin", true, allocator);
+    document.AddMember("AttachStdout", true, allocator);
+    document.AddMember("AttachStderr", true, allocator);
+    document.AddMember("OpenStdin", true, allocator);
+    document.AddMember("StdinOnce", true, allocator);
+    document.AddMember("Tty", true, allocator);
+    document.AddMember("Cmd", cmd, allocator);
+
+    // create hostconfig object
+    rapidjson::Value hostConfig(rapidjson::kObjectType);
+    hostConfig.AddMember("Privileged", true , allocator);
+    hostConfig.AddMember("AutoRemove", true , allocator);
+    hostConfig.AddMember("NetworkMode", "host" , allocator);
+
+    // add hostconfig to doc
+    document.AddMember("HostConfig", hostConfig, allocator);
+
+    client.docker_run(document, debugger, container_name);
+
     return 0;
 }
 int Camera::initialize()
@@ -165,45 +227,21 @@ int Camera::initialize()
         log.Info("rtsp selected");
         camera.rtsp_docker_start();
     }
+    if(camera_val.protocol == "udp") {
+        log.Info("rtsp selected");
+        camera.gst_docker_start();
+    }
     return 0;
 }
 int Camera::teardown()
 {
-    Camera camera;
-    camera.rtsp_docker_stop();
+    bool debugger = true;
+    Docker client = Docker();
+    // TODO store running ct in db and stop the correct one. stopping all for now.
+    const std::string gstname = "gst_server";
+    client.stop_container_by_name(debugger, gstname);
+
+    const std::string rtspname = "rtsp_server";
+    client.stop_container_by_name(debugger, rtspname);
     return 0;
 }
-// int main(int argc, char *argv[])
-// {
-//     Logger log;
-//     // Utils utils;
-//     Camera camera;
-//     Database db;
-//     camera_values camera_val;
-//     db.get_camera(&camera_val);
-
-//     if (argc == 1)
-//     {
-//         std::cout << "camera application for uavcast. Type -h or --help to learn more\n";
-//     }
-
-//     for (int i = 0; i < argc; i++)
-//     {
-//         if (std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help")
-//         {
-//             std::cout << "Option -start to start video\n";
-//             std::cout << "Option -stop to stop all services\n\n\n";
-//             std::cout << "author: Bernt Christian Egeland / aka sinamics\n\n";
-//         }
-
-//         if (std::string(argv[i]) == "-start" || std::string(argv[i]) == "--start")
-//         {
-//             camera.initialize();
-//         }
-//         if (std::string(argv[i]) == "-stop" || std::string(argv[i]) == "--stop")
-//         {
-//             camera.teardown();
-//         }
-//     }
-
-// }

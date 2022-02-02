@@ -4,9 +4,9 @@ import { useCameraDataQuery, useUpdateCameraMutation } from '../../../graphql/ge
 import { extractHostname } from '../../../utils/apolloClient';
 
 export const protocolArr = [
-  { key: 'tcp', value: 'tcp', text: 'TCP', disabled: true },
-  { key: 'udp', value: 'udp', text: 'UDP', disabled: true },
-  { key: 'rtsp', value: 'rtsp', text: 'RTSP' }
+  { key: 'rtsp', value: 'rtsp', text: 'RTSP' },
+  { key: 'udp', value: 'udp', text: 'UDP' },
+  { key: 'tcp', value: 'tcp', text: 'TCP', disabled: true }
 ];
 
 const CameraProtocol = () => {

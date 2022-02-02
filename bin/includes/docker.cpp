@@ -42,7 +42,10 @@ e.g.
 #include <stdio.h>
 #include "db.h"
 #include "utils.h"
+#include "logger.h"
 #include <cstdlib>
+#include "rapidjson/pointer.h"
+#include "rapidjson/rapidjson.h"
 
 /*
 *
@@ -352,6 +355,92 @@ std::string jsonToString(JSON_VALUE & doc){
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
     doc.Accept(writer);
     return std::string(buffer.GetString());
+}
+JSON_DOCUMENT Docker::docker_run(rapidjson::Document &create, bool verbose, const std::string& name, bool logs, bool stream, bool o_stdin, bool o_stdout, bool o_stderr)
+{
+    Logger log;
+    Docker client = Docker();
+
+    JSON_DOCUMENT create_log;
+
+    if(verbose){
+         // pretty print
+        rapidjson::StringBuffer buffer;
+        rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+        create.Accept(writer);
+        const char* charBuffer = buffer.GetString();
+        printf(charBuffer);
+    }
+
+
+    JSON_DOCUMENT container = client.create_container(create, name);
+
+    assert(container.IsObject());
+    assert(container.HasMember("success"));
+
+    if(container["success"].GetBool() == 1){
+
+        log.Info("container successfully created");
+        JSON_DOCUMENT start = client.start_container(container["data"]["Id"].GetString());
+
+        assert(start.IsObject());
+        assert(start.HasMember("success"));
+        if(start["success"].GetBool() == 1){
+            log.Info("container successfully started");
+
+            //attach_to_container(const std::__cxx11::string &container_id, bool logs = false,
+            // bool stream = false, bool o_stdin = false, bool o_stdout = false, bool o_stderr = false)
+            create_log = client.attach_to_container(container["data"]["Id"].GetString(), logs,stream,o_stdin,o_stdout,o_stderr);
+            log.Info(jsonToString(create_log).c_str());
+            return 0;
+        }
+        log.Info(jsonToString(start).c_str());
+
+    }
+
+    return 0;
+}
+JSON_DOCUMENT Docker::stop_container_by_name(bool debugger, const std::string& name)
+{
+    Docker client = Docker();
+    Logger log;
+
+    JSON_DOCUMENT all_ct = client.list_containers(true);
+    rapidjson::Value &v = all_ct;
+
+    // rapidjson::Pointer namePtr("/rtsp_server");
+    if (v["data"].IsArray()) {
+        for (rapidjson::SizeType i = 0; i < v["data"].Size(); i++) {
+            auto it = v["data"][i].FindMember("Names");
+            if (it != v["data"][i].MemberEnd()){
+
+                if(v["data"][i]["Names"][0] == "/"+name){
+
+                    std::string msg = name + " server running, stopping...";
+                    log.Info(msg.c_str());
+
+                    // TODO kill or stop command?
+                    client.kill_container(v["data"][i]["Id"].GetString());
+                    return 0;
+                }
+
+            }
+        }
+
+         log.Error("No streaming active!");
+         return 0;
+    }
+
+    if(debugger){
+        //   pretty print
+        rapidjson::StringBuffer buffer;
+        rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+        all_ct.Accept(writer);
+        const char* charBuffer = buffer.GetString();
+        printf(charBuffer);
+    }
+
+    return 0;
 }
 // using namespace rapidjson;
 
