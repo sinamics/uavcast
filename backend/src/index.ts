@@ -50,7 +50,7 @@ process
   })
   .on('unhandledRejection', async (reason: any, promise: any) => {
     // console.error(event.message, 'Unhandled Rejection at Promise', path);
-    console.error('Unhandled Rejection at Promise', path);
+    console.error('Unhandled Rejection at Promise', path); // eslint-disable-line no-console
     LogServer.error({ message: reason.message, data: promise, path: __filename });
     process.exit();
     // ServLog.getLogger().error(reason);

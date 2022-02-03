@@ -123,8 +123,8 @@ export class Supervisor {
     // }
 
     //@ts-ignore
-    subscribe: async (_: any, __: any, { pubsub }: any): Promise<any> => {
-      return await pubsub.asyncIterator('U_SUPERVISOR_MESSAGE');
+    subscribe: async (_: any, __: any, { PubSub }: any): Promise<any> => {
+      return await PubSub.asyncIterator('U_SUPERVISOR_MESSAGE');
     }
   })
   supervisor(@Root() supervisor: SupervisorRespons) {
