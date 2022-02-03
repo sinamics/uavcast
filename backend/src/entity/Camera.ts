@@ -62,7 +62,7 @@ export class Camera {
   whiteBalance: string;
 
   @Field()
-  @Column({ type: String, default: 'Default', nullable: false })
+  @Column({ type: String, default: 'none', nullable: false })
   flipCamera: string;
 
   @Field()

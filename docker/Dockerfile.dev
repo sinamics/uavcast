@@ -53,6 +53,10 @@ RUN chmod +x  /bin/systemctl \
               /bin/systemctl3.py \
               /bin/journalctl
 
+RUN sudo touch /var/run/docker.sock
+RUN sudo chmod 666 /var/run/docker.sock
+RUN sudo chown uavcast:docker /var/run/docker.sock
+
 # zerotier installation
 RUN sudo curl -s https://install.zerotier.com/ | sudo bash
 

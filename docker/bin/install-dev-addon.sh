@@ -28,9 +28,9 @@ else
 fi
 
 # access docker enviroment inside dev container
-sudo touch /var/run/docker.sock
-sudo chmod 666 /var/run/docker.sock
-sudo chown uavcast:docker /var/run/docker.sock
+# sudo touch /var/run/docker.sock
+# sudo chmod 666 /var/run/docker.sock
+# sudo chown uavcast:docker /var/run/docker.sock
 
 # Build binaries
 cd /app/uavcast/bin && make

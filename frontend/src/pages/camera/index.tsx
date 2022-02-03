@@ -9,7 +9,7 @@ import CameraFooter from './containers/footer';
 import FramesPrSecond from './containers/framesPrSecond';
 import CameraProtocol from './containers/protocol';
 import CameraResolution from './containers/resolution';
-import CameraRotation from './containers/rotation';
+// import CameraRotation from './containers/rotation';
 import CameraContrast from './containers/contrast';
 import CameraFlip from './containers/flip';
 import CameraBrightness from './containers/brightness';
@@ -59,7 +59,7 @@ const Camera = () => {
                   <BitratePrSecond />
 
                   {/* Rotation  */}
-                  <CameraRotation />
+                  {/* <CameraRotation /> */}
 
                   {/* Contrast */}
                   <CameraContrast />
