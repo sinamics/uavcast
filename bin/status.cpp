@@ -65,8 +65,13 @@ int main()
     }
 
     // Check if video is running
-    string camera_enabled = utils.exec("sudo docker inspect -f {{.State.Running}} rtsp_server >/dev/null 2>&1");
-    if (utils.isWordPresent(camera_enabled, "true"))
+    string rtsp_enabled = utils.exec("sudo docker inspect -f {{.State.Running}} rtsp_server 2>/dev/null");
+    if (utils.isWordPresent(rtsp_enabled, "true"))
+    {
+        status["video"] = true;
+    }
+    string gst_enabled = utils.exec("sudo docker inspect -f {{.State.Running}} gst_server 2>/dev/null");
+    if (utils.isWordPresent(gst_enabled, "true"))
     {
         status["video"] = true;
     }
