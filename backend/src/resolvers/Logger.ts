@@ -2,12 +2,11 @@ import AppLogger from '../logger/ulog';
 import { Args, Mutation, Query, Resolver } from 'type-graphql';
 import { getLoggerRepository } from '../entity/Logger';
 import {
-  CpuLoggDataResponse,
   LoggDataResponse,
   LoggFilesResponse,
   LoggResponse,
   NetworkLoggDataResponse,
-  TempLoggDataResponse
+  WinstonResponse
 } from '../graphql-response-types/LoggViewer';
 import { LogFileInput, LogParametersInput, LogPeriodeInput, PruneLogsInput } from '../graphql-input-types/LogViewer';
 import SystemLogger from '../logger';
@@ -56,7 +55,7 @@ export class Logviewer {
   //
   // SYSTEM LOGGER
   //
-  @Query(() => TempLoggDataResponse)
+  @Query(() => WinstonResponse)
   async getTempLog(@Args() { properties }: LogPeriodeInput) {
     const System = SystemLogger.getLogger();
     const { dailyRotateFile: file }: any = await System.temperatureLogger.queryLogs({
@@ -78,7 +77,7 @@ export class Logviewer {
   }
 
   //cpu
-  @Query(() => CpuLoggDataResponse)
+  @Query(() => WinstonResponse)
   async getCpuLog(@Args() { properties }: LogPeriodeInput) {
     const System = SystemLogger.getLogger();
     const { dailyRotateFile: file }: any = await System.cpuLogger.queryLogs({
@@ -88,6 +87,16 @@ export class Logviewer {
     return { file };
   }
 
+  //dockerLogger
+  @Mutation(() => WinstonResponse)
+  async getDockerLog(@Args() { properties }: LogPeriodeInput) {
+    const System = SystemLogger.getLogger();
+    const { dailyRotateFile: file }: any = await System.dockerLogger.queryLogs({
+      from: new Date().valueOf() - properties.minutes * 60 * 1000,
+      until: new Date()
+    });
+    return { file };
+  }
   //
   // ALL LOGGERS
   //

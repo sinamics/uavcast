@@ -14,7 +14,7 @@ import FlightLog from './containers/flightLog';
 
 const FlightController = () => {
   const { data: { stdout = { message: '', errors: {} } } = {} } = useSubscription(StdoutDocument);
-
+  console.log(stdout);
   return (
     <Container fluid>
       <Grid stackable padded columns={2} divided>

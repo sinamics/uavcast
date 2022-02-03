@@ -34,9 +34,9 @@ export type Query = {
   getFileData: LoggDataResponse;
   getLoggData: LoggResponse;
   getLoggerParameters: LoggResponse;
-  getTempLog: TempLoggDataResponse;
+  getTempLog: WinstonResponse;
   getNetworkLog: NetworkLoggDataResponse;
-  getCpuLog: CpuLoggDataResponse;
+  getCpuLog: WinstonResponse;
   cameraData: CameraResponse;
 };
 
@@ -252,16 +252,16 @@ export type LogProperties = {
   minutes: Scalars['Float'];
 };
 
-export type TempLoggDataResponse = {
-  __typename?: 'TempLoggDataResponse';
-  file?: Maybe<Array<TempLoggDataProperties>>;
+export type WinstonResponse = {
+  __typename?: 'WinstonResponse';
+  file?: Maybe<Array<WinstonProperties>>;
   errors?: Maybe<Array<FieldError>>;
 };
 
-export type TempLoggDataProperties = {
-  __typename?: 'TempLoggDataProperties';
+export type WinstonProperties = {
+  __typename?: 'WinstonProperties';
   timestamp: Scalars['String'];
-  message: Scalars['String'];
+  message?: Maybe<Scalars['String']>;
 };
 
 export type NetworkLoggDataResponse = {
@@ -283,18 +283,6 @@ export type NetworkLoggDataPropertiesValues = {
   tx_bytes: Scalars['Float'];
   rx_sec?: Maybe<Scalars['Float']>;
   tx_sec?: Maybe<Scalars['Float']>;
-};
-
-export type CpuLoggDataResponse = {
-  __typename?: 'CpuLoggDataResponse';
-  file?: Maybe<Array<CpuLoggDataProperties>>;
-  errors?: Maybe<Array<FieldError>>;
-};
-
-export type CpuLoggDataProperties = {
-  __typename?: 'CpuLoggDataProperties';
-  timestamp: Scalars['String'];
-  message?: Maybe<Scalars['String']>;
 };
 
 export type CameraResponse = {
@@ -358,6 +346,7 @@ export type Mutation = {
   setLoggerParameters: LoggResponse;
   removeLogfile: Scalars['Boolean'];
   removeAllLogfiles: Scalars['Boolean'];
+  getDockerLog: WinstonResponse;
   pruneLogFiles: Scalars['Boolean'];
   updateCamera: CameraResponse;
   cameraActions: CameraActionResponse;
@@ -442,6 +431,11 @@ export type MutationSetLoggerParametersArgs = {
 
 export type MutationRemoveLogfileArgs = {
   filename: Scalars['String'];
+};
+
+
+export type MutationGetDockerLogArgs = {
+  properties: LogProperties;
 };
 
 
@@ -572,6 +566,7 @@ export type Subscription = {
   stdout: KernelResponse;
   supervisor: SupervisorRespons;
   status: StatusResponse;
+  camera_stdout: KernelResponse;
 };
 
 export type MavlinkResponse = {
@@ -667,6 +662,18 @@ export type StatusResponse = {
   vpn?: Maybe<Scalars['Boolean']>;
   undervoltage?: Maybe<Scalars['Boolean']>;
   arch?: Maybe<Scalars['String']>;
+};
+
+export type TempLoggDataProperties = {
+  __typename?: 'TempLoggDataProperties';
+  timestamp: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type TempLoggDataResponse = {
+  __typename?: 'TempLoggDataResponse';
+  file?: Maybe<Array<TempLoggDataProperties>>;
+  errors?: Maybe<Array<FieldError>>;
 };
 
 export type MavlinkCommandInput = {
@@ -967,6 +974,22 @@ export type SetLoggerParametersMutation = (
   ) }
 );
 
+export type GetDockerLogMutationVariables = Exact<{
+  properties: LogProperties;
+}>;
+
+
+export type GetDockerLogMutation = (
+  { __typename?: 'Mutation' }
+  & { getDockerLog: (
+    { __typename?: 'WinstonResponse' }
+    & { file?: Maybe<Array<(
+      { __typename?: 'WinstonProperties' }
+      & Pick<WinstonProperties, 'message' | 'timestamp'>
+    )>> }
+  ) }
+);
+
 export type SendMavCommandMutationVariables = Exact<{
   type: Scalars['String'];
   value: Scalars['String'];
@@ -1160,10 +1183,10 @@ export type GetTempLogQueryVariables = Exact<{
 export type GetTempLogQuery = (
   { __typename?: 'Query' }
   & { getTempLog: (
-    { __typename?: 'TempLoggDataResponse' }
+    { __typename?: 'WinstonResponse' }
     & { file?: Maybe<Array<(
-      { __typename?: 'TempLoggDataProperties' }
-      & Pick<TempLoggDataProperties, 'message' | 'timestamp'>
+      { __typename?: 'WinstonProperties' }
+      & Pick<WinstonProperties, 'message' | 'timestamp'>
     )>> }
   ) }
 );
@@ -1196,10 +1219,10 @@ export type GetCpuLogQueryVariables = Exact<{
 export type GetCpuLogQuery = (
   { __typename?: 'Query' }
   & { getCpuLog: (
-    { __typename?: 'CpuLoggDataResponse' }
+    { __typename?: 'WinstonResponse' }
     & { file?: Maybe<Array<(
-      { __typename?: 'CpuLoggDataProperties' }
-      & Pick<CpuLoggDataProperties, 'timestamp' | 'message'>
+      { __typename?: 'WinstonProperties' }
+      & Pick<WinstonProperties, 'timestamp' | 'message'>
     )>> }
   ) }
 );
@@ -1350,7 +1373,7 @@ export type Camera_StdoutSubscriptionVariables = Exact<{ [key: string]: never; }
 
 export type Camera_StdoutSubscription = (
   { __typename?: 'Subscription' }
-  & { stdout: (
+  & { camera_stdout: (
     { __typename?: 'KernelResponse' }
     & Pick<KernelResponse, 'message'>
     & { errors?: Maybe<Array<(
@@ -2044,6 +2067,41 @@ export function useSetLoggerParametersMutation(baseOptions?: Apollo.MutationHook
 export type SetLoggerParametersMutationHookResult = ReturnType<typeof useSetLoggerParametersMutation>;
 export type SetLoggerParametersMutationResult = Apollo.MutationResult<SetLoggerParametersMutation>;
 export type SetLoggerParametersMutationOptions = Apollo.BaseMutationOptions<SetLoggerParametersMutation, SetLoggerParametersMutationVariables>;
+export const GetDockerLogDocument = gql`
+    mutation getDockerLog($properties: LogProperties!) {
+  getDockerLog(properties: $properties) {
+    file {
+      message
+      timestamp
+    }
+  }
+}
+    `;
+export type GetDockerLogMutationFn = Apollo.MutationFunction<GetDockerLogMutation, GetDockerLogMutationVariables>;
+
+/**
+ * __useGetDockerLogMutation__
+ *
+ * To run a mutation, you first call `useGetDockerLogMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetDockerLogMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getDockerLogMutation, { data, loading, error }] = useGetDockerLogMutation({
+ *   variables: {
+ *      properties: // value for 'properties'
+ *   },
+ * });
+ */
+export function useGetDockerLogMutation(baseOptions?: Apollo.MutationHookOptions<GetDockerLogMutation, GetDockerLogMutationVariables>) {
+        return Apollo.useMutation<GetDockerLogMutation, GetDockerLogMutationVariables>(GetDockerLogDocument, baseOptions);
+      }
+export type GetDockerLogMutationHookResult = ReturnType<typeof useGetDockerLogMutation>;
+export type GetDockerLogMutationResult = Apollo.MutationResult<GetDockerLogMutation>;
+export type GetDockerLogMutationOptions = Apollo.BaseMutationOptions<GetDockerLogMutation, GetDockerLogMutationVariables>;
 export const SendMavCommandDocument = gql`
     mutation sendMavCommand($type: String!, $value: String!) {
   sendMavCommand(type: $type, value: $value)
@@ -3005,7 +3063,7 @@ export type ZerotierNetworksLazyQueryHookResult = ReturnType<typeof useZerotierN
 export type ZerotierNetworksQueryResult = Apollo.QueryResult<ZerotierNetworksQuery, ZerotierNetworksQueryVariables>;
 export const Camera_StdoutDocument = gql`
     subscription camera_stdout {
-  stdout {
+  camera_stdout {
     message
     errors {
       path

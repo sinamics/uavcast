@@ -120,7 +120,7 @@ export class CameraResolver {
     //     console.log('object')
     // }
   })
-  async stdout(@Root() stdout: any): Promise<any> {
+  async camera_stdout(@Root() stdout: any): Promise<any> {
     // console.log('stdout', stdout);
     return { message: stdout.message, errors: stdout.errors };
   }

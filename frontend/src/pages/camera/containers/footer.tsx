@@ -1,12 +1,12 @@
 import { Button, Grid, Icon } from 'semantic-ui-react';
 import {
   useCameraActionsMutation,
-  useKernelMessageMutation,
+  // useKernelMessageMutation,
   useResetCameraDatabaseMutation
 } from '../../../graphql/generated/dist';
 
-const CameraFooter = () => {
-  const [kernelCommand] = useKernelMessageMutation();
+const CameraFooter = ({ getDockerLogs }: any) => {
+  // const [kernelCommand] = useKernelMessageMutation();
   const [clearData] = useResetCameraDatabaseMutation();
   const [cameraAction, { loading }] = useCameraActionsMutation({
     errorPolicy: 'all'
@@ -47,7 +47,7 @@ const CameraFooter = () => {
             Stop camera
           </Button>
           {/* <Button.Or /> */}
-          <Button
+          {/* <Button
             onClick={() =>
               kernelCommand({
                 variables: { cmd: 'sudo systemctl status uavcast-camera', path: '/' }
@@ -55,16 +55,8 @@ const CameraFooter = () => {
             }
           >
             Status
-          </Button>
-          <Button
-            onClick={() =>
-              kernelCommand({
-                variables: { cmd: 'sudo journalctl -u uavcast-camera', path: '/' }
-              })
-            }
-          >
-            View History Log
-          </Button>
+          </Button> */}
+          <Button onClick={() => getDockerLogs()}>View History Log (last 5min)</Button>
         </Button.Group>
       </Grid.Column>
       <Grid.Column computer='2'>

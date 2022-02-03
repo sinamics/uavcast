@@ -1,5 +1,5 @@
 subscription camera_stdout {
-  stdout {
+  camera_stdout {
     message
     errors {
       path

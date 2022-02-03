@@ -1,7 +1,7 @@
 import { useSubscription } from '@apollo/client';
 import { Card, Container, Grid, Header } from 'semantic-ui-react';
 import RaspberryConsole from '../../components/CodeMirror';
-import { Camera_StdoutDocument, useCameraDataQuery } from '../../graphql/generated/dist';
+import { Camera_StdoutDocument, useCameraDataQuery, useGetDockerLogMutation } from '../../graphql/generated/dist';
 import VideoHelp from './components/help';
 import BitratePrSecond from './containers/bitratePrSecond';
 import CameraType from './containers/cameraType';
@@ -15,10 +15,17 @@ import CameraFlip from './containers/flip';
 import CameraBrightness from './containers/brightness';
 
 const Camera = () => {
-  const { data: { stdout = { message: '', errors: {} } } = {} } = useSubscription(Camera_StdoutDocument);
+  const { data: { camera_stdout = { message: '', errors: {} } } = {} } = useSubscription(Camera_StdoutDocument);
+
+  const [getDockerLogs, { data: { getDockerLog = {} } = {} }]: any = useGetDockerLogMutation({
+    variables: { properties: { minutes: 5 } }
+  });
+
   const { data: { cameraData = {} } = {} }: any = useCameraDataQuery();
 
   const { protocol } = cameraData?.database || {};
+  const { file = [] } = getDockerLog || {};
+
   return (
     <Container fluid>
       <Grid stackable padded columns={2} divided>
@@ -63,10 +70,13 @@ const Camera = () => {
               )}
 
               {/* Footer  */}
-              <CameraFooter />
+              <CameraFooter getDockerLogs={getDockerLogs} />
               <Grid padded columns={1}>
                 <Grid.Column style={{ height: '300px' }}>
-                  <RaspberryConsole stdout={stdout.message} error={stdout.errors} />
+                  <RaspberryConsole
+                    stdout={camera_stdout.message || (file.length > 0 && file.map((e: any) => e.message.trim()))}
+                    error={camera_stdout.errors}
+                  />
                 </Grid.Column>
               </Grid>
             </Card.Content>
