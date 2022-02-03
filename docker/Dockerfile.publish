@@ -113,7 +113,9 @@ RUN apt-get update && apt-get install -y \
                    libsqlite3-dev
 
 #tools
-RUN apt-get install -y net-tools
+RUN apt-get install -y net-tools \
+                       usbutils \
+                       less
 
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
