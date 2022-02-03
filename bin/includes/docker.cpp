@@ -440,7 +440,14 @@ JSON_DOCUMENT Docker::stop_container_by_name(bool debugger, const std::string& n
                     log.Info(msg.c_str());
 
                     // TODO kill or stop command?
-                    client.kill_container(v["data"][i]["Id"].GetString());
+                    JSON_DOCUMENT kill = client.kill_container(v["data"][i]["Id"].GetString());
+                    bool killed = kill["success"].GetBool();
+                    if(!killed){
+                        JSON_DOCUMENT del = client.delete_container(v["data"][i]["Id"].GetString());
+                        log.Info("delete container");
+                        // log.Info(jsonToString(del).c_str());
+                    }
+
                     return 0;
                 }
 
