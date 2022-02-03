@@ -159,6 +159,9 @@ int Camera::gst_docker_start()
     cmd.PushBack(rapidjson::Value("contrast=" + std::to_string(camera_val.contrast), document.GetAllocator()).Move(), allocator);
     cmd.PushBack(rapidjson::Value("brightness=" + std::to_string(camera_val.brightness), document.GetAllocator()).Move(), allocator);
     cmd.PushBack("!", allocator);
+    cmd.PushBack("videoflip", allocator);
+    cmd.PushBack(rapidjson::Value("method=" + camera_val.flipCamera, document.GetAllocator()).Move(), allocator);
+    cmd.PushBack("!", allocator);
     cmd.PushBack(rapidjson::Value("video/x-raw,framerate=30/1,width=" + res_arr[0] + ",height=" + res_arr[1], document.GetAllocator()).Move(), allocator);
     cmd.PushBack("!", allocator);
     cmd.PushBack("videoflip", allocator);
