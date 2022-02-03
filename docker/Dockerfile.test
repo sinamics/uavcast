@@ -1,20 +1,25 @@
+# FROM node:14.18.3-buster-slim
+
+# RUN apt-get update && apt-get install -y curl
+# RUN apt-get install -y build-essential python
+
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
+
 ## GCC
-FROM --platform=$TARGETPLATFORM gcc:9.2 as gcc
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
+FROM gcc:9.2 as gcc
 WORKDIR /gcc
 
 # install app dependencies
 COPY ["bin", "./"]
 
-RUN apt-get update && apt-get install -y \
-                   libcppunit-dev \
-                   libjsoncpp-dev \
-                   libv4l-dev \
-                   libgstreamer1.0-dev \
-                   libcurl4-nss-dev \
-                   sqlite3 \
-                   libsqlite3-dev
-RUN mkdir -p build
-RUN make
+# RUN apt-get update && apt-get install -y \
+#                    libcppunit-dev \
+#                    libjsoncpp-dev \
+#                    libv4l-dev \
+#                    libgstreamer1.0-dev \
+#                    libcurl4-nss-dev \
+#                    sqlite3 \
+#                    libsqlite3-dev
+# RUN mkdir -p build
+# RUN make
 ENTRYPOINT ["tail", "-f", "/dev/null"]

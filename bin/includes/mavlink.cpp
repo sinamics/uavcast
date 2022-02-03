@@ -9,15 +9,20 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
+#include "logger.h"
+
+
 
 int Mavlink::disconnect()
 {
+    Logger log;
     Utils utils;
     std::string mavlink_active = utils.exec("sudo systemctl is-active mavlink-router");
     if (utils.isWordPresent(mavlink_active, "active"))
     {
         //We should stop all active mavlinks
-        std::cout << "mavlink active, stopping service" << '\n';
+        log.Info("mavlink active, stopping service");
+
 
         try
         {
@@ -38,11 +43,11 @@ int Mavlink::disconnect()
             if (!utils.isWordPresent(mavlink_active, "active"))
                 break;
 
-            std::cout << i << " attempts to stopp mavlink!" << '\n';
+            log.Info(i+" attempts to stopp mavlink!");
 
             if ((i = attempts))
             {
-                std::cout << i << " could not stop mavlink!. quitting!" << '\n';
+                log.Error("could not stop mavlink!. quitting!");
                 return 1;
             }
 
@@ -53,6 +58,7 @@ int Mavlink::disconnect()
 }
 int Mavlink::ardupilot(FlightControllerRecords fc_record)
 {
+    Logger log;
     Database db;
     Utils utils;
     Mavlink mav;
@@ -72,7 +78,8 @@ int Mavlink::ardupilot(FlightControllerRecords fc_record)
 
     if (!fc_record.size())
     {
-        std::cout << "No data in FlightController DB. Please configure data from webinterface!" << '\n';
+        log.Info("No data in FlightController DB. Please configure data from webinterface!");
+
         return -1;
     }
 
@@ -112,7 +119,7 @@ int Mavlink::ardupilot(FlightControllerRecords fc_record)
 
     MavConfigFile.close();
 
-    std::cout << "Mavlink is starting.." << '\n';
+    log.Info("Mavlink is starting..");
     // start mavlink
     utils.exec("sudo systemctl start mavlink-router");
     std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -120,7 +127,8 @@ int Mavlink::ardupilot(FlightControllerRecords fc_record)
     mavlink_active = utils.exec("sudo systemctl is-active mavlink-router");
     if (utils.isWordPresent(mavlink_active, "active"))
     {
-        std::cout << "Mavlink has started!" << '\n';
+        log.Info("Mavlink has started!");
+
         return 0;
     }
     std::cout << mavlink_active << '\n';

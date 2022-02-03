@@ -1,21 +1,27 @@
 import { Button, Grid, Icon } from 'semantic-ui-react';
-import { useKernelMessageMutation, useResetCameraDatabaseMutation } from '../../../graphql/generated/dist';
+import {
+  useCameraActionsMutation,
+  // useKernelMessageMutation,
+  useResetCameraDatabaseMutation
+} from '../../../graphql/generated/dist';
 
-const CameraFooter = () => {
-  const [kernelCommand] = useKernelMessageMutation();
+const CameraFooter = ({ getDockerLogs }: any) => {
+  // const [kernelCommand] = useKernelMessageMutation();
   const [clearData] = useResetCameraDatabaseMutation();
+  const [cameraAction, { loading }] = useCameraActionsMutation({
+    errorPolicy: 'all'
+  });
 
   return (
     <Grid padded>
       <Grid.Column computer='14'>
         <Button.Group size='mini'>
           <Button
+            loading={loading}
             onClick={() =>
-              kernelCommand({
+              cameraAction({
                 variables: {
-                  path: '/',
-                  // eslint-disable-next-line max-len
-                  cmd: 'sudo systemctl restart uavcast-camera && sleep 1s && sudo journalctl -u uavcast-camera.service | tail'
+                  properties: { playStream: true }
                 }
               })
             }
@@ -27,13 +33,12 @@ const CameraFooter = () => {
           </Button>
           <Button.Or />
           <Button
+            loading={loading}
             negative
             onClick={() =>
-              kernelCommand({
+              cameraAction({
                 variables: {
-                  path: '/',
-                  // eslint-disable-next-line max-len
-                  cmd: 'sudo systemctl stop uavcast-camera && sleep 1s && sudo journalctl -u uavcast-camera.service | tail'
+                  properties: { playStream: false }
                 }
               })
             }
@@ -42,7 +47,7 @@ const CameraFooter = () => {
             Stop camera
           </Button>
           {/* <Button.Or /> */}
-          <Button
+          {/* <Button
             onClick={() =>
               kernelCommand({
                 variables: { cmd: 'sudo systemctl status uavcast-camera', path: '/' }
@@ -50,16 +55,8 @@ const CameraFooter = () => {
             }
           >
             Status
-          </Button>
-          <Button
-            onClick={() =>
-              kernelCommand({
-                variables: { cmd: 'sudo journalctl -u uavcast-camera', path: '/' }
-              })
-            }
-          >
-            View History Log
-          </Button>
+          </Button> */}
+          <Button onClick={() => getDockerLogs()}>View History Log (last 5min)</Button>
         </Button.Group>
       </Grid.Column>
       <Grid.Column computer='2'>

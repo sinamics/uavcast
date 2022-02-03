@@ -15,13 +15,13 @@ class ServerLogger {
   }
   createTransport() {
     return new winston.transports.DailyRotateFile({
-      filename: `${paths.logFolder}/server-%DATE%.log`,
+      filename: `${paths.logFolder}/${this.name}-%DATE%.log`,
       datePattern: 'YYYY-MM-DD',
       // zippedArchive: true,
       json: true,
       maxSize: '5m',
       maxFiles: '7d',
-      auditFile: `${paths.logFolder}/server-audit.json`,
+      auditFile: `${paths.logFolder}/${this.name}-audit.json`,
       format: winston.format.combine(winston.format.json())
     });
   }
@@ -63,7 +63,13 @@ class ServerLogger {
             winston.format.timestamp({
               format: 'YYYY-MM-DD HH:mm:ss'
             }),
-            winston.format.printf((info: any) => `${info.level}: ${info.message}`)
+            winston.format.printf((info: any) => {
+              // eslint-disable-next-line no-control-regex
+              if (info.level.replace(/\u001b\[.*?m/g, '') === 'error') {
+                return `${info.level}: ${info.message} FILE:${info.path}`;
+              }
+              return `${info.level}: ${info.message}`;
+            })
           ),
           //@ts-ignore
           prettyPrint: (object: any): any => {

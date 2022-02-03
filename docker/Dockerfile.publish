@@ -3,7 +3,7 @@
 #  !GCC
 #
 ###
-FROM --platform=$TARGETPLATFORM gcc:9.2 as gcc
+FROM --platform=$TARGETPLATFORM gcc:8.3 as gcc
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /gcc
@@ -27,12 +27,12 @@ RUN make clean && make
 #  !Backend
 #
 ###
-FROM --platform=$TARGETPLATFORM node:14.18.3-bullseye-slim as backend
+FROM --platform=$TARGETPLATFORM node:14.18.3-buster-slim as backend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /backend
 
-RUN apt-get update && apt-get install -y build-essential python
+RUN apt-get update && apt-get install -y build-essential cmake python
 RUN npm i typescript -g
 
 COPY ["backend/package.json", \
@@ -52,13 +52,11 @@ RUN npm run build
 #  !Frontend
 #
 ###
-FROM --platform=$TARGETPLATFORM node:14.18.3-bullseye-slim as frontend
+FROM --platform=$TARGETPLATFORM node:14.18.3-buster-slim as frontend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /frontend
-RUN apt-get update && apt-get install -y build-essential python
-# RUN apk add --no-cache python2 make g++
-# ENV PYTHONPATH /usr/lib/python3.7/site-packages
+RUN apt-get update && apt-get install -y build-essential cmake python
 
 # install app dependencies
 COPY [  "frontend/package.json", \
@@ -110,11 +108,14 @@ COPY --from=backend /backend/ormconfig.js ./backend
 RUN apt-get update && apt-get install -y \
                    libcppunit-dev \
                    libjsoncpp-dev \
-                   libv4l-dev \
-                   libgstreamer1.0-dev \
                    libcurl4-nss-dev \
                    sqlite3 \
                    libsqlite3-dev
+
+#tools
+RUN apt-get install -y net-tools \
+                       usbutils \
+                       less
 
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
@@ -147,10 +148,10 @@ RUN sudo curl -s https://install.zerotier.com/ | sudo bash
 
 # Copy systemd files
 COPY ["init/mavlink-router.service", \
-      "init/uavcast-camera.service", \
       "init/uavcast-vpn.service", \
       "init/uavcast-web.service", \
       "init/uavcast.service", "/etc/systemd/system/"]
+      # "init/uavcast-camera.service", \
 
 #gives uavcast user permissions to access /var/run/docker.sock
 RUN sudo usermod -a -G docker root

@@ -27,7 +27,7 @@ export const backupDatabase = (app: any) => {
       });
     });
 
-    kernelCommandsCallback(`tar -czvf ${tarName} ${bkName}`, sqlFolder, (res: number) => {
+    kernelCommandsCallback(`tar -czvf ${tarName} ${bkName}`, sqlFolder, false, (res: number) => {
       if (res !== 0) {
         ServerLog.error({
           message: 'Could not generate tar file!, try again or report this error',

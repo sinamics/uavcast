@@ -85,6 +85,10 @@ export const fileDownload = (app: any) => {
         const { dailyRotateFile: file }: any = await System[service].queryLogs({ from, until });
         zip.file(`system-core.log`, JSON.stringify(file, null, 4));
 
+        // camera
+        const { dailyRotateFile: docker }: any = await System.dockerLogger.queryLogs({ from, until });
+        zip.file(`system-docker.log`, JSON.stringify(docker, null, 4));
+
         // Get systemctl logs
         const systemctlPath = '/var/log/journal';
         if (!fs.existsSync(systemctlPath))

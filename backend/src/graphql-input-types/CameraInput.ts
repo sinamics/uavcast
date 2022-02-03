@@ -3,51 +3,67 @@ import { ArgsType, InputType, Field } from 'type-graphql';
 @InputType()
 export class CameraProperties {
   @Field({ nullable: true })
-    controller: string;
+  controller: string;
 
   @Field({ nullable: true })
-    protocol: string;
+  protocol: string;
 
   @Field({ nullable: true })
-    cameraType: string;
+  cameraType: string;
 
   @Field({ nullable: true })
-    resolution: string;
+  resolution: string;
 
   @Field({ nullable: true })
-    enableCamera: boolean;
+  enableCamera: boolean;
 
   @Field({ nullable: true })
-    customPipeline: string;
+  customPipeline: string;
 
   @Field({ nullable: true })
-    framesPrSecond: number;
+  framesPrSecond: number;
 
   @Field({ nullable: true })
-    bitratePrSecond: number;
+  bitratePrSecond: number;
 
   @Field({ nullable: true })
-    contrast: number;
+  contrast: number;
 
   @Field({ nullable: true })
-    rotation: number;
+  rotation: number;
 
   @Field({ nullable: true })
-    brightness: number;
+  brightness: number;
 
   @Field({ nullable: true })
-    whiteBalance: string;
+  whiteBalance: string;
 
   @Field({ nullable: true })
-    flipCamera: string;
+  flipCamera: string;
 
   @Field({ nullable: true })
-    format: string;
+  format: string;
 }
 
 @ArgsType()
 @InputType()
 export class CameraInput {
   @Field({ nullable: true })
-    properties: CameraProperties;
+  properties: CameraProperties;
+}
+
+@InputType()
+export class CameraActionProperties {
+  @Field({ nullable: true })
+  playStream: boolean;
+
+  @Field({ nullable: true })
+  stopStream: boolean;
+}
+
+@ArgsType()
+@InputType()
+export class CameraActionInput {
+  @Field({ nullable: true })
+  properties: CameraActionProperties;
 }

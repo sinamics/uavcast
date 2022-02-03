@@ -34,10 +34,9 @@ export type Query = {
   getFileData: LoggDataResponse;
   getLoggData: LoggResponse;
   getLoggerParameters: LoggResponse;
-  getTempLog: TempLoggDataResponse;
+  getTempLog: WinstonResponse;
   getNetworkLog: NetworkLoggDataResponse;
-  getCpuLog: CpuLoggDataResponse;
-  licenseDetails: LicenseResponse;
+  getCpuLog: WinstonResponse;
   cameraData: CameraResponse;
 };
 
@@ -253,16 +252,16 @@ export type LogProperties = {
   minutes: Scalars['Float'];
 };
 
-export type TempLoggDataResponse = {
-  __typename?: 'TempLoggDataResponse';
-  file?: Maybe<Array<TempLoggDataProperties>>;
+export type WinstonResponse = {
+  __typename?: 'WinstonResponse';
+  file?: Maybe<Array<WinstonProperties>>;
   errors?: Maybe<Array<FieldError>>;
 };
 
-export type TempLoggDataProperties = {
-  __typename?: 'TempLoggDataProperties';
+export type WinstonProperties = {
+  __typename?: 'WinstonProperties';
   timestamp: Scalars['String'];
-  message: Scalars['String'];
+  message?: Maybe<Scalars['String']>;
 };
 
 export type NetworkLoggDataResponse = {
@@ -284,61 +283,6 @@ export type NetworkLoggDataPropertiesValues = {
   tx_bytes: Scalars['Float'];
   rx_sec?: Maybe<Scalars['Float']>;
   tx_sec?: Maybe<Scalars['Float']>;
-};
-
-export type CpuLoggDataResponse = {
-  __typename?: 'CpuLoggDataResponse';
-  file?: Maybe<Array<CpuLoggDataProperties>>;
-  errors?: Maybe<Array<FieldError>>;
-};
-
-export type CpuLoggDataProperties = {
-  __typename?: 'CpuLoggDataProperties';
-  timestamp: Scalars['String'];
-  message?: Maybe<Scalars['String']>;
-};
-
-export type LicenseResponse = {
-  __typename?: 'LicenseResponse';
-  response?: Maybe<LicenseKeyProperties>;
-  errors?: Maybe<Array<FieldError>>;
-};
-
-export type LicenseKeyProperties = {
-  __typename?: 'LicenseKeyProperties';
-  license_id: Scalars['String'];
-  product_id: Scalars['String'];
-  variation_id: Scalars['String'];
-  license_key: Scalars['ID'];
-  image_license_key?: Maybe<Scalars['String']>;
-  license_status: Scalars['String'];
-  owner_first_name: Scalars['String'];
-  owner_last_name: Scalars['String'];
-  owner_email_address: Scalars['String'];
-  delivre_x_times: Scalars['Float'];
-  remaining_delivre_x_times: Scalars['Float'];
-  max_instance_number: Scalars['Float'];
-  number_use_remaining: Scalars['Float'];
-  activation_date: Scalars['String'];
-  license_checked_date: Scalars['String'];
-  creation_date: Scalars['String'];
-  sold_date: Scalars['String'];
-  expiration_date: Scalars['String'];
-  valid: Scalars['String'];
-  order_id: Scalars['String'];
-  this_device_licensed: Scalars['Boolean'];
-  activated_instances: Array<ActivatedInstances>;
-};
-
-export type ActivatedInstances = {
-  __typename?: 'ActivatedInstances';
-  id: Scalars['String'];
-  license_key: Scalars['String'];
-  instance_id: Scalars['String'];
-  instance_name: Scalars['String'];
-  instance_hostname: Scalars['String'];
-  instance_date: Scalars['String'];
-  current?: Maybe<Scalars['Boolean']>;
 };
 
 export type CameraResponse = {
@@ -402,10 +346,10 @@ export type Mutation = {
   setLoggerParameters: LoggResponse;
   removeLogfile: Scalars['Boolean'];
   removeAllLogfiles: Scalars['Boolean'];
+  getDockerLog: WinstonResponse;
   pruneLogFiles: Scalars['Boolean'];
-  validateLicenseKey: UavmatrixApiResponse;
-  unregisterDevice: LicenseResponse;
   updateCamera: CameraResponse;
+  cameraActions: CameraActionResponse;
   resetCameraDatabase: CameraResponse;
   uploadDatabaseFile: Scalars['Boolean'];
 };
@@ -490,24 +434,23 @@ export type MutationRemoveLogfileArgs = {
 };
 
 
+export type MutationGetDockerLogArgs = {
+  properties: LogProperties;
+};
+
+
 export type MutationPruneLogFilesArgs = {
   service: Scalars['String'];
 };
 
 
-export type MutationValidateLicenseKeyArgs = {
-  license?: Maybe<LicenseDetails>;
-};
-
-
-export type MutationUnregisterDeviceArgs = {
-  instance_id?: Maybe<Scalars['String']>;
-  licenseKey?: Maybe<Scalars['String']>;
-};
-
-
 export type MutationUpdateCameraArgs = {
   properties?: Maybe<CameraProperties>;
+};
+
+
+export type MutationCameraActionsArgs = {
+  properties?: Maybe<CameraActionProperties>;
 };
 
 
@@ -588,24 +531,6 @@ export type LogParameters = {
   resolution?: Maybe<Scalars['Float']>;
 };
 
-export type LicenseDetails = {
-  licenseKey?: Maybe<Scalars['String']>;
-  deviceName?: Maybe<Scalars['String']>;
-};
-
-export type UavmatrixApiResponse = {
-  __typename?: 'UavmatrixApiResponse';
-  response?: Maybe<UavmatrixApiResponseProperties>;
-  errors?: Maybe<Array<FieldError>>;
-};
-
-export type UavmatrixApiResponseProperties = {
-  __typename?: 'UavmatrixApiResponseProperties';
-  message?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['String']>;
-  result?: Maybe<Scalars['String']>;
-};
-
 export type CameraProperties = {
   controller?: Maybe<Scalars['String']>;
   protocol?: Maybe<Scalars['String']>;
@@ -623,6 +548,17 @@ export type CameraProperties = {
   format?: Maybe<Scalars['String']>;
 };
 
+export type CameraActionProperties = {
+  playStream?: Maybe<Scalars['Boolean']>;
+  stopStream?: Maybe<Scalars['Boolean']>;
+};
+
+export type CameraActionResponse = {
+  __typename?: 'CameraActionResponse';
+  playStream?: Maybe<Scalars['Boolean']>;
+  stopStream?: Maybe<Scalars['Boolean']>;
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   mavlink: MavlinkResponse;
@@ -630,6 +566,7 @@ export type Subscription = {
   stdout: KernelResponse;
   supervisor: SupervisorRespons;
   status: StatusResponse;
+  camera_stdout: KernelResponse;
 };
 
 export type MavlinkResponse = {
@@ -727,6 +664,18 @@ export type StatusResponse = {
   arch?: Maybe<Scalars['String']>;
 };
 
+export type TempLoggDataProperties = {
+  __typename?: 'TempLoggDataProperties';
+  timestamp: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type TempLoggDataResponse = {
+  __typename?: 'TempLoggDataResponse';
+  file?: Maybe<Array<TempLoggDataProperties>>;
+  errors?: Maybe<Array<FieldError>>;
+};
+
 export type MavlinkCommandInput = {
   type?: Maybe<Scalars['String']>;
   value?: Maybe<Scalars['String']>;
@@ -792,17 +741,12 @@ export type PruneLogsInput = {
   service: Scalars['String'];
 };
 
-export type LicenseInput = {
-  license?: Maybe<LicenseDetails>;
-};
-
-export type UnregisterInput = {
-  instance_id?: Maybe<Scalars['String']>;
-  licenseKey?: Maybe<Scalars['String']>;
-};
-
 export type CameraInput = {
   properties?: Maybe<CameraProperties>;
+};
+
+export type CameraActionInput = {
+  properties?: Maybe<CameraActionProperties>;
 };
 
 export type UpdateApplicationMutationVariables = Exact<{
@@ -872,6 +816,19 @@ export type ResetCameraDatabaseMutation = (
         & Pick<Caps, 'value' | 'text' | 'height' | 'width' | 'format'>
       )>> }
     )>> }
+  ) }
+);
+
+export type CameraActionsMutationVariables = Exact<{
+  properties: CameraActionProperties;
+}>;
+
+
+export type CameraActionsMutation = (
+  { __typename?: 'Mutation' }
+  & { cameraActions: (
+    { __typename?: 'CameraActionResponse' }
+    & Pick<CameraActionResponse, 'playStream' | 'stopStream'>
   ) }
 );
 
@@ -973,48 +930,6 @@ export type KernelMessageMutation = (
   ) }
 );
 
-export type ValidateLicenseKeyMutationVariables = Exact<{
-  license: LicenseDetails;
-}>;
-
-
-export type ValidateLicenseKeyMutation = (
-  { __typename?: 'Mutation' }
-  & { validateLicenseKey: (
-    { __typename?: 'UavmatrixApiResponse' }
-    & { response?: Maybe<(
-      { __typename?: 'UavmatrixApiResponseProperties' }
-      & Pick<UavmatrixApiResponseProperties, 'message' | 'code' | 'result'>
-    )>, errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'path' | 'message'>
-    )>> }
-  ) }
-);
-
-export type UnregisterDeviceMutationVariables = Exact<{
-  instance_id: Scalars['String'];
-}>;
-
-
-export type UnregisterDeviceMutation = (
-  { __typename?: 'Mutation' }
-  & { unregisterDevice: (
-    { __typename?: 'LicenseResponse' }
-    & { response?: Maybe<(
-      { __typename?: 'LicenseKeyProperties' }
-      & Pick<LicenseKeyProperties, 'license_id' | 'product_id' | 'variation_id' | 'license_key' | 'image_license_key' | 'license_status' | 'owner_first_name' | 'owner_last_name' | 'owner_email_address' | 'delivre_x_times' | 'remaining_delivre_x_times' | 'max_instance_number' | 'number_use_remaining' | 'activation_date' | 'license_checked_date' | 'creation_date' | 'sold_date' | 'expiration_date' | 'valid' | 'order_id' | 'this_device_licensed'>
-      & { activated_instances: Array<(
-        { __typename?: 'ActivatedInstances' }
-        & Pick<ActivatedInstances, 'id' | 'license_key' | 'instance_id' | 'instance_name' | 'instance_hostname' | 'instance_date' | 'current'>
-      )> }
-    )>, errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'path' | 'message'>
-    )>> }
-  ) }
-);
-
 export type RemoveLogfileMutationVariables = Exact<{
   filename: Scalars['String'];
 }>;
@@ -1056,6 +971,22 @@ export type SetLoggerParametersMutation = (
       { __typename?: 'Logger' }
       & Pick<Logger, 'id' | 'cellSignal' | 'satellites' | 'altitude' | 'resolution'>
     )> }
+  ) }
+);
+
+export type GetDockerLogMutationVariables = Exact<{
+  properties: LogProperties;
+}>;
+
+
+export type GetDockerLogMutation = (
+  { __typename?: 'Mutation' }
+  & { getDockerLog: (
+    { __typename?: 'WinstonResponse' }
+    & { file?: Maybe<Array<(
+      { __typename?: 'WinstonProperties' }
+      & Pick<WinstonProperties, 'message' | 'timestamp'>
+    )>> }
   ) }
 );
 
@@ -1220,24 +1151,6 @@ export type FlightControllerQuery = (
   ) }
 );
 
-export type LicenseDetailsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type LicenseDetailsQuery = (
-  { __typename?: 'Query' }
-  & { licenseDetails: (
-    { __typename?: 'LicenseResponse' }
-    & { response?: Maybe<(
-      { __typename?: 'LicenseKeyProperties' }
-      & Pick<LicenseKeyProperties, 'license_id' | 'product_id' | 'variation_id' | 'license_key' | 'image_license_key' | 'license_status' | 'owner_first_name' | 'owner_last_name' | 'owner_email_address' | 'delivre_x_times' | 'remaining_delivre_x_times' | 'max_instance_number' | 'number_use_remaining' | 'activation_date' | 'license_checked_date' | 'creation_date' | 'sold_date' | 'expiration_date' | 'valid' | 'order_id' | 'this_device_licensed'>
-      & { activated_instances: Array<(
-        { __typename?: 'ActivatedInstances' }
-        & Pick<ActivatedInstances, 'id' | 'license_key' | 'instance_id' | 'instance_name' | 'instance_hostname' | 'instance_date' | 'current'>
-      )> }
-    )> }
-  ) }
-);
-
 export type GetFileNamesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1270,10 +1183,10 @@ export type GetTempLogQueryVariables = Exact<{
 export type GetTempLogQuery = (
   { __typename?: 'Query' }
   & { getTempLog: (
-    { __typename?: 'TempLoggDataResponse' }
+    { __typename?: 'WinstonResponse' }
     & { file?: Maybe<Array<(
-      { __typename?: 'TempLoggDataProperties' }
-      & Pick<TempLoggDataProperties, 'message' | 'timestamp'>
+      { __typename?: 'WinstonProperties' }
+      & Pick<WinstonProperties, 'message' | 'timestamp'>
     )>> }
   ) }
 );
@@ -1306,10 +1219,10 @@ export type GetCpuLogQueryVariables = Exact<{
 export type GetCpuLogQuery = (
   { __typename?: 'Query' }
   & { getCpuLog: (
-    { __typename?: 'CpuLoggDataResponse' }
+    { __typename?: 'WinstonResponse' }
     & { file?: Maybe<Array<(
-      { __typename?: 'CpuLoggDataProperties' }
-      & Pick<CpuLoggDataProperties, 'timestamp' | 'message'>
+      { __typename?: 'WinstonProperties' }
+      & Pick<WinstonProperties, 'timestamp' | 'message'>
     )>> }
   ) }
 );
@@ -1451,6 +1364,21 @@ export type ZerotierNetworksQuery = (
     & { networks?: Maybe<Array<(
       { __typename?: 'ZerotierNetworkProperties' }
       & Pick<ZerotierNetworkProperties, 'assignedAddresses' | 'name' | 'nwid' | 'portDeviceName' | 'status' | 'type'>
+    )>> }
+  ) }
+);
+
+export type Camera_StdoutSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Camera_StdoutSubscription = (
+  { __typename?: 'Subscription' }
+  & { camera_stdout: (
+    { __typename?: 'KernelResponse' }
+    & Pick<KernelResponse, 'message'>
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'path' | 'message'>
     )>> }
   ) }
 );
@@ -1734,6 +1662,39 @@ export function useResetCameraDatabaseMutation(baseOptions?: Apollo.MutationHook
 export type ResetCameraDatabaseMutationHookResult = ReturnType<typeof useResetCameraDatabaseMutation>;
 export type ResetCameraDatabaseMutationResult = Apollo.MutationResult<ResetCameraDatabaseMutation>;
 export type ResetCameraDatabaseMutationOptions = Apollo.BaseMutationOptions<ResetCameraDatabaseMutation, ResetCameraDatabaseMutationVariables>;
+export const CameraActionsDocument = gql`
+    mutation cameraActions($properties: CameraActionProperties!) {
+  cameraActions(properties: $properties) {
+    playStream
+    stopStream
+  }
+}
+    `;
+export type CameraActionsMutationFn = Apollo.MutationFunction<CameraActionsMutation, CameraActionsMutationVariables>;
+
+/**
+ * __useCameraActionsMutation__
+ *
+ * To run a mutation, you first call `useCameraActionsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCameraActionsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cameraActionsMutation, { data, loading, error }] = useCameraActionsMutation({
+ *   variables: {
+ *      properties: // value for 'properties'
+ *   },
+ * });
+ */
+export function useCameraActionsMutation(baseOptions?: Apollo.MutationHookOptions<CameraActionsMutation, CameraActionsMutationVariables>) {
+        return Apollo.useMutation<CameraActionsMutation, CameraActionsMutationVariables>(CameraActionsDocument, baseOptions);
+      }
+export type CameraActionsMutationHookResult = ReturnType<typeof useCameraActionsMutation>;
+export type CameraActionsMutationResult = Apollo.MutationResult<CameraActionsMutation>;
+export type CameraActionsMutationOptions = Apollo.BaseMutationOptions<CameraActionsMutation, CameraActionsMutationVariables>;
 export const AddEndpointDocument = gql`
     mutation addEndpoint {
   addEndpoint {
@@ -1979,113 +1940,6 @@ export function useKernelMessageMutation(baseOptions?: Apollo.MutationHookOption
 export type KernelMessageMutationHookResult = ReturnType<typeof useKernelMessageMutation>;
 export type KernelMessageMutationResult = Apollo.MutationResult<KernelMessageMutation>;
 export type KernelMessageMutationOptions = Apollo.BaseMutationOptions<KernelMessageMutation, KernelMessageMutationVariables>;
-export const ValidateLicenseKeyDocument = gql`
-    mutation validateLicenseKey($license: LicenseDetails!) {
-  validateLicenseKey(license: $license) {
-    response {
-      message
-      code
-      result
-    }
-    errors {
-      path
-      message
-    }
-  }
-}
-    `;
-export type ValidateLicenseKeyMutationFn = Apollo.MutationFunction<ValidateLicenseKeyMutation, ValidateLicenseKeyMutationVariables>;
-
-/**
- * __useValidateLicenseKeyMutation__
- *
- * To run a mutation, you first call `useValidateLicenseKeyMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useValidateLicenseKeyMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [validateLicenseKeyMutation, { data, loading, error }] = useValidateLicenseKeyMutation({
- *   variables: {
- *      license: // value for 'license'
- *   },
- * });
- */
-export function useValidateLicenseKeyMutation(baseOptions?: Apollo.MutationHookOptions<ValidateLicenseKeyMutation, ValidateLicenseKeyMutationVariables>) {
-        return Apollo.useMutation<ValidateLicenseKeyMutation, ValidateLicenseKeyMutationVariables>(ValidateLicenseKeyDocument, baseOptions);
-      }
-export type ValidateLicenseKeyMutationHookResult = ReturnType<typeof useValidateLicenseKeyMutation>;
-export type ValidateLicenseKeyMutationResult = Apollo.MutationResult<ValidateLicenseKeyMutation>;
-export type ValidateLicenseKeyMutationOptions = Apollo.BaseMutationOptions<ValidateLicenseKeyMutation, ValidateLicenseKeyMutationVariables>;
-export const UnregisterDeviceDocument = gql`
-    mutation unregisterDevice($instance_id: String!) {
-  unregisterDevice(instance_id: $instance_id) {
-    response {
-      license_id
-      product_id
-      variation_id
-      license_key
-      image_license_key
-      license_status
-      owner_first_name
-      owner_last_name
-      owner_email_address
-      delivre_x_times
-      remaining_delivre_x_times
-      max_instance_number
-      number_use_remaining
-      activation_date
-      license_checked_date
-      creation_date
-      sold_date
-      expiration_date
-      valid
-      order_id
-      this_device_licensed
-      activated_instances {
-        id
-        license_key
-        instance_id
-        instance_name
-        instance_hostname
-        instance_date
-        current
-      }
-    }
-    errors {
-      path
-      message
-    }
-  }
-}
-    `;
-export type UnregisterDeviceMutationFn = Apollo.MutationFunction<UnregisterDeviceMutation, UnregisterDeviceMutationVariables>;
-
-/**
- * __useUnregisterDeviceMutation__
- *
- * To run a mutation, you first call `useUnregisterDeviceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUnregisterDeviceMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [unregisterDeviceMutation, { data, loading, error }] = useUnregisterDeviceMutation({
- *   variables: {
- *      instance_id: // value for 'instance_id'
- *   },
- * });
- */
-export function useUnregisterDeviceMutation(baseOptions?: Apollo.MutationHookOptions<UnregisterDeviceMutation, UnregisterDeviceMutationVariables>) {
-        return Apollo.useMutation<UnregisterDeviceMutation, UnregisterDeviceMutationVariables>(UnregisterDeviceDocument, baseOptions);
-      }
-export type UnregisterDeviceMutationHookResult = ReturnType<typeof useUnregisterDeviceMutation>;
-export type UnregisterDeviceMutationResult = Apollo.MutationResult<UnregisterDeviceMutation>;
-export type UnregisterDeviceMutationOptions = Apollo.BaseMutationOptions<UnregisterDeviceMutation, UnregisterDeviceMutationVariables>;
 export const RemoveLogfileDocument = gql`
     mutation removeLogfile($filename: String!) {
   removeLogfile(filename: $filename)
@@ -2213,6 +2067,41 @@ export function useSetLoggerParametersMutation(baseOptions?: Apollo.MutationHook
 export type SetLoggerParametersMutationHookResult = ReturnType<typeof useSetLoggerParametersMutation>;
 export type SetLoggerParametersMutationResult = Apollo.MutationResult<SetLoggerParametersMutation>;
 export type SetLoggerParametersMutationOptions = Apollo.BaseMutationOptions<SetLoggerParametersMutation, SetLoggerParametersMutationVariables>;
+export const GetDockerLogDocument = gql`
+    mutation getDockerLog($properties: LogProperties!) {
+  getDockerLog(properties: $properties) {
+    file {
+      message
+      timestamp
+    }
+  }
+}
+    `;
+export type GetDockerLogMutationFn = Apollo.MutationFunction<GetDockerLogMutation, GetDockerLogMutationVariables>;
+
+/**
+ * __useGetDockerLogMutation__
+ *
+ * To run a mutation, you first call `useGetDockerLogMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetDockerLogMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getDockerLogMutation, { data, loading, error }] = useGetDockerLogMutation({
+ *   variables: {
+ *      properties: // value for 'properties'
+ *   },
+ * });
+ */
+export function useGetDockerLogMutation(baseOptions?: Apollo.MutationHookOptions<GetDockerLogMutation, GetDockerLogMutationVariables>) {
+        return Apollo.useMutation<GetDockerLogMutation, GetDockerLogMutationVariables>(GetDockerLogDocument, baseOptions);
+      }
+export type GetDockerLogMutationHookResult = ReturnType<typeof useGetDockerLogMutation>;
+export type GetDockerLogMutationResult = Apollo.MutationResult<GetDockerLogMutation>;
+export type GetDockerLogMutationOptions = Apollo.BaseMutationOptions<GetDockerLogMutation, GetDockerLogMutationVariables>;
 export const SendMavCommandDocument = gql`
     mutation sendMavCommand($type: String!, $value: String!) {
   sendMavCommand(type: $type, value: $value)
@@ -2625,69 +2514,6 @@ export function useFlightControllerLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type FlightControllerQueryHookResult = ReturnType<typeof useFlightControllerQuery>;
 export type FlightControllerLazyQueryHookResult = ReturnType<typeof useFlightControllerLazyQuery>;
 export type FlightControllerQueryResult = Apollo.QueryResult<FlightControllerQuery, FlightControllerQueryVariables>;
-export const LicenseDetailsDocument = gql`
-    query licenseDetails {
-  licenseDetails {
-    response {
-      license_id
-      product_id
-      variation_id
-      license_key
-      image_license_key
-      license_status
-      owner_first_name
-      owner_last_name
-      owner_email_address
-      delivre_x_times
-      remaining_delivre_x_times
-      max_instance_number
-      number_use_remaining
-      activation_date
-      license_checked_date
-      creation_date
-      sold_date
-      expiration_date
-      valid
-      order_id
-      this_device_licensed
-      activated_instances {
-        id
-        license_key
-        instance_id
-        instance_name
-        instance_hostname
-        instance_date
-        current
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useLicenseDetailsQuery__
- *
- * To run a query within a React component, call `useLicenseDetailsQuery` and pass it any options that fit your needs.
- * When your component renders, `useLicenseDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useLicenseDetailsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useLicenseDetailsQuery(baseOptions?: Apollo.QueryHookOptions<LicenseDetailsQuery, LicenseDetailsQueryVariables>) {
-        return Apollo.useQuery<LicenseDetailsQuery, LicenseDetailsQueryVariables>(LicenseDetailsDocument, baseOptions);
-      }
-export function useLicenseDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LicenseDetailsQuery, LicenseDetailsQueryVariables>) {
-          return Apollo.useLazyQuery<LicenseDetailsQuery, LicenseDetailsQueryVariables>(LicenseDetailsDocument, baseOptions);
-        }
-export type LicenseDetailsQueryHookResult = ReturnType<typeof useLicenseDetailsQuery>;
-export type LicenseDetailsLazyQueryHookResult = ReturnType<typeof useLicenseDetailsLazyQuery>;
-export type LicenseDetailsQueryResult = Apollo.QueryResult<LicenseDetailsQuery, LicenseDetailsQueryVariables>;
 export const GetFileNamesDocument = gql`
     query getFileNames {
   getFileNames {
@@ -3235,6 +3061,38 @@ export function useZerotierNetworksLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type ZerotierNetworksQueryHookResult = ReturnType<typeof useZerotierNetworksQuery>;
 export type ZerotierNetworksLazyQueryHookResult = ReturnType<typeof useZerotierNetworksLazyQuery>;
 export type ZerotierNetworksQueryResult = Apollo.QueryResult<ZerotierNetworksQuery, ZerotierNetworksQueryVariables>;
+export const Camera_StdoutDocument = gql`
+    subscription camera_stdout {
+  camera_stdout {
+    message
+    errors {
+      path
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useCamera_StdoutSubscription__
+ *
+ * To run a query within a React component, call `useCamera_StdoutSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCamera_StdoutSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCamera_StdoutSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCamera_StdoutSubscription(baseOptions?: Apollo.SubscriptionHookOptions<Camera_StdoutSubscription, Camera_StdoutSubscriptionVariables>) {
+        return Apollo.useSubscription<Camera_StdoutSubscription, Camera_StdoutSubscriptionVariables>(Camera_StdoutDocument, baseOptions);
+      }
+export type Camera_StdoutSubscriptionHookResult = ReturnType<typeof useCamera_StdoutSubscription>;
+export type Camera_StdoutSubscriptionResult = Apollo.SubscriptionResult<Camera_StdoutSubscription>;
 export const StatusDocument = gql`
     subscription status {
   status {

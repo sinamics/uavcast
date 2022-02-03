@@ -83,10 +83,8 @@ export class NetworkLoggDataResponse {
   errors: FieldError[];
 }
 
-//CPU Response
-
 @ObjectType()
-export class CpuLoggDataProperties {
+export class WinstonProperties {
   @Field(() => String)
   timestamp: string;
 
@@ -94,9 +92,9 @@ export class CpuLoggDataProperties {
   message: string;
 }
 @ObjectType()
-export class CpuLoggDataResponse {
-  @Field(() => [CpuLoggDataProperties], { nullable: true })
-  file: CpuLoggDataProperties[];
+export class WinstonResponse {
+  @Field(() => [WinstonProperties], { nullable: true })
+  file: WinstonProperties[];
 
   @Field(() => [FieldError], { nullable: true })
   errors: FieldError[];

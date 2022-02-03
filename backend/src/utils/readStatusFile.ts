@@ -29,7 +29,7 @@ export const getStatus = (pubsub: any) => {
       });
       child.stderr.on('data', (err: any) => {
         // console.log(error.toString());
-        ServerLog.info({ message: err, path: __filename });
+        ServerLog.error({ message: err.toString(), path: __filename });
       });
       child.on('exit', () => {
         // make sure it only send new status when it has changed
@@ -45,7 +45,7 @@ export const getStatus = (pubsub: any) => {
       });
     } catch (error) {
       // console.log(error);
-      ServerLog.info({ message: error, path: __filename });
+      ServerLog.error({ message: error, path: __filename });
     }
   }
   // wait 3sec after proccess has finished. No race condition

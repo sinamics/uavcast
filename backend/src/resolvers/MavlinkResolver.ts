@@ -53,10 +53,10 @@ export class MavlinkResolver {
   @Subscription(() => MavlinkResponse, {
     // topics: "APPLICATION_STATUS", // single topic
     subscribe: (_, __, context) => {
-      MavCon.PubSub = context.pubsub;
+      MavCon.PubSub = context.PubSub;
       MavCon.startHandshake();
 
-      return context.pubsub.asyncIterator('MAVLINK_DATA');
+      return context.PubSub.asyncIterator('MAVLINK_DATA');
     }
     // topics: ({ args, payload, context }) => args.topic // or dynamic topic function
     // filter: ():any => {
@@ -69,7 +69,7 @@ export class MavlinkResolver {
 
   @Subscription(() => MavAckResponse, {
     subscribe: (_, __, context) => {
-      return context.pubsub.asyncIterator('MAVLINK_ACK');
+      return context.PubSub.asyncIterator('MAVLINK_ACK');
     }
   })
   async cmdAck(@Root() _mav: any): Promise<any> {

@@ -237,6 +237,7 @@ int Database::get_camera(camera_values *camera)
 {
     if (Database::connect_db() != 0)
     {
+        std::cout << ">>> cannot connect database!" << "\n";
         return -1;
     }
 

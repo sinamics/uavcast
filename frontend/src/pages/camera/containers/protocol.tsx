@@ -1,10 +1,12 @@
 import React from 'react';
 import { Dropdown, Grid, Header } from 'semantic-ui-react';
 import { useCameraDataQuery, useUpdateCameraMutation } from '../../../graphql/generated/dist';
+import { extractHostname } from '../../../utils/apolloClient';
 
 export const protocolArr = [
-  { key: 'tcp', value: 'tcp', text: 'TCP' },
-  { key: 'udp', value: 'udp', text: 'UDP' }
+  { key: 'rtsp', value: 'rtsp', text: 'RTSP' },
+  { key: 'udp', value: 'udp', text: 'UDP' },
+  { key: 'tcp', value: 'tcp', text: 'TCP', disabled: true }
 ];
 
 const CameraProtocol = () => {
@@ -16,6 +18,7 @@ const CameraProtocol = () => {
   };
 
   const { protocol } = cameraData?.database || {};
+  const url = extractHostname(window.location.href);
 
   return (
     <Grid doubling padded columns={2}>
@@ -37,6 +40,12 @@ const CameraProtocol = () => {
           options={protocolArr}
           placeholder='Camera Protocol'
         />
+        {protocol === 'rtsp' && (
+          <span className='themeText'>
+            access video stream by using <span style={{ color: 'yellow' }}>rtsp://{url}:8554/uavcast</span>
+          </span>
+        )}
+        {/* <Label basic>Default selectOnNavigation</Label> */}
       </Grid.Column>
     </Grid>
   );

@@ -1,17 +1,24 @@
-import { CameraResponse } from '../graphql-response-types/CameraResponse';
-import { Args, Query, Mutation, Resolver } from 'type-graphql';
+import { CameraActionResponse, CameraResponse } from '../graphql-response-types/CameraResponse';
+import { Args, Query, Mutation, Resolver, Subscription, Root, PubSub, Publisher } from 'type-graphql';
 import { Camera, getCameraRepository } from '../entity/Camera';
-import { CameraInput } from '../graphql-input-types/CameraInput';
+import { CameraActionInput, CameraInput } from '../graphql-input-types/CameraInput';
 import { spawn } from 'child_process';
 import { paths } from '../config/paths';
 import { runSeeder } from 'typeorm-seeding';
 import { CreateCamera } from '../seeds/camera.seed';
 import winston from 'winston';
 import path from 'path';
+import { KernelResponse } from '../graphql-response-types/KernelResponse';
+import DockerUtils from '../docker/manager';
+import { kernelCommandsCallback } from '../utils/kernelCommands';
 
 // status file
 const cameraDeviceFile = path.join(paths.pythonFolder, 'devices.py');
 const ServerLog = winston.loggers.get('server');
+const DockerLog = winston.loggers.get('docker');
+
+const rtspManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:v0.2.4', name: 'rtsp_server' });
+// const gstreamerManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:latest', name: 'rtsp_server' });
 
 @Resolver()
 export class CameraResolver {
@@ -25,13 +32,49 @@ export class CameraResolver {
     const database = await getCameraRepository().findOne(1);
     return { database };
   }
+  @Mutation(() => CameraActionResponse)
+  async cameraActions(
+    @PubSub('CAMERA_KERNEL_MESSAGE') publish: Publisher<any>,
+    @Args() { properties }: CameraActionInput
+  ): Promise<any> {
+    const camera = await getCameraRepository().findOne(1);
+    rtspManager.notify(publish);
 
+    if (!('playStream' in properties)) return { playStream: false };
+
+    let stdioutMsg = '';
+    switch (camera?.protocol) {
+      case 'rtsp':
+      case 'udp':
+        if (properties.playStream) {
+          // const cmd = ['-u', 'uavcast', '-G', `${camera?.resolution}x${camera?.framesPrSecond}`, camera?.cameraType];
+
+          kernelCommandsCallback('/app/uavcast/bin/build/uav_main -v start', null, true, (out: any) => {
+            DockerLog.info({ message: out.toString(), path: __filename });
+            stdioutMsg = stdioutMsg.concat(out.toString());
+            publish({ message: stdioutMsg });
+          });
+          return true;
+        }
+        if (!properties.playStream) {
+          kernelCommandsCallback('/app/uavcast/bin/build/uav_main -v stop', null, true, (out: any) => {
+            DockerLog.info({ message: out.toString(), path: __filename });
+            stdioutMsg = stdioutMsg.concat(out.toString());
+            publish({ message: stdioutMsg });
+          });
+        }
+        break;
+
+      default:
+        return { playStream: false };
+    }
+  }
   @Query(() => CameraResponse)
   // @UseMiddleware(isAuth)
   async cameraData(): Promise<any> {
     const availableCams: object[] = await new Promise((resolve, reject) => {
       try {
-        const child = spawn('python3', [cameraDeviceFile], { shell: true });
+        const child = spawn('sudo python3', [cameraDeviceFile], { shell: true });
         child.stdout.on('data', (data) => {
           if (data) {
             resolve(JSON.parse(data.toString('utf8')));
@@ -69,5 +112,16 @@ export class CameraResolver {
 
     const database = await getCameraRepository().findOne(1);
     return { database };
+  }
+  @Subscription(() => KernelResponse, {
+    topics: 'CAMERA_KERNEL_MESSAGE' // single topic
+    // topics: ({ args, payload, context }) => args.topic // or dynamic topic function
+    // filter: ():any => {
+    //     console.log('object')
+    // }
+  })
+  async camera_stdout(@Root() stdout: any): Promise<any> {
+    // console.log('stdout', stdout);
+    return { message: stdout.message, errors: stdout.errors };
   }
 }

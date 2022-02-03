@@ -24,11 +24,12 @@ RUN apt-get update && apt-get install -y \
                    libcppunit-dev \
                    libjsoncpp-dev \
                    libv4l-dev \
-                   libgstreamer1.0-dev \
                    libcurl4-nss-dev \
                    sqlite3 \
                    libsqlite3-dev \
-                   git
+                   git \
+                   make \
+                   g++
 
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
@@ -44,6 +45,9 @@ COPY ["init/mavlink-router.service", \
 
 RUN mkdir -p /app/uavcast/data && chown -R uavcast /app/uavcast/data
 
+# Create mavlink directory
+RUN mkdir -p /etc/mavlink-router
+COPY ["etc/mavlink-router-example.conf", "/etc/mavlink-router/main.conf"]
 
 RUN chmod +x  /bin/systemctl \
               /bin/systemctl3.py \

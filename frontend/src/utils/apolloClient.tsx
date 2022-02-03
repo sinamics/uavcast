@@ -6,7 +6,7 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { createUploadLink } from 'apollo-upload-client';
 
-const extractHostname = (url: string) => {
+export const extractHostname = (url: string) => {
   let hostname;
   //find & remove protocol (http, ftp, etc.) and get hostname
   if (url.indexOf('://') > -1) {
