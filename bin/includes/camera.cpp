@@ -13,6 +13,9 @@
 #include <assert.h>
 #include "rapidjson/pointer.h"
 #include "rapidjson/rapidjson.h"
+#include <math.h>
+
+
 
 int Camera::rtsp_docker_start()
 {
@@ -110,6 +113,7 @@ int Camera::gst_docker_start()
 
     rapidjson::Value cmd(rapidjson::kArrayType);
 
+    // TODO
     std::string pipeline_str;
     if (camera_val.cameraType == "custom")
     {
@@ -151,9 +155,9 @@ int Camera::gst_docker_start()
 
     cmd.PushBack("v4l2src", allocator);
     cmd.PushBack(rapidjson::Value("device=" + camera_val.cameraType, document.GetAllocator()).Move(), allocator);
-    cmd.PushBack("!", allocator);
-    cmd.PushBack("rotate", allocator);
-    cmd.PushBack(rapidjson::Value("angle=" + std::to_string(camera_val.rotation * 0.01745329252), document.GetAllocator()).Move(), allocator);
+    // cmd.PushBack("!", allocator);
+    // cmd.PushBack("rotate", allocator);
+    // cmd.PushBack(rapidjson::Value("angle=" + std::to_string(camera_val.rotation * M_PI / 180 ), document.GetAllocator()).Move(), allocator);
     cmd.PushBack("!", allocator);
     cmd.PushBack("videobalance", allocator);
     cmd.PushBack(rapidjson::Value("contrast=" + std::to_string(camera_val.contrast), document.GetAllocator()).Move(), allocator);
@@ -162,7 +166,7 @@ int Camera::gst_docker_start()
     cmd.PushBack("videoflip", allocator);
     cmd.PushBack(rapidjson::Value("method=" + camera_val.flipCamera, document.GetAllocator()).Move(), allocator);
     cmd.PushBack("!", allocator);
-    cmd.PushBack(rapidjson::Value("video/x-raw,framerate=30/1,width=" + res_arr[0] + ",height=" + res_arr[1], document.GetAllocator()).Move(), allocator);
+    cmd.PushBack(rapidjson::Value("video/x-raw,framerate=" + std::to_string(camera_val.framesPrSecond) + "/1,width=" + res_arr[0] + ",height=" + res_arr[1], document.GetAllocator()).Move(), allocator);
     cmd.PushBack("!", allocator);
     cmd.PushBack("videoflip", allocator);
     cmd.PushBack("video-direction=identity", allocator);
@@ -177,7 +181,7 @@ int Camera::gst_docker_start()
     cmd.PushBack("!", allocator);
     cmd.PushBack("x264enc", allocator);
     cmd.PushBack("tune=zerolatency", allocator);
-    cmd.PushBack(rapidjson::Value("bitrate=" + std::to_string(camera_val.bitratePrSecond / 1000), document.GetAllocator()).Move(), allocator);
+    // cmd.PushBack(rapidjson::Value("bitrate=" + std::to_string(camera_val.bitratePrSecond / 1000), document.GetAllocator()).Move(), allocator);
     cmd.PushBack("speed-preset=superfast", allocator);
     cmd.PushBack("!", allocator);
     cmd.PushBack("rtph264pay", allocator);
@@ -205,12 +209,12 @@ int Camera::gst_docker_start()
     // TODO add container Image tag in db
     document.AddMember("Image", container_image, allocator);
     document.AddMember("Name", container_name, allocator);
-    document.AddMember("AttachStdin", false, allocator);
+    document.AddMember("AttachStdin", true, allocator);
     document.AddMember("AttachStdout", true, allocator);
     document.AddMember("AttachStderr", true, allocator);
     document.AddMember("OpenStdin", false, allocator);
-    document.AddMember("StdinOnce", true, allocator);
-    document.AddMember("Tty", true, allocator);
+    document.AddMember("StdinOnce", false, allocator);
+    document.AddMember("Tty", false, allocator);
     document.AddMember("Cmd", cmd, allocator);
 
     // create hostconfig object
@@ -223,7 +227,7 @@ int Camera::gst_docker_start()
     document.AddMember("HostConfig", hostConfig, allocator);
 
     bool container_logs = true;
-    bool container_stream = true;
+    bool container_stream = false;
     bool container_o_stdin = false;
     bool container_o_stdout = true;
     bool container_o_stderr = true;

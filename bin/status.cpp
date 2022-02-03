@@ -37,6 +37,7 @@ int main()
 {
     Database db;
     Utils utils;
+
     // Json::StyledWriter styledWriter;
     Json::FastWriter fastWriter;
     Json::Value status;
@@ -110,8 +111,10 @@ int main()
     // Get vpn vlaues
     vpn_values vpn_val;
     db.get_vpn(&vpn_val);
+    // log.Info(std::to_string(vpn_val.enableVpn).c_str());
 
-    if(vpn_val.enableVpn){
+    // if (vpn_val.enableVpn)
+    // {
 
         if(vpn_val.serviceProvider == "zerotier"){
             string vpn_active = utils.exec("sudo zerotier-cli listnetworks");
@@ -127,7 +130,7 @@ int main()
                 status["vpn"] = true;
             }
         }
-    }
+    // }
 
     // paste <(cat /sys/class/thermal/thermal_zone*/type) <(cat /sys/class/thermal/thermal_zone*/temp) | column -s $'\t' -t | sed 's/\(.\)..$/.\1°C/'
     cout << fastWriter.write(status) << endl;

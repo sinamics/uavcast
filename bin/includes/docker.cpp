@@ -379,23 +379,40 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
 
 
     JSON_DOCUMENT container = client.create_container(create, name);
+    if(verbose)
+        log.Info(jsonToString(container).c_str());
     // log.Info(jsonToString(container).c_str());
 
     assert(container.IsObject());
     assert(container.HasMember("success"));
-    assert(container["code"].IsInt());
 
-    if(container["code"].GetInt() == 404){
+    rapidjson::Value::ConstMemberIterator itr = container.FindMember("code");
+    if(itr != container.MemberEnd() && container["code"].GetInt() == 409){
+        // 409 image already in use
+        log.Info("image is already in use, please stop it first!");
+    }
+
+
+    if(itr != container.MemberEnd() && container["code"].GetInt() == 404){
         // 404 image does not exsist
         // Pull image
         log.Info("Image does not exist, first startup?, lets pull it..., this could take a few moments!");
         JSON_DOCUMENT create_image = client.create_image(create, image);
         assert(create_image.HasMember("success"));
         assert(create_image["success"].IsBool());
+        rapidjson::Value::ConstMemberIterator s_itr = create_image.FindMember("success");
 
-        log.Info("Done. Image pulled successfully.");
-        container = client.create_container(create, name);
+         if(s_itr != container.MemberEnd() && create_image["success"].IsBool() && create_image["success"] == true){
+            log.Info("Done. Image pulled successfully.");
+            container = client.create_container(create, name);
+
+            if(verbose)
+                log.Info(jsonToString(container).c_str());
+         }
+
+
     }
+
 
 
     if(container["success"].GetBool() == 1){
@@ -412,7 +429,9 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
             //attach_to_container(const std::__cxx11::string &container_id, bool logs = false,
             // bool stream = false, bool o_stdin = false, bool o_stdout = false, bool o_stderr = false)
             create_log = client.attach_to_container(container["data"]["Id"].GetString(), logs,stream,o_stdin,o_stdout,o_stderr);
-            log.Info(jsonToString(create_log).c_str());
+
+            if(verbose)
+                log.Info(jsonToString(create_log).c_str());
 
             return 0;
         }
@@ -426,6 +445,9 @@ JSON_DOCUMENT Docker::stop_container_by_name(bool debugger, const std::string& n
     Logger log;
 
     JSON_DOCUMENT all_ct = client.list_containers(true);
+    // if(debugger)
+    //     log.Info(jsonToString(all_ct).c_str());
+
     rapidjson::Value &v = all_ct;
 
     // rapidjson::Pointer namePtr("/rtsp_server");
@@ -445,7 +467,8 @@ JSON_DOCUMENT Docker::stop_container_by_name(bool debugger, const std::string& n
                     if(!killed){
                         JSON_DOCUMENT del = client.delete_container(v["data"][i]["Id"].GetString());
                         log.Info("delete container");
-                        // log.Info(jsonToString(del).c_str());
+                        if(debugger)
+                            log.Info(jsonToString(del).c_str());
                     }
 
                     return 0;
