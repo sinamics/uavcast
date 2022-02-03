@@ -64,7 +64,7 @@ int Camera::rtsp_docker_start()
     // add hostconfig to doc
     document.AddMember("HostConfig", hostConfig, allocator);
 
-    if(client.start_container_by_name(document, debugger, container_name) == 0)
+    if(client.start_container_by_name(document,container_image, debugger, container_name) == 0)
     {
         std::vector<std::string> ip_lists;
         log.Info("get stream by using the following rtsp url:\n");
@@ -229,7 +229,7 @@ int Camera::gst_docker_start()
     bool container_o_stderr = true;
     bool debugger = false;
 
-    client.start_container_by_name(document, debugger, container_name, container_logs, container_stream,container_o_stdin, container_o_stdout, container_o_stderr);
+    client.start_container_by_name(document, container_image, debugger, container_name, container_logs, container_stream,container_o_stdin, container_o_stdout, container_o_stderr);
 
     return 0;
 }

@@ -30,7 +30,7 @@ class Docker{
         explicit Docker(std::string host);
         ~Docker();
 
-        int start_container_by_name(JSON_DOCUMENT& create, bool verbose=false, const std::string& name="",  bool logs=false, bool stream=false, bool o_stdin=false, bool o_stdout=false, bool o_stderr=false);
+        int start_container_by_name(JSON_DOCUMENT& create,const std::string& image, bool verbose=false, const std::string& name="",  bool logs=false, bool stream=false, bool o_stdin=false, bool o_stdout=false, bool o_stderr=false);
         JSON_DOCUMENT stop_container_by_name(bool debugger, const std::string& name="");
         /*
         * System
@@ -42,6 +42,8 @@ class Docker{
         * Images
         */
         JSON_DOCUMENT list_images();
+        JSON_DOCUMENT create_image(JSON_DOCUMENT& parameters, const std::string& image);
+
 
         /*
         * Containers
