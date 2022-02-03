@@ -94,7 +94,11 @@ JSON_DOCUMENT Docker::list_images(){
     std::string path = "/images/json";
     return requestAndParseJson(GET,path);
 }
-
+JSON_DOCUMENT Docker::create_image(JSON_DOCUMENT& parameters, const std::string& image){
+    std::string path = "/images/create?";
+    path += param("fromImage", image);
+    return requestAndParseJson(POST,path,201,parameters);
+}
 /*
 * Containers
 */
@@ -357,7 +361,7 @@ std::string jsonToString(JSON_VALUE & doc){
     doc.Accept(writer);
     return std::string(buffer.GetString());
 }
-int Docker::start_container_by_name(rapidjson::Document &create, bool verbose, const std::string& name, bool logs, bool stream, bool o_stdin, bool o_stdout, bool o_stderr)
+int Docker::start_container_by_name(rapidjson::Document &create, const std::string& image, bool verbose, const std::string& name, bool logs, bool stream, bool o_stdin, bool o_stdout, bool o_stderr)
 {
     Logger log;
     Docker client = Docker();
@@ -375,9 +379,24 @@ int Docker::start_container_by_name(rapidjson::Document &create, bool verbose, c
 
 
     JSON_DOCUMENT container = client.create_container(create, name);
+    // log.Info(jsonToString(container).c_str());
 
     assert(container.IsObject());
     assert(container.HasMember("success"));
+    assert(container["code"].IsInt());
+
+    if(container["code"].GetInt() == 404){
+        // 404 image does not exsist
+        // Pull image
+        log.Info("Image does not exist, first startup?, lets pull it..., this could take a few moments!");
+        JSON_DOCUMENT create_image = client.create_image(create, image);
+        assert(create_image.HasMember("success"));
+        assert(create_image["success"].IsBool());
+
+        log.Info("Done. Image pulled successfully.");
+        container = client.create_container(create, name);
+    }
+
 
     if(container["success"].GetBool() == 1){
 
