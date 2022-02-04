@@ -1,0 +1,52 @@
+name: Support Request
+description: Support for uavcast setup or configuration
+title: '[Support]: '
+labels: ['support']
+assignees: []
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the problem you are having
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Visible on the Settings page in the Web UI
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Ubuntu
+        - Debian
+        - Windows
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: network
+    attributes:
+      label: Network connection
+      options:
+        - Wired
+        - Wireless
+        - LTE / 4G
+    validations:
+      required: true
+  - type: textarea
+    id: other
+    attributes:
+      label: Any other information that may be helpful
