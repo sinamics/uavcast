@@ -32,7 +32,6 @@ body:
       options:
         - Ubuntu
         - Debian
-        - Other Linux
         - Windows
         - Other
     validations:
