@@ -1,4 +1,13 @@
 {
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "bash"
+    },
+    "sh": {
+      "path": "sh"
+    }
+  },
+  "terminal.integrated.defaultProfile.linux": "bash",
   "editor.bracketPairColorization.enabled": true,
   "editor.guides.bracketPairs": "active",
   "files.associations": {
@@ -102,6 +111,6 @@
     "**/node_modules/*/**": true,
     "**/build/*/**": true,
     "**/dist/*/**": true,
-    "**/mavlink/v2.0/dialects/*/**": true,
+    "**/mavlink/v2.0/dialects/*/**": true
   }
 }
