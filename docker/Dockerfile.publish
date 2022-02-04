@@ -78,7 +78,7 @@ RUN npm run build
 #  !final image creation
 #
 ###
-FROM --platform=$TARGETPLATFORM sinamics/debian-uavcast-base:latest as main
+FROM --platform=$TARGETPLATFORM sinamics/uavcast-base:latest as main
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 ARG TARGETARCH
@@ -87,16 +87,6 @@ LABEL maintainer="Bernt Christian Egeland / uavmatrix.com"
 
 RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
 WORKDIR /app/uavcast
-
-ARG USERNAME=uavcast
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
 
 COPY --from=gcc /gcc/build ./bin/build
 COPY --from=frontend /frontend/build ./frontend/build

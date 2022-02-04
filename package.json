@@ -3,6 +3,7 @@
   "private": false,
   "scripts": {
     "start": "concurrently \"cd frontend && npm start\" \"cd backend && ts-node-dev --respawn --transpile-only src/index.ts\" ",
+    "install": "concurrently \"cd frontend && npm install\" \"cd backend && npm install\" ",
     "codegen": "cd frontend && npm run codegen"
   },
   "dependencies": {}

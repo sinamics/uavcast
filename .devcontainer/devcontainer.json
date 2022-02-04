@@ -45,6 +45,7 @@
     "mikestead.dotenv"
   ],
   // Uncomment the next line to run commands after the container is created - for example installing curl.
+  "postAttachCommand": "sudo chown uavcast:docker /var/run/docker.sock",
   "postCreateCommand": "sudo docker/bin/./install-dev-addon.sh",
   "remoteUser": "uavcast"
 }
