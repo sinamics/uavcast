@@ -20,11 +20,8 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
-    validations:
-      required: true
+      label: Attach Logfiles (Optional)
+      description: Download system logs from Web UI, then Drag and drop here.
   - type: dropdown
     id: os
     attributes:
