@@ -1,7 +1,7 @@
 // scss-lint:disable all
 $enable-sidebar-nav-rounded: false !default;
 
-$border-color: $gray-200 !default;
+$border-color: $gray-400 !default;
 $layout-transition-speed: 0.25s !default;
 
 // Navbar
@@ -23,7 +23,7 @@ $navbar-brand-border: (
   bottom: (
     size: 1px,
     style: solid,
-    color: $border-color
+    color: rgb(58, 58, 65)
   )
 ) !default;
 
