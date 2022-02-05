@@ -1,4 +1,4 @@
-![https://i.ibb.co/QXYSmyG/uavcast-logo-transparant.png](https://i.ibb.co/QXYSmyG/uavcast-logo-transparant.png)
+![https://i.ibb.co/sj7Qtm6/uavcast-logo-transparant.png](https://i.ibb.co/sj7Qtm6/uavcast-logo-transparant.png)
 
 [![GithubCI](https://github.com/sinamics/uavcast/workflows/Build%20Container/badge.svg)](https://github.com/sinamics/uavcast/actions)
 [![Release](https://img.shields.io/github/v/release/sinamics/uavcast.svg)](https://github.com/sinamics/uavcast/releases/latest)
