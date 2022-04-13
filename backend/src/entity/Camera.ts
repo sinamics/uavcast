@@ -32,7 +32,7 @@ export class Camera {
   @Column({
     type: String,
     default:
-      'gst-launch-1.0 videotestsrc ! x264enc ! video/x-h264, stream-format=byte-stream ! rtph264pay ! udpsink host=192.168.1.100 port=5600', // eslint-disable-line max-len
+      'videotestsrc ! x264enc ! video/x-h264, stream-format=byte-stream ! rtph264pay ! udpsink host=192.168.1.100 port=5600', // eslint-disable-line max-len
     nullable: false
   })
   customPipeline: string;
