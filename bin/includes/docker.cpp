@@ -381,7 +381,6 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
     JSON_DOCUMENT container = client.create_container(create, name);
     if(verbose)
         log.Info(jsonToString(container).c_str());
-    // log.Info(jsonToString(container).c_str());
 
     assert(container.IsObject());
     assert(container.HasMember("success"));
@@ -389,9 +388,9 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
     rapidjson::Value::ConstMemberIterator itr = container.FindMember("code");
     if(itr != container.MemberEnd() && container["code"].GetInt() == 409){
         // 409 image already in use
-        log.Info("image is already in use, please stop it first!");
+        log.Info("There is an active video stream, please stop it first!");
+        log.Info(jsonToString(container["data"]).c_str());
     }
-
 
     if(itr != container.MemberEnd() && container["code"].GetInt() == 404){
         // 404 image does not exsist
@@ -419,7 +418,7 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
 
         log.Info("container successfully created");
         JSON_DOCUMENT start = client.start_container(container["data"]["Id"].GetString());
-        // log.Info(jsonToString(start).c_str());
+        log.Info(jsonToString(start).c_str());
 
         assert(start.IsObject());
         assert(start.HasMember("success"));
@@ -435,7 +434,7 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
 
             return 0;
         }
-        return 1;
+        return 0;
     }
     return 1;
 }

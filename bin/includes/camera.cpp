@@ -95,6 +95,15 @@ void find(rapidjson::Value &v, const char* name) {
 
 int Camera::gst_docker_start()
 {
+    // enable to see more verbose output from docker
+    bool debugger = false;
+
+    bool container_logs = true;
+    bool container_stream = false;
+    bool container_o_stdin = false;
+    bool container_o_stdout = true;
+    bool container_o_stderr = true;
+
     const std::string container_image = "sinamics/gstreamer:latest";
     const std::string container_name = "gst_server";
 
@@ -115,10 +124,7 @@ int Camera::gst_docker_start()
 
     // TODO
     std::string pipeline_str;
-    if (camera_val.cameraType == "custom")
-    {
-        pipeline_str = camera_val.customPipeline;
-    }
+
 
     EndpointRecords endpoints = db.get_endpoints();
     std::string clients;
@@ -136,13 +142,6 @@ int Camera::gst_docker_start()
         }
     }
 
-    if (clients.empty())
-    {
-        log.Error("no camera clients found!.. process stopped!");
-        log.Error("make sure you have selected a destination in Ground Controller Page!");
-        return -1;
-    }
-
     char delimiter = 'x';
     std::vector<std::string> res_arr = utils.split(camera_val.resolution, delimiter);
 
@@ -152,6 +151,29 @@ int Camera::gst_docker_start()
 
     char res_height[res_arr[1].length()];
     strcpy(res_height, res_arr[1].c_str());
+
+    if (camera_val.cameraType == "custom")
+    {
+        char *ptr;
+        char c_string[camera_val.customPipeline.length() + 1];
+        strcpy(c_string, camera_val.customPipeline.c_str());
+        ptr = std::strtok(c_string, " ");
+
+        while (ptr != NULL)
+        {
+            cmd.PushBack(rapidjson::Value(ptr, document.GetAllocator()).Move(), allocator);
+            ptr = strtok (NULL, " ");
+        }
+        goto docker_config;
+    }
+
+    if (clients.empty())
+    {
+        log.Error("no camera clients found!.. process stopped!");
+        log.Error("make sure you have selected a destination in Ground Controller Page!");
+        return -1;
+    }
+
 
     cmd.PushBack("v4l2src", allocator);
     cmd.PushBack(rapidjson::Value("device=" + camera_val.cameraType, document.GetAllocator()).Move(), allocator);
@@ -191,19 +213,11 @@ int Camera::gst_docker_start()
     cmd.PushBack("multiudpsink", allocator);
     cmd.PushBack(rapidjson::Value("clients=" + clients, document.GetAllocator()).Move(), allocator);
 
+    // log.Info(jsonToString(cmd).c_str());
 
-    // cmd.PushBack("videotestsrc", allocator);
-    // cmd.PushBack("!", allocator);
-    // cmd.PushBack("x264enc", allocator);
-    // cmd.PushBack("!", allocator);
-    // cmd.PushBack("video/x-h264,", allocator);
-    // cmd.PushBack("stream-format=byte-stream", allocator);
-    // cmd.PushBack("!", allocator);
-    // cmd.PushBack("rtph264pay", allocator);
-    // cmd.PushBack("!", allocator);
-    // cmd.PushBack("udpsink", allocator);
-    // cmd.PushBack("host=10.0.0.49", allocator);
-    // cmd.PushBack("port=5600", allocator);
+
+    // jump point
+    docker_config:
 
     // create main object docker config
     // TODO add container Image tag in db
@@ -226,17 +240,11 @@ int Camera::gst_docker_start()
     // add hostconfig to doc
     document.AddMember("HostConfig", hostConfig, allocator);
 
-    bool container_logs = true;
-    bool container_stream = false;
-    bool container_o_stdin = false;
-    bool container_o_stdout = true;
-    bool container_o_stderr = true;
-    bool debugger = false;
-
     client.start_container_by_name(document, container_image, debugger, container_name, container_logs, container_stream,container_o_stdin, container_o_stdout, container_o_stderr);
 
     return 0;
 }
+
 int Camera::initialize()
 {
     Logger log;
@@ -249,14 +257,17 @@ int Camera::initialize()
         log.Info("Camera not enabled, exiting!");
         return 1;
     }
-
+    if(camera_val.cameraType == "custom") {
+        log.Info("custom, loading pipeline");
+        return camera.gst_docker_start();
+    }
     if(camera_val.protocol == "rtsp") {
         log.Info("rtsp, starting v4l2rtspserver");
-        camera.rtsp_docker_start();
+        return camera.rtsp_docker_start();
     }
     if(camera_val.protocol == "udp") {
         log.Info("udp, starting gstreamer");
-        camera.gst_docker_start();
+        return camera.gst_docker_start();
     }
     return 0;
 }

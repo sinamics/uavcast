@@ -9,16 +9,12 @@ import { CreateCamera } from '../seeds/camera.seed';
 import winston from 'winston';
 import path from 'path';
 import { KernelResponse } from '../graphql-response-types/KernelResponse';
-import DockerUtils from '../docker/manager';
 import { kernelCommandsCallback } from '../utils/kernelCommands';
 
 // status file
 const cameraDeviceFile = path.join(paths.pythonFolder, 'devices.py');
 const ServerLog = winston.loggers.get('server');
 const DockerLog = winston.loggers.get('docker');
-
-const rtspManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:v0.2.4', name: 'rtsp_server' });
-// const gstreamerManager = new DockerUtils({ image: 'mpromonet/v4l2rtspserver:latest', name: 'rtsp_server' });
 
 @Resolver()
 export class CameraResolver {
@@ -32,14 +28,13 @@ export class CameraResolver {
     const database = await getCameraRepository().findOne(1);
     return { database };
   }
+
   @Mutation(() => CameraActionResponse)
   async cameraActions(
     @PubSub('CAMERA_KERNEL_MESSAGE') publish: Publisher<any>,
     @Args() { properties }: CameraActionInput
   ): Promise<any> {
     const camera = await getCameraRepository().findOne(1);
-    rtspManager.notify(publish);
-
     if (!('playStream' in properties)) return { playStream: false };
 
     let stdioutMsg = '';
