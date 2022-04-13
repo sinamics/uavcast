@@ -35,7 +35,12 @@ const GroundController = () => {
           <Card fluid className='theme'>
             <Card.Content className='cardHeader'>
               <Grid.Column width={8}>
-                <Header as='h4' content='Ground Control Stations' subheader='Add your destination here' />
+                <Header
+                  data-testid='endpoint-title'
+                  as='h4'
+                  content='Ground Control Stations'
+                  subheader='Add your destination here'
+                />
               </Grid.Column>
             </Card.Content>
             <Card.Content>
