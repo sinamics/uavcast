@@ -2,8 +2,8 @@
 import * as React from 'react';
 import { customRender } from '../../../utils/customRender';
 import { GetEndpointsDocument } from '../../../graphql/generated/dist';
-import { Route } from 'react-router';
-import Endpoints from '../../../pages/endpoints';
+// import { Route } from 'react-router';
+// import Endpoints from '../../../pages/endpoints';
 import ModuleActive from '../../../pages/endpoints/components/apModuleActive';
 import '@testing-library/jest-dom/extend-expect';
 import '@apollo/client';
