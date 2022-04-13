@@ -96,7 +96,7 @@ void find(rapidjson::Value &v, const char* name) {
 int Camera::gst_docker_start()
 {
     // enable to see more verbose output from docker
-    bool debugger = true;
+    bool debugger = false;
 
     bool container_logs = true;
     bool container_stream = false;
@@ -258,7 +258,7 @@ int Camera::initialize()
         return 1;
     }
     if(camera_val.cameraType == "custom") {
-        log.Info("custom pipeline, loading pipeline");
+        log.Info("custom, loading pipeline");
         return camera.gst_docker_start();
     }
     if(camera_val.protocol == "rtsp") {

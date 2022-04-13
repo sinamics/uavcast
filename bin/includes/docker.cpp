@@ -388,6 +388,7 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
     rapidjson::Value::ConstMemberIterator itr = container.FindMember("code");
     if(itr != container.MemberEnd() && container["code"].GetInt() == 409){
         // 409 image already in use
+        log.Info("There is an active video stream, please stop it first!");
         log.Info(jsonToString(container["data"]).c_str());
     }
 
