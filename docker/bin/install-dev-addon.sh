@@ -27,7 +27,7 @@ elif [ "$ARCH" == "aarch64" ]; then
     cp ${APPROOT}/bin/mavlink/mavlink-routerd-arm64 ${APPROOT}/bin/mavlink/mavlink-routerd
 fi
 
-sudo apt-get install usbutils
+sudo apt-get install -y usbutils
 
 # Build binaries
 cd /app/uavcast/bin && make
