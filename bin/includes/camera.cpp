@@ -148,21 +148,20 @@ int Camera::gst_docker_start()
     char res_width[res_arr[0].length()];
     strcpy(res_width, res_arr[0].c_str());
 
-
     char res_height[res_arr[1].length()];
     strcpy(res_height, res_arr[1].c_str());
 
     if (camera_val.cameraType == "custom")
     {
-        char *ptr;
-        char c_string[camera_val.customPipeline.length() + 1];
-        strcpy(c_string, camera_val.customPipeline.c_str());
-        ptr = std::strtok(c_string, " ");
+        char *ctm_ptr;
+        char ctm_pipe[camera_val.customPipeline.length() + 1];
+        strcpy(ctm_pipe, camera_val.customPipeline.c_str());
+        ctm_ptr = std::strtok(ctm_pipe, " ");
 
-        while (ptr != NULL)
+        while (ctm_ptr != NULL)
         {
-            cmd.PushBack(rapidjson::Value(ptr, document.GetAllocator()).Move(), allocator);
-            ptr = strtok (NULL, " ");
+            cmd.PushBack(rapidjson::Value(ctm_ptr, document.GetAllocator()).Move(), allocator);
+            ctm_ptr = strtok (NULL, " ");
         }
         goto docker_config;
     }
