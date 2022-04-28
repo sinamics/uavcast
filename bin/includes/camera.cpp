@@ -274,12 +274,38 @@ int Camera::teardown()
 {
     bool debugger = true;
     Docker client = Docker();
+    Logger log;
 
-    // TODO store running ct in db and stop the correct one. stopping all for now.
-    const std::string gstname = "gst_server";
-    client.stop_container_by_name(debugger, gstname);
+    JSON_DOCUMENT all_ct = client.list_containers(true);
+    rapidjson::Value &v = all_ct;
+        if (v["data"].IsArray()) {
+        for (rapidjson::SizeType i = 0; i < v["data"].Size(); i++) {
+            auto it = v["data"][i].FindMember("Names");
+            if (it != v["data"][i].MemberEnd()){
 
-    const std::string rtspname = "rtsp_server";
-    client.stop_container_by_name(debugger, rtspname);
+                const std::string gstname = "gst_server";
+                const std::string rtspname = "rtsp_server";
+
+                if(v["data"][i]["Names"][0] == "/gst_server"){
+                    std::string msg = gstname +" running, sending stop signal...";
+                    log.Info(msg.c_str());
+
+                    client.stop_container_by_name(debugger, gstname);
+                    return 0;
+                }
+                 if(v["data"][i]["Names"][0] == "/rtsp_server"){
+
+                    std::string msg = rtspname +" running, sending stop signal...";
+                    log.Info(msg.c_str());
+
+                    client.stop_container_by_name(debugger, rtspname);
+                    return 0;
+                }
+            }
+        }
+        std::string msg = "Video server not running, nothing to stop.";
+        log.Error(msg.c_str());
+        return 0;
+    }
     return 0;
 }
