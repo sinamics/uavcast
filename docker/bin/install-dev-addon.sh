@@ -19,7 +19,7 @@ sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
 git submodule update --init --recursive
 
 ARCH=`uname -m`
-if [ "$ARCH" == "x86_64" ]; then
+if [ "$ARCH" == "x86_64" ] || [ "$ARCH" = "amd64" ]; then
     cp ${APPROOT}/bin/mavlink/mavlink-routerd-amd64 ${APPROOT}/bin/mavlink/mavlink-routerd
 elif [ "$ARCH" == "armv7l" ]; then
     cp ${APPROOT}/bin/mavlink/mavlink-routerd-arm ${APPROOT}/bin/mavlink/mavlink-routerd
