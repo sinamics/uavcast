@@ -27,10 +27,7 @@ elif [ "$ARCH" == "aarch64" ]; then
     cp ${APPROOT}/bin/mavlink/mavlink-routerd-arm64 ${APPROOT}/bin/mavlink/mavlink-routerd
 fi
 
-# access docker enviroment inside dev container
-# sudo touch /var/run/docker.sock
-# sudo chmod 666 /var/run/docker.sock
-# sudo chown uavcast:docker /var/run/docker.sock
+sudo apt-get install usbutils
 
 # Build binaries
 cd /app/uavcast/bin && make
