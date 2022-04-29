@@ -148,21 +148,20 @@ int Camera::gst_docker_start()
     char res_width[res_arr[0].length()];
     strcpy(res_width, res_arr[0].c_str());
 
-
     char res_height[res_arr[1].length()];
     strcpy(res_height, res_arr[1].c_str());
 
     if (camera_val.cameraType == "custom")
     {
-        char *ptr;
-        char c_string[camera_val.customPipeline.length() + 1];
-        strcpy(c_string, camera_val.customPipeline.c_str());
-        ptr = std::strtok(c_string, " ");
+        char *ctm_ptr;
+        char ctm_pipe[camera_val.customPipeline.length() + 1];
+        strcpy(ctm_pipe, camera_val.customPipeline.c_str());
+        ctm_ptr = std::strtok(ctm_pipe, " ");
 
-        while (ptr != NULL)
+        while (ctm_ptr != NULL)
         {
-            cmd.PushBack(rapidjson::Value(ptr, document.GetAllocator()).Move(), allocator);
-            ptr = strtok (NULL, " ");
+            cmd.PushBack(rapidjson::Value(ctm_ptr, document.GetAllocator()).Move(), allocator);
+            ctm_ptr = strtok (NULL, " ");
         }
         goto docker_config;
     }
@@ -275,12 +274,38 @@ int Camera::teardown()
 {
     bool debugger = true;
     Docker client = Docker();
+    Logger log;
 
-    // TODO store running ct in db and stop the correct one. stopping all for now.
-    const std::string gstname = "gst_server";
-    client.stop_container_by_name(debugger, gstname);
+    JSON_DOCUMENT all_ct = client.list_containers(true);
+    rapidjson::Value &v = all_ct;
+        if (v["data"].IsArray()) {
+        for (rapidjson::SizeType i = 0; i < v["data"].Size(); i++) {
+            auto it = v["data"][i].FindMember("Names");
+            if (it != v["data"][i].MemberEnd()){
 
-    const std::string rtspname = "rtsp_server";
-    client.stop_container_by_name(debugger, rtspname);
+                const std::string gstname = "gst_server";
+                const std::string rtspname = "rtsp_server";
+
+                if(v["data"][i]["Names"][0] == "/gst_server"){
+                    std::string msg = gstname +" running, sending stop signal...";
+                    log.Info(msg.c_str());
+
+                    client.stop_container_by_name(debugger, gstname);
+                    return 0;
+                }
+                 if(v["data"][i]["Names"][0] == "/rtsp_server"){
+
+                    std::string msg = rtspname +" running, sending stop signal...";
+                    log.Info(msg.c_str());
+
+                    client.stop_container_by_name(debugger, rtspname);
+                    return 0;
+                }
+            }
+        }
+        std::string msg = "Video server not running, nothing to stop.";
+        log.Error(msg.c_str());
+        return 0;
+    }
     return 0;
 }

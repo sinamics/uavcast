@@ -23,7 +23,7 @@ export const extractHostname = (url: string) => {
   //find & remove "?"
   hostname = hostname.split('?')[0];
 
-  return hostname;
+  return `${hostname}:4000`;
 };
 
 export const graphUrl = extractHostname(window.location.href);

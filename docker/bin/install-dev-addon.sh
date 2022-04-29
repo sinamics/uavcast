@@ -19,7 +19,7 @@ sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
 git submodule update --init --recursive
 
 ARCH=`uname -m`
-if [ "$ARCH" == "x86_64" ]; then
+if [ "$ARCH" == "x86_64" ] || [ "$ARCH" = "amd64" ]; then
     cp ${APPROOT}/bin/mavlink/mavlink-routerd-amd64 ${APPROOT}/bin/mavlink/mavlink-routerd
 elif [ "$ARCH" == "armv7l" ]; then
     cp ${APPROOT}/bin/mavlink/mavlink-routerd-arm ${APPROOT}/bin/mavlink/mavlink-routerd
@@ -27,10 +27,7 @@ elif [ "$ARCH" == "aarch64" ]; then
     cp ${APPROOT}/bin/mavlink/mavlink-routerd-arm64 ${APPROOT}/bin/mavlink/mavlink-routerd
 fi
 
-# access docker enviroment inside dev container
-# sudo touch /var/run/docker.sock
-# sudo chmod 666 /var/run/docker.sock
-# sudo chown uavcast:docker /var/run/docker.sock
+sudo apt-get install -y usbutils
 
 # Build binaries
 cd /app/uavcast/bin && make

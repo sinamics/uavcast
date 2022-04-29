@@ -423,7 +423,7 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
         assert(start.IsObject());
         assert(start.HasMember("success"));
         if(start["success"].GetBool() == 1){
-            log.Info("container started");
+            log.Info("container successfully started");
 
             //attach_to_container(const std::__cxx11::string &container_id, bool logs = false,
             // bool stream = false, bool o_stdin = false, bool o_stdout = false, bool o_stderr = false)
@@ -457,7 +457,7 @@ JSON_DOCUMENT Docker::stop_container_by_name(bool debugger, const std::string& n
 
                 if(v["data"][i]["Names"][0] == "/"+name){
 
-                    std::string msg = name + " server running, stopping...";
+                    std::string msg = name + " server stopped!";
                     log.Info(msg.c_str());
 
                     // TODO kill or stop command?
@@ -472,11 +472,10 @@ JSON_DOCUMENT Docker::stop_container_by_name(bool debugger, const std::string& n
 
                     return 0;
                 }
-
             }
         }
-        std::string msg = name + " not running, nothing to stop.";
-        log.Error(msg.c_str());
+        // std::string msg = name + " not running, nothing to stop.";
+        // log.Error(msg.c_str());
         return 0;
     }
 

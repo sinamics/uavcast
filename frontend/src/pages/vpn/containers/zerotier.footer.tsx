@@ -28,7 +28,7 @@ const ZerotierFooter = () => {
       <Button
         onClick={() =>
           kernelCommand({
-            variables: { cmd: 'sudo zerotier-cli listpeers', path: '/' }
+            variables: { cmd: 'sudo zerotier-cli peers', path: '/' }
           })
         }
       >
