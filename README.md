@@ -6,8 +6,6 @@
 
 # uavcast - companion software for remote :helicopter: :boat: :red_car:
 
-uavcast 5.x has been re-written from the ground-up compared to the previouse versions, and are still missing key features before it is usable.
-
 :warning: This project is still in development and does not have a stabel version yet. Feel free to make improvements and provide a PR.
 
 Latest build of this repository can be found at:
@@ -88,9 +86,6 @@ Ensure lint passes. `npm run lint` This command will ensure basic conformance to
 
 Use these commands in the project root (!not in the vscode developer container).\
 Type `./compile_release.sh` + arguments to genereate local docker image, or you can publish to your own container registery.
-
-Example external publish:\
-`./compile_release.sh --image_name sinamics/uavcast --version 5.x.x --docker_publish`
 
 Example local build:\
 `./compile_release.sh --image_name sinamics/uavcast --version 5.x.x --docker_local`
