@@ -37,28 +37,20 @@ export class CameraResolver {
     const camera = await getCameraRepository().findOne(1);
     if (!('playStream' in properties)) return { playStream: false };
 
+    const playstatus = properties.playStream ? 'start' : 'stop';
+
     let stdioutMsg = '';
     switch (camera?.protocol) {
       case 'rtsp':
       case 'udp':
-        if (properties.playStream) {
-          // const cmd = ['-u', 'uavcast', '-G', `${camera?.resolution}x${camera?.framesPrSecond}`, camera?.cameraType];
+        // const cmd = ['-u', 'uavcast', '-G', `${camera?.resolution}x${camera?.framesPrSecond}`, camera?.cameraType];
 
-          kernelCommandsCallback('/app/uavcast/bin/build/uav_main -v start', null, true, (out: any) => {
-            DockerLog.info({ message: out.toString(), path: __filename });
-            stdioutMsg = stdioutMsg.concat(out.toString());
-            publish({ message: stdioutMsg });
-          });
-          return true;
-        }
-        if (!properties.playStream) {
-          kernelCommandsCallback('/app/uavcast/bin/build/uav_main -v stop', null, true, (out: any) => {
-            DockerLog.info({ message: out.toString(), path: __filename });
-            stdioutMsg = stdioutMsg.concat(out.toString());
-            publish({ message: stdioutMsg });
-          });
-        }
-        break;
+        kernelCommandsCallback(`/app/uavcast/bin/build/uav_main -v ${playstatus}`, null, true, (out: any) => {
+          DockerLog.info({ message: out.toString(), path: __filename });
+          stdioutMsg = stdioutMsg.concat(out.toString());
+          publish({ message: stdioutMsg });
+        });
+        return true;
 
       default:
         return { playStream: false };
