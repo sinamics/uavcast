@@ -1,7 +1,6 @@
 
 # *****************************************************
 # Variables to control Makefile operation
-MKDIR_P = mkdir -p
 CC = g++
 CXXFLAGS = -g -Wall
 
