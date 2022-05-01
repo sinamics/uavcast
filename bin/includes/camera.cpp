@@ -95,6 +95,15 @@ void find(rapidjson::Value &v, const char* name) {
 
 int Camera::gst_docker_start()
 {
+    // enable to see more verbose output from docker
+    bool debugger = false;
+
+    bool container_logs = true;
+    bool container_stream = false;
+    bool container_o_stdin = false;
+    bool container_o_stdout = true;
+    bool container_o_stderr = true;
+
     const std::string container_image = "sinamics/gstreamer:latest";
     const std::string container_name = "gst_server";
 
@@ -115,10 +124,7 @@ int Camera::gst_docker_start()
 
     // TODO
     std::string pipeline_str;
-    if (camera_val.cameraType == "custom")
-    {
-        pipeline_str = camera_val.customPipeline;
-    }
+
 
     EndpointRecords endpoints = db.get_endpoints();
     std::string clients;
@@ -136,6 +142,30 @@ int Camera::gst_docker_start()
         }
     }
 
+    char delimiter = 'x';
+    std::vector<std::string> res_arr = utils.split(camera_val.resolution, delimiter);
+
+    char res_width[res_arr[0].length()];
+    strcpy(res_width, res_arr[0].c_str());
+
+    char res_height[res_arr[1].length()];
+    strcpy(res_height, res_arr[1].c_str());
+
+    if (camera_val.cameraType == "custom")
+    {
+        char *ctm_ptr;
+        char ctm_pipe[camera_val.customPipeline.length() + 1];
+        strcpy(ctm_pipe, camera_val.customPipeline.c_str());
+        ctm_ptr = std::strtok(ctm_pipe, " ");
+
+        while (ctm_ptr != NULL)
+        {
+            cmd.PushBack(rapidjson::Value(ctm_ptr, document.GetAllocator()).Move(), allocator);
+            ctm_ptr = strtok (NULL, " ");
+        }
+        goto docker_config;
+    }
+
     if (clients.empty())
     {
         log.Error("no camera clients found!.. process stopped!");
@@ -143,15 +173,6 @@ int Camera::gst_docker_start()
         return -1;
     }
 
-    char delimiter = 'x';
-    std::vector<std::string> res_arr = utils.split(camera_val.resolution, delimiter);
-
-    char res_width[res_arr[0].length()];
-    strcpy(res_width, res_arr[0].c_str());
-
-
-    char res_height[res_arr[1].length()];
-    strcpy(res_height, res_arr[1].c_str());
 
     cmd.PushBack("v4l2src", allocator);
     cmd.PushBack(rapidjson::Value("device=" + camera_val.cameraType, document.GetAllocator()).Move(), allocator);
@@ -191,19 +212,11 @@ int Camera::gst_docker_start()
     cmd.PushBack("multiudpsink", allocator);
     cmd.PushBack(rapidjson::Value("clients=" + clients, document.GetAllocator()).Move(), allocator);
 
+    // log.Info(jsonToString(cmd).c_str());
 
-    // cmd.PushBack("videotestsrc", allocator);
-    // cmd.PushBack("!", allocator);
-    // cmd.PushBack("x264enc", allocator);
-    // cmd.PushBack("!", allocator);
-    // cmd.PushBack("video/x-h264,", allocator);
-    // cmd.PushBack("stream-format=byte-stream", allocator);
-    // cmd.PushBack("!", allocator);
-    // cmd.PushBack("rtph264pay", allocator);
-    // cmd.PushBack("!", allocator);
-    // cmd.PushBack("udpsink", allocator);
-    // cmd.PushBack("host=10.0.0.49", allocator);
-    // cmd.PushBack("port=5600", allocator);
+
+    // jump point
+    docker_config:
 
     // create main object docker config
     // TODO add container Image tag in db
@@ -226,17 +239,11 @@ int Camera::gst_docker_start()
     // add hostconfig to doc
     document.AddMember("HostConfig", hostConfig, allocator);
 
-    bool container_logs = true;
-    bool container_stream = false;
-    bool container_o_stdin = false;
-    bool container_o_stdout = true;
-    bool container_o_stderr = true;
-    bool debugger = false;
-
     client.start_container_by_name(document, container_image, debugger, container_name, container_logs, container_stream,container_o_stdin, container_o_stdout, container_o_stderr);
 
     return 0;
 }
+
 int Camera::initialize()
 {
     Logger log;
@@ -249,14 +256,17 @@ int Camera::initialize()
         log.Info("Camera not enabled, exiting!");
         return 1;
     }
-
+    if(camera_val.cameraType == "custom") {
+        log.Info("custom, loading pipeline");
+        return camera.gst_docker_start();
+    }
     if(camera_val.protocol == "rtsp") {
         log.Info("rtsp, starting v4l2rtspserver");
-        camera.rtsp_docker_start();
+        return camera.rtsp_docker_start();
     }
     if(camera_val.protocol == "udp") {
         log.Info("udp, starting gstreamer");
-        camera.gst_docker_start();
+        return camera.gst_docker_start();
     }
     return 0;
 }
@@ -264,12 +274,38 @@ int Camera::teardown()
 {
     bool debugger = true;
     Docker client = Docker();
+    Logger log;
 
-    // TODO store running ct in db and stop the correct one. stopping all for now.
-    const std::string gstname = "gst_server";
-    client.stop_container_by_name(debugger, gstname);
+    JSON_DOCUMENT all_ct = client.list_containers(true);
+    rapidjson::Value &v = all_ct;
+        if (v["data"].IsArray()) {
+        for (rapidjson::SizeType i = 0; i < v["data"].Size(); i++) {
+            auto it = v["data"][i].FindMember("Names");
+            if (it != v["data"][i].MemberEnd()){
 
-    const std::string rtspname = "rtsp_server";
-    client.stop_container_by_name(debugger, rtspname);
+                const std::string gstname = "gst_server";
+                const std::string rtspname = "rtsp_server";
+
+                if(v["data"][i]["Names"][0] == "/gst_server"){
+                    std::string msg = gstname +" running, sending stop signal...";
+                    log.Info(msg.c_str());
+
+                    client.stop_container_by_name(debugger, gstname);
+                    return 0;
+                }
+                 if(v["data"][i]["Names"][0] == "/rtsp_server"){
+
+                    std::string msg = rtspname +" running, sending stop signal...";
+                    log.Info(msg.c_str());
+
+                    client.stop_container_by_name(debugger, rtspname);
+                    return 0;
+                }
+            }
+        }
+        std::string msg = "Video server not running, nothing to stop.";
+        log.Error(msg.c_str());
+        return 0;
+    }
     return 0;
 }

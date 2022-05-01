@@ -13,8 +13,11 @@ import CameraResolution from './containers/resolution';
 import CameraContrast from './containers/contrast';
 import CameraFlip from './containers/flip';
 import CameraBrightness from './containers/brightness';
+import { useEffect, useState } from 'react';
 
 const Camera = () => {
+  const [logMsg, setLogMsg] = useState('');
+
   const { data: { camera_stdout = { message: '', errors: {} } } = {} } = useSubscription(Camera_StdoutDocument);
 
   const [getDockerLogs, { data: { getDockerLog = {} } = {} }]: any = useGetDockerLogMutation({
@@ -25,6 +28,16 @@ const Camera = () => {
 
   const { protocol } = cameraData?.database || {};
   const { file = [] } = getDockerLog || {};
+
+  useEffect(() => {
+    setLogMsg(camera_stdout.message);
+  }, [camera_stdout.message]);
+
+  useEffect(() => {
+    if (file.length > 0) {
+      setLogMsg(file.map((e: any) => e.timestamp + ': ' + e.message.trim()));
+    }
+  }, [file]);
 
   return (
     <Container fluid>
@@ -73,10 +86,7 @@ const Camera = () => {
               <CameraFooter getDockerLogs={getDockerLogs} />
               <Grid padded columns={1}>
                 <Grid.Column style={{ height: '300px' }}>
-                  <RaspberryConsole
-                    stdout={camera_stdout.message || (file.length > 0 && file.map((e: any) => e.message.trim()))}
-                    error={camera_stdout.errors}
-                  />
+                  <RaspberryConsole stdout={logMsg} error={camera_stdout.errors} />
                 </Grid.Column>
               </Grid>
             </Card.Content>

@@ -8,7 +8,6 @@ const ZerotierTable = () => {
   const { data: { zerotierNetworks: { networks = [] } = {} } = {} }: any = useZerotierNetworksQuery({
     pollInterval: 5000
   });
-
   return (
     <Grid stackable padded columns={2}>
       <Grid.Column>
@@ -36,42 +35,43 @@ const ZerotierTable = () => {
           </Table.Header>
 
           <Table.Body>
-            {networks && networks.map((prop: any, idx: any) => {
-              const ZtStatusClass = classnames({
-                'text-danger': prop.status !== 'OK',
-                'text-success': prop.status === 'OK'
-              });
-              return (
-                <Table.Row key={idx}>
-                  <Table.Cell>
-                    <Header
-                      as='h4'
-                      // color={prop.current ? 'green' : 'black'}
-                      content={prop.name}
-                      subheader={prop.type}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>{prop.assignedAddresses[0]}</Table.Cell>
-                  <Table.Cell className={ZtStatusClass}>{prop.status}</Table.Cell>
-                  <Table.Cell>{prop.type}</Table.Cell>
-                  <Table.Cell>
-                    <Label
-                      style={{ cursor: 'pointer' }}
-                      onClick={() =>
-                        kernelCommand({
-                          variables: { cmd: 'sudo zerotier-cli leave ' + prop.nwid, path: '/' },
-                          refetchQueries: [{ query: ZerotierNetworksDocument }]
-                        })
-                      }
-                      color='orange'
-                      ribbon='right'
-                    >
-                      Leave
-                    </Label>
-                  </Table.Cell>
-                </Table.Row>
-              );
-            })}
+            {networks &&
+              networks.map((prop: any, idx: any) => {
+                const ZtStatusClass = classnames({
+                  'text-danger': prop.status !== 'OK',
+                  'text-success': prop.status === 'OK'
+                });
+                return (
+                  <Table.Row key={idx}>
+                    <Table.Cell>
+                      <Header
+                        as='h4'
+                        // color={prop.current ? 'green' : 'black'}
+                        content={prop.name}
+                        subheader={prop.type}
+                      />
+                    </Table.Cell>
+                    <Table.Cell>{prop.assignedAddresses[0]}</Table.Cell>
+                    <Table.Cell className={ZtStatusClass}>{prop.status}</Table.Cell>
+                    <Table.Cell>{prop.type}</Table.Cell>
+                    <Table.Cell>
+                      <Label
+                        style={{ cursor: 'pointer' }}
+                        onClick={() =>
+                          kernelCommand({
+                            variables: { cmd: 'sudo zerotier-cli leave ' + prop.nwid, path: '/' },
+                            refetchQueries: [{ query: ZerotierNetworksDocument }]
+                          })
+                        }
+                        color='orange'
+                        ribbon='right'
+                      >
+                        Leave
+                      </Label>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
           </Table.Body>
         </Table>
       </Grid.Column>

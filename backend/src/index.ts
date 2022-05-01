@@ -129,10 +129,12 @@ const server = async () => {
 
   apolloServer.applyMiddleware({ app, cors: false });
   const httpServer = http.createServer(app);
+
   // you need this to get websocket connection
   apolloServer.installSubscriptionHandlers(httpServer);
 
-  const port = process.env.SERVER_PORT || 80;
+  // Set dev port 4000, or in prod get env server_port or 80 if undefined.
+  const port = process.env.NODE_ENV !== 'production' ? 4000 : process.env.SERVER_PORT || 80;
   httpServer.listen(port, () => {
     LogServer.info({ message: `started at http://localhost:${port}/graphql`, path: 'server' });
   });

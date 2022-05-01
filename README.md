@@ -1,4 +1,4 @@
-![https://i.ibb.co/qF2frvt/uavcast-logo-trans-compact-hue.png](https://i.ibb.co/qF2frvt/uavcast-logo-trans-compact-hue.png)
+![https://i.ibb.co/Vps9t4x/uavcast-logo.png](https://i.ibb.co/Vps9t4x/uavcast-logo.png)
 
 [![GithubCI](https://github.com/sinamics/uavcast/workflows/Build%20Container/badge.svg)](https://github.com/sinamics/uavcast/actions)
 [![Release](https://img.shields.io/github/v/release/sinamics/uavcast.svg)](https://github.com/sinamics/uavcast/releases/latest)
@@ -6,7 +6,7 @@
 
 # uavcast - companion software for remote :helicopter: :boat: :red_car:
 
-uavcast 5.x has been re-written from the ground-up compared to the previouse versions, and are still missing key features before it is usable.
+uavcast is an application that provides an easy method for streaming mavlink (telemetry) data and video over a LTE/4G or WiFi network.
 
 :warning: This project is still in development and does not have a stabel version yet. Feel free to make improvements and provide a PR.
 
@@ -88,9 +88,6 @@ Ensure lint passes. `npm run lint` This command will ensure basic conformance to
 
 Use these commands in the project root (!not in the vscode developer container).\
 Type `./compile_release.sh` + arguments to genereate local docker image, or you can publish to your own container registery.
-
-Example external publish:\
-`./compile_release.sh --image_name sinamics/uavcast --version 5.x.x --docker_publish`
 
 Example local build:\
 `./compile_release.sh --image_name sinamics/uavcast --version 5.x.x --docker_local`

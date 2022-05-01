@@ -17,12 +17,11 @@ export const extractHostname = (url: string) => {
 
   //find & remove port number if developing
   if (process.env.NODE_ENV === 'development') {
-    hostname = hostname.split(':')[0];
+    hostname = hostname.split(':')[0] + ':4000';
   }
 
   //find & remove "?"
   hostname = hostname.split('?')[0];
-
   return hostname;
 };
 
