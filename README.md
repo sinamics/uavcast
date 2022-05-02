@@ -10,15 +10,11 @@ uavcast is an application that provides an easy method for streaming mavlink (te
 
 :warning: This project is still in development and does not have a stabel version yet. Feel free to make improvements and provide a PR.
 
-Latest build of this repository can be found at:
-
-- https://hub.docker.com/repository/docker/sinamics/uavcast
-
 <br />
 
 ## :whale: Installation
 
-To install developer version (supervisor & uavcast) on Rasperry PI, Jetson, or any <kbd>arm/v7</kbd> <kbd>arm64</kbd> <kbd>amd64</kbd> device:
+Install latest uavcast version on Rasperry PI, Jetson, or any <kbd>arm/v7</kbd> <kbd>arm64</kbd> <kbd>amd64</kbd> device:
 
 - `curl -s http://install.uavmatrix.com/next/ | sudo bash`
 
