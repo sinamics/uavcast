@@ -48,10 +48,6 @@ jobs:
         with:
           fallback: 5.0.0 # Optional fallback tag to use when no tag can be found
 
-      - name: Set new version
-        run: sed -i 's/REACT_APP_UAVCAST_VER=.*/REACT_APP_UAVCAST_VER='\"${{ steps.previoustag.outputs.tag }}\"'/' .env
-        working-directory: ./frontend
-
       - name: Create VARS
         id: vars
         run: |
@@ -154,14 +150,14 @@ jobs:
 
           docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SHADOWSOURCE}-linux-amd64 --amend ${SHADOWSOURCE}-linux-arm-v7 --amend ${SHADOWSOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
 
-      - name: Create manifests for GitHub Container Registry
-        env:
-          DOCKER_CLI_EXPERIMENTAL: enabled
-        run: |
-          IMAGE=ghcr.io/$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
-          TAG=${GITHUB_REF//refs\/heads\//}
-          SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
-          docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
-          if [[ ${GITHUB_REF//refs\/heads\//} == master ]]; then
-          docker manifest create ${IMAGE}:latest                             --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:latest
-          fi
+      # - name: Create manifests for GitHub Container Registry
+      #   env:
+      #     DOCKER_CLI_EXPERIMENTAL: enabled
+      #   run: |
+      #     IMAGE=ghcr.io/$(echo ${GITHUB_REPOSITORY//docker-/} | tr '[:upper:]' '[:lower:]')
+      #     TAG=${GITHUB_REF//refs\/heads\//}
+      #     SOURCE=${IMAGE}:${{ steps.previoustag.outputs.tag }}
+      #     docker manifest create ${IMAGE}:${{ steps.previoustag.outputs.tag }}    --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:${{ steps.previoustag.outputs.tag }}
+      #     if [[ ${GITHUB_REF//refs\/heads\//} == master ]]; then
+      #     docker manifest create ${IMAGE}:latest                             --amend ${SOURCE}-linux-amd64 --amend ${SOURCE}-linux-arm-v7 --amend ${SOURCE}-linux-arm64 && docker manifest push ${IMAGE}:latest
+      #     fi
