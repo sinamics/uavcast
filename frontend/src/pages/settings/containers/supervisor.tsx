@@ -100,7 +100,7 @@ const Supervisor = () => {
           </Button>
           <Button
             size='small'
-            onClick={() => externalRoute('https://github.com/sinamics/uavcast-supervisor/releases')}
+            onClick={() => externalRoute('https://docs.uavmatrix.com/changelog/')}
             compact
             floated='right'
             color='grey'

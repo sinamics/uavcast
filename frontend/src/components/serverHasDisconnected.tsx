@@ -9,23 +9,20 @@ const ServerDisconnected = () => {
   const [disconnected, setDisconnected] = useState(false);
   const date = new Date();
 
-  const statusHandel = useCallback(
-    (status: any) => {
-      // let disconnectTimeout: ReturnType<typeof setTimeout>;
-      if (status) {
-        if (disconnectTimeout) return;
+  const statusHandel = useCallback((status: any) => {
+    // let disconnectTimeout: ReturnType<typeof setTimeout>;
+    if (status) {
+      if (disconnectTimeout) return;
 
-        return (disconnectTimeout = setTimeout(() => {
-          setDisconnected(status);
-        }, 10000));
-      }
+      return (disconnectTimeout = setTimeout(() => {
+        setDisconnected(status);
+      }, 6000));
+    }
 
-      clearTimeout(disconnectTimeout);
-      disconnectTimeout = 0;
-      setDisconnected(status);
-    },
-    [setDisconnected]
-  );
+    clearTimeout(disconnectTimeout);
+    disconnectTimeout = 0;
+    setDisconnected(status);
+  }, []);
 
   useEffect(() => {
     wsClient.onDisconnected(() => {
@@ -50,7 +47,7 @@ const ServerDisconnected = () => {
     <React.Fragment>
       {disconnected && (
         <Spinner>
-          <div className='text-danger '>SERVER DISCONNECTED</div>
+          <div className='text-danger '>RPI DISCONNECTED</div>
           <div>
             <TimeAgo date={date} />
           </div>

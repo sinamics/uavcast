@@ -76,6 +76,13 @@ fi
 # update submodules
 # sudo git submodule update --init --recursive
 
+# set version nummer as enviroment
+if [[ ! -f "$DIR/frontend/.env" ]]; then
+    echo "REACT_APP_UAVCAST_VER=\"$version_arg"\" > $DIR/frontend/.env
+else
+    sed -i 's/REACT_APP_UAVCAST_VER=.*/REACT_APP_UAVCAST_VER='\"$version_arg\"'/' $DIR/frontend/.env
+fi
+
 # crypt
 #If file is older than one year, abort. User will get notified.
 DATEMESSAGE="Your version of uavcast has expired and will no longer work. Please update your version, see https://docs.uavmatrix.com. If you have any further questions, please contact UAVmatrix, support@uavmatrix.com"

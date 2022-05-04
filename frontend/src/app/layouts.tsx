@@ -4,21 +4,18 @@ import Header from '../components/Header/Header';
 import SuspenseMainLoading from '../components/suspense2columns';
 import ServerHasDisconnected from '../components/serverHasDisconnected';
 import ReactGA from 'react-ga';
-import { useGetUavcastInformationQuery } from '../graphql/generated/dist';
 
 const Sidebar = React.lazy(() => import('../components/Sidebar/Sidebar'));
 
+const GoogleAnalytics = (location: any) => {
+  ReactGA.pageview('version ' + process.env.REACT_APP_UAVCAST_VER + location.pathname);
+};
 export const LayoutPublic = withRouter(({ children, location }: any): any => {
-  const { data: versionInformation, loading: uavcastLoading } = useGetUavcastInformationQuery();
-  const { message } = versionInformation?.getUavcastInformation || {};
-
   useEffect(() => {
-    if (uavcastLoading) return;
     if (process.env.NODE_ENV === 'production') {
-      ReactGA.pageview(message?.uavcast?.localVersion + location.pathname);
+      GoogleAnalytics(location);
     }
-  }, [message, location, uavcastLoading]);
-
+  }, [location]);
   return (
     <div className='app'>
       <Header />
