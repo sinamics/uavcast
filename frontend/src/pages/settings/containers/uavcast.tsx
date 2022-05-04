@@ -100,7 +100,7 @@ const Uavcast = () => {
           </Button>
           <Button
             size='small'
-            onClick={() => externalRoute('https://docs.uavmatrix.com/changelog/')}
+            onClick={() => externalRoute('https://github.com/sinamics/uavcast/releases')}
             compact
             floated='right'
             // basic
