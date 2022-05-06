@@ -43,7 +43,14 @@ query getNetworkLog($properties: LogProperties!) {
     }
   }
 }
-
+query getServerLog($properties: LogProperties!) {
+  getServerLog(properties: $properties) {
+    file {
+      timestamp
+      message
+    }
+  }
+}
 query getCpuLog($properties: LogProperties!) {
   getCpuLog(properties: $properties) {
     file {
