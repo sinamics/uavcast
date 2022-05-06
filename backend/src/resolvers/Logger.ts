@@ -97,6 +97,16 @@ export class Logviewer {
     });
     return { file };
   }
+  //dockerLogger
+  @Query(() => WinstonResponse)
+  async getServerLog(@Args() { properties }: LogPeriodeInput) {
+    const System = SystemLogger.getLogger();
+    const { dailyRotateFile: file }: any = await System.serverLogger.queryLogs({
+      from: new Date().valueOf() - properties.minutes * 60 * 1000,
+      until: new Date()
+    });
+    return { file };
+  }
   //
   // ALL LOGGERS
   //

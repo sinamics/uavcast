@@ -37,6 +37,7 @@ export type Query = {
   getTempLog: WinstonResponse;
   getNetworkLog: NetworkLoggDataResponse;
   getCpuLog: WinstonResponse;
+  getServerLog: WinstonResponse;
   cameraData: CameraResponse;
 };
 
@@ -62,6 +63,11 @@ export type QueryGetNetworkLogArgs = {
 
 
 export type QueryGetCpuLogArgs = {
+  properties: LogProperties;
+};
+
+
+export type QueryGetServerLogArgs = {
   properties: LogProperties;
 };
 
@@ -1207,6 +1213,22 @@ export type GetNetworkLogQuery = (
         { __typename?: 'NetworkLoggDataPropertiesValues' }
         & Pick<NetworkLoggDataPropertiesValues, 'iface' | 'rx_bytes' | 'tx_bytes' | 'rx_sec' | 'tx_sec'>
       )>> }
+    )>> }
+  ) }
+);
+
+export type GetServerLogQueryVariables = Exact<{
+  properties: LogProperties;
+}>;
+
+
+export type GetServerLogQuery = (
+  { __typename?: 'Query' }
+  & { getServerLog: (
+    { __typename?: 'WinstonResponse' }
+    & { file?: Maybe<Array<(
+      { __typename?: 'WinstonProperties' }
+      & Pick<WinstonProperties, 'timestamp' | 'message'>
     )>> }
   ) }
 );
@@ -2657,6 +2679,42 @@ export function useGetNetworkLogLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetNetworkLogQueryHookResult = ReturnType<typeof useGetNetworkLogQuery>;
 export type GetNetworkLogLazyQueryHookResult = ReturnType<typeof useGetNetworkLogLazyQuery>;
 export type GetNetworkLogQueryResult = Apollo.QueryResult<GetNetworkLogQuery, GetNetworkLogQueryVariables>;
+export const GetServerLogDocument = gql`
+    query getServerLog($properties: LogProperties!) {
+  getServerLog(properties: $properties) {
+    file {
+      timestamp
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetServerLogQuery__
+ *
+ * To run a query within a React component, call `useGetServerLogQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetServerLogQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetServerLogQuery({
+ *   variables: {
+ *      properties: // value for 'properties'
+ *   },
+ * });
+ */
+export function useGetServerLogQuery(baseOptions: Apollo.QueryHookOptions<GetServerLogQuery, GetServerLogQueryVariables>) {
+        return Apollo.useQuery<GetServerLogQuery, GetServerLogQueryVariables>(GetServerLogDocument, baseOptions);
+      }
+export function useGetServerLogLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetServerLogQuery, GetServerLogQueryVariables>) {
+          return Apollo.useLazyQuery<GetServerLogQuery, GetServerLogQueryVariables>(GetServerLogDocument, baseOptions);
+        }
+export type GetServerLogQueryHookResult = ReturnType<typeof useGetServerLogQuery>;
+export type GetServerLogLazyQueryHookResult = ReturnType<typeof useGetServerLogLazyQuery>;
+export type GetServerLogQueryResult = Apollo.QueryResult<GetServerLogQuery, GetServerLogQueryVariables>;
 export const GetCpuLogDocument = gql`
     query getCpuLog($properties: LogProperties!) {
   getCpuLog(properties: $properties) {
