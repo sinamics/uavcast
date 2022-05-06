@@ -93,7 +93,8 @@ export class Logviewer {
     const System = SystemLogger.getLogger();
     const { dailyRotateFile: file }: any = await System.dockerLogger.queryLogs({
       from: new Date().valueOf() - properties.minutes * 60 * 1000,
-      until: new Date()
+      until: new Date(),
+      limit: properties.limit
     });
     return { file };
   }
@@ -103,7 +104,8 @@ export class Logviewer {
     const System = SystemLogger.getLogger();
     const { dailyRotateFile: file }: any = await System.serverLogger.queryLogs({
       from: new Date().valueOf() - properties.minutes * 60 * 1000,
-      until: new Date()
+      until: new Date(),
+      limit: properties.limit
     });
     return { file };
   }

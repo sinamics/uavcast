@@ -5,7 +5,7 @@ import { useGetDockerLogMutation } from '../../../graphql/generated/dist';
 const DockerLog = () => {
   //get server logs
   const [fetchLog, { data, loading, error }] = useGetDockerLogMutation({
-    variables: { properties: { minutes: 240 } },
+    variables: { properties: { minutes: 240, limit: 35 } },
     fetchPolicy: 'network-only'
   });
 

@@ -73,12 +73,12 @@ class DockerLogger {
       );
     }
   }
-  queryLogs({ from, until }: any) {
+  queryLogs({ from, until, limit = Infinity }: any) {
     return new Promise((resolve, reject): any => {
       const options: any = {
         from,
         until,
-        limit: Infinity,
+        limit,
         start: 0,
         order: 'asc',
         fields: ['message', 'path', 'timestamp', 'level', 'data']
