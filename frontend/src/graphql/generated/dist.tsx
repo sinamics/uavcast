@@ -256,6 +256,7 @@ export type Logger = {
 
 export type LogProperties = {
   minutes: Scalars['Float'];
+  limit?: Maybe<Scalars['Float']>;
 };
 
 export type WinstonResponse = {

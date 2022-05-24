@@ -108,4 +108,6 @@ docker run --restart unless-stopped --name uavcast -d \
 
 ### Copyright and License
 
-uavcast is provided under the [GNU Affero General Public License v3.0](https://github.com/sinamics/uavcast/blob/main/LICENSE).
+uavcast is provided under the [the 3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause).  
+All license notes are listed in our documentation.
+[https://docs.uavmatrix.com/5.x/libraries/](https://docs.uavmatrix.com/5.x/libraries/)

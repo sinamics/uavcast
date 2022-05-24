@@ -34,6 +34,9 @@ export class LogParametersInput {
 export class LogProperties {
   @Field()
   minutes: number;
+
+  @Field({ nullable: true })
+  limit: number;
 }
 
 @InputType()

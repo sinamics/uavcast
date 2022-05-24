@@ -9,7 +9,7 @@ const ServerLog = () => {
     loading,
     error
   } = useGetServerLogQuery({
-    variables: { properties: { minutes: 240 } },
+    variables: { properties: { minutes: 240, limit: 35 } },
     fetchPolicy: 'network-only'
   });
 
