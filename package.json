@@ -6,5 +6,6 @@
     "install": "concurrently \"cd frontend && npm install\" \"cd backend && npm install\" ",
     "codegen": "cd frontend && npm run codegen"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "license": "BSD-3-Clause"
 }
