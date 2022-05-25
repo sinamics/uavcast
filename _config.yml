@@ -1,1 +1,9 @@
 theme: jekyll-theme-cayman
+title: uavcast
+tagline: uav companion software
+description: provides an easier method for streaming mavlink (telemetry) data and video over a defined network
+author: Bernt Christian Egeland
+url: https://sinamics.github.io/uavcast/
+twitter:
+  username: BerntChris
+  card: summary_large_image
