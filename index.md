@@ -4,15 +4,15 @@
 [![Release](https://img.shields.io/github/v/release/sinamics/uavcast.svg)](https://github.com/sinamics/uavcast/releases/latest)
 [![Docker Pulls](https://img.shields.io/docker/pulls/sinamics/uavcast.svg)](https://hub.docker.com/r/sinamics/uavcast/)
 
-# uavcast - companion software for remote :helicopter: :boat: :red_car:
+# uavcast - companion software for remote uav vehicles
 
 uavcast is an application that provides an easy method for streaming mavlink (telemetry) data and video over a LTE/4G or WiFi network.
 
-:warning: This project is still in development and does not have a stabel version yet. Feel free to make improvements and provide a PR.
+This project is still in development and does not have a stabel version yet. Feel free to make improvements and provide a PR.
 
 <br />
 
-## :whale: Installation
+## Installation
 
 Install latest uavcast version on Rasperry PI, Jetson, or any <kbd>arm/v7</kbd> <kbd>arm64</kbd> <kbd>amd64</kbd> device:
 
@@ -20,33 +20,33 @@ Install latest uavcast version on Rasperry PI, Jetson, or any <kbd>arm/v7</kbd> 
 
 <br />
 
-## :notebook: Documentation
+## Documentation
 
 https://docs.uavmatrix.com/5.x/
 
 <br />
 
-## :hammer: Codebase
+## Codebase
 
-:white_check_mark: Express nodejs (Typescript)\
-:white_check_mark: Typeorm && sqlite3 database\
-:white_check_mark: React (Typescript)\
-:white_check_mark: Semantic-ui-react\
-:white_check_mark: graphql / type-graphql && codegen
+Express nodejs (Typescript)\
+Typeorm && sqlite3 database\
+React (Typescript)\
+Semantic-ui-react\
+graphql / type-graphql && codegen
 
 <br />
 
-## :wrench: Developer Instructions
+## Developer Instructions
 
 ### Prerequisites
 
-:warning: These packages needs to be installed
+These packages needs to be installed
 
-:heavy_plus_sign: Docker\
-:heavy_plus_sign: Docker Compose\
-:heavy_plus_sign: Visual Studio Code
+Docker\
+Docker Compose\
+Visual Studio Code
 
-### :computer: Open the repo with Visual Studio Code
+### Open the repo with Visual Studio Code
 
 Upon opening, you should be prompted to open the project in a **remote container**. This will build a container on top of the base uavcast container with all the development dependencies installed. This ensures everyone uses a consistent development environment without the need to install any dependencies on your host machine.
 
@@ -61,9 +61,9 @@ After starting the container for the first time, it will install some additional
 
 VSCode will start the docker compose file for you and open a terminal window connected to `/app/uavcast` folder.
 
-:heavy_minus_sign: Run `cd backend && npm install`\
-:heavy_minus_sign: Run `cd frontend && npm install`\
-:heavy_minus_sign: Run `npm start` from the project root to start both frontend & backend.
+Run `cd backend && npm install`\
+Run `cd frontend && npm install`\
+Run `npm start` from the project root to start both frontend & backend.
 
 ### Supervisor
 
