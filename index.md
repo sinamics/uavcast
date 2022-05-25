@@ -4,25 +4,23 @@
 [![Release](https://img.shields.io/github/v/release/sinamics/uavcast.svg)](https://github.com/sinamics/uavcast/releases/latest)
 [![Docker Pulls](https://img.shields.io/docker/pulls/sinamics/uavcast.svg)](https://hub.docker.com/r/sinamics/uavcast/)
 
+# Installation
+
+Install latest uavcast version on Rasperry PI, Jetson, or any <kbd>arm/v7</kbd> <kbd>arm64</kbd> <kbd>amd64</kbd> device:
+
+`curl -s http://install.uavmatrix.com/next/ | sudo bash`
+
+
+# Documentation
+
+[https://docs.uavmatrix.com/5.x/](https://docs.uavmatrix.com/5.x/)
+
+
 # uavcast - companion software for remote uav vehicles
 
 uavcast is an application that provides an easy method for streaming mavlink (telemetry) data and video over a LTE/4G or WiFi network.
 
 This project is still in development and does not have a stabel version yet. Feel free to make improvements and provide a PR.
-
-<br />
-
-## Installation
-
-Install latest uavcast version on Rasperry PI, Jetson, or any <kbd>arm/v7</kbd> <kbd>arm64</kbd> <kbd>amd64</kbd> device:
-
-- `curl -s http://install.uavmatrix.com/next/ | sudo bash`
-
-<br />
-
-## Documentation
-
-https://docs.uavmatrix.com/5.x/
 
 <br />
 
