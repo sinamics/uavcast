@@ -38,7 +38,7 @@ export class Logviewer {
   //enabling logging
   @Mutation(() => LoggResponse)
   async setLoggerParameters(@Args() { parameters }: LogParametersInput) {
-    AppLogger.setActiveLogger(parameters);
+    // AppLogger.setActiveLogger(parameters);
     await getLoggerRepository().update(1, { ...parameters });
     return { logs: { ...(await getLoggerRepository().findOne(1)) } };
   }

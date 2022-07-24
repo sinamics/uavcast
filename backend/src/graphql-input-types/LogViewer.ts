@@ -11,16 +11,7 @@ export class LogFileInput {
 @InputType()
 export class LogParameters {
   @Field({ nullable: true })
-  cellSignal: boolean;
-
-  @Field({ nullable: true })
-  satellites: boolean;
-
-  @Field({ nullable: true })
-  altitude: boolean;
-
-  @Field({ nullable: true })
-  resolution: number;
+  debug: boolean;
 }
 
 @InputType()

@@ -361,14 +361,14 @@ std::string jsonToString(JSON_VALUE & doc){
     doc.Accept(writer);
     return std::string(buffer.GetString());
 }
-int Docker::start_container_by_name(rapidjson::Document &create, const std::string& image, bool verbose, const std::string& name, bool logs, bool stream, bool o_stdin, bool o_stdout, bool o_stderr)
+int Docker::start_container_by_name(rapidjson::Document &create, const std::string& image, int debugger, const std::string& name, bool logs, bool stream, bool o_stdin, bool o_stdout, bool o_stderr)
 {
     Logger log;
     Docker client = Docker();
 
     JSON_DOCUMENT create_log;
 
-    if(verbose){
+    if(debugger){
          // pretty print
         rapidjson::StringBuffer buffer;
         rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
@@ -379,7 +379,7 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
 
 
     JSON_DOCUMENT container = client.create_container(create, name);
-    if(verbose)
+    if(debugger)
         log.Info(jsonToString(container).c_str());
 
     assert(container.IsObject());
@@ -405,7 +405,7 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
             log.Info("Done. Image pulled successfully.");
             container = client.create_container(create, name);
 
-            if(verbose)
+            if(debugger)
                 log.Info(jsonToString(container).c_str());
          }
 
@@ -429,7 +429,7 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
             // bool stream = false, bool o_stdin = false, bool o_stdout = false, bool o_stderr = false)
             create_log = client.attach_to_container(container["data"]["Id"].GetString(), logs,stream,o_stdin,o_stdout,o_stderr);
 
-            if(verbose)
+            if(debugger)
                 log.Info(jsonToString(create_log).c_str());
 
             return 0;
@@ -438,14 +438,14 @@ int Docker::start_container_by_name(rapidjson::Document &create, const std::stri
     }
     return 1;
 }
-JSON_DOCUMENT Docker::stop_container_by_name(bool debugger, const std::string& name)
+JSON_DOCUMENT Docker::stop_container_by_name(int debugger, const std::string& name)
 {
     Docker client = Docker();
     Logger log;
 
     JSON_DOCUMENT all_ct = client.list_containers(true);
-    // if(debugger)
-    //     log.Info(jsonToString(all_ct).c_str());
+    if(debugger)
+        log.Info(jsonToString(all_ct).c_str());
 
     rapidjson::Value &v = all_ct;
 

@@ -41,13 +41,13 @@ int Modem::connect(){
     Utils utils;
     Logger log;
 
-    modem_values modem_val;
-    db.get_modem(&modem_val);
+    db_modem db_modem_obj;
+    db.get_modem(&db_modem_obj);
 
     Modem modem;
-    if (modem_val.enableModem)
+    if (db_modem_obj.enableModem)
     {
-        if(modem_val.modemType == "stick"){
+        if(db_modem_obj.modemType == "stick"){
             log.Info("stick modem");
             int res = modem.connectWithModemManager();
             if(res == -1){
@@ -55,8 +55,8 @@ int Modem::connect(){
             }
 
         }
-        if(modem_val.modemType == "hilink"){
-            std::string hilinkInt = std::string("/sbin/ifconfig ") + modem_val.modemInterface +
+        if(db_modem_obj.modemType == "hilink"){
+            std::string hilinkInt = std::string("/sbin/ifconfig ") + db_modem_obj.modemInterface +
                                     std::string(" | grep 'inet' | wc -l");
 
             std::string nic = utils.exec(hilinkInt.c_str());
@@ -74,17 +74,17 @@ int Modem::connectWithModemManager()
 {
     Database db;
     Logger log;
-    modem_values modem_val;
-    db.get_modem(&modem_val);
+    db_modem db_modem_obj;
+    db.get_modem(&db_modem_obj);
 
     log.Info("Starting ModemManager");
 
 
     std::string con_string;
     con_string =
-        std::string("sudo mmcli -m 0 --simple-connect='pin=") + modem_val.pinCode +
-        std::string(",user=") + modem_val.username +
-        std::string(",password=") + modem_val.password +
+        std::string("sudo mmcli -m 0 --simple-connect='pin=") + db_modem_obj.pinCode +
+        std::string(",user=") + db_modem_obj.username +
+        std::string(",password=") + db_modem_obj.password +
         std::string(",ip-type=ipv4'");
 
 

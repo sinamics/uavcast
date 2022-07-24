@@ -37,7 +37,7 @@ int Database::close_db()
     return -1;
 }
 
-int Database::get_global(global_values *global)
+int Database::get_global(db_global *global)
 {
     if (Database::connect_db() != 0)
     {
@@ -92,7 +92,7 @@ int Database::get_global(global_values *global)
     }
 }
 
-int Database::get_vpn(vpn_values *vpn)
+int Database::get_vpn(db_vpn *vpn)
 {
     if (Database::connect_db() != 0)
     {
@@ -155,7 +155,7 @@ int Database::get_vpn(vpn_values *vpn)
     }
 }
 
-int Database::get_modem(modem_values *modem)
+int Database::get_modem(db_modem *modem)
 {
     if (Database::connect_db() != 0)
     {
@@ -233,7 +233,7 @@ int Database::get_modem(modem_values *modem)
         return -1;
     }
 }
-int Database::get_camera(camera_values *camera)
+int Database::get_camera(db_camera *camera)
 {
     if (Database::connect_db() != 0)
     {
@@ -351,7 +351,7 @@ EndpointRecords Database::get_endpoints()
 
     sqlite3_bind_int(stmt, 1, 16); /* 1 */
 
-    endpoint_values endP;
+    db_endpoint endP;
 
     EndpointRecords endpArray;
 
@@ -415,7 +415,7 @@ FlightControllerRecords Database::get_flightcontroller()
 
     sqlite3_bind_int(stmt, 1, 16); /* 1 */
 
-    fc_values fc_ctrl;
+    db_flight_controller fc_ctrl;
 
     FlightControllerRecords fc_record;
 
@@ -464,7 +464,7 @@ FlightControllerRecords Database::get_flightcontroller()
     return fc_record;
 }
 
-int Database::get_application(app_values *app)
+int Database::get_application(db_app *app)
 {
     if (Database::connect_db() != 0)
     {
@@ -489,6 +489,57 @@ int Database::get_application(app_values *app)
             {
                 // std::cout << sqlite3_column_int(stmt, col) << '\n';
                 app->webPort = sqlite3_column_int(stmt, col);
+            }
+        }
+    }
+    Database::close_db();
+    switch (rc)
+    {
+    case SQLITE_DONE:
+    case SQLITE_OK:
+        // printf("\nFetched Modem values\n");
+        return 0;
+        break;
+    case SQLITE_ERROR:
+        // printf("\nSQL error or missing database\n");
+        return -1;
+        break;
+    case SQLITE_MISUSE:
+        // printf("\nLibrary used incorrectly\n");
+        return -1;
+        break;
+    default:
+        // printf("\nError code: %i.\nPlease advise Sqlite error codes (http://www.sqlite.org/c3ref/c_abort.html)", rc);
+        return -1;
+    }
+}
+
+
+int Database::get_logger(db_logger *log)
+{
+    if (Database::connect_db() != 0)
+    {
+        std::cout << "Database not ready!" << '\n';
+        return {};
+    }
+
+    int rc;
+    const char *sql = "SELECT * FROM logger";
+    sqlite3_stmt *stmt;
+
+    sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    sqlite3_bind_int(stmt, 1, 16); /* 1 */
+
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+    {
+
+        // std::cout << sqlite3_column_count(stmt) << '\n';
+        for (int col = 0; col < sqlite3_column_count(stmt); col++)
+        {
+            if (strcmp(sqlite3_column_name(stmt, col), "debug") == 0)
+            {
+                // std::cout << sqlite3_column_int(stmt, col) << '\n';
+                log->debug = sqlite3_column_int(stmt, col);
             }
         }
     }

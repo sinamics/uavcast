@@ -246,12 +246,7 @@ export type LoggResponse = {
 export type Logger = {
   __typename?: 'Logger';
   id: Scalars['ID'];
-  resolution: Scalars['Float'];
-  datetime: Scalars['DateTime'];
-  logtemperature: Scalars['Boolean'];
-  cellSignal: Scalars['Boolean'];
-  satellites: Scalars['Boolean'];
-  altitude: Scalars['Boolean'];
+  debug: Scalars['Boolean'];
 };
 
 export type LogProperties = {
@@ -302,7 +297,7 @@ export type Camera = {
   __typename?: 'Camera';
   id: Scalars['ID'];
   enableCamera: Scalars['Boolean'];
-  key: Scalars['String'];
+  key?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   path: Scalars['String'];
   protocol: Scalars['String'];
@@ -534,10 +529,7 @@ export type FcProperties = {
 };
 
 export type LogParameters = {
-  cellSignal?: Maybe<Scalars['Boolean']>;
-  satellites?: Maybe<Scalars['Boolean']>;
-  altitude?: Maybe<Scalars['Boolean']>;
-  resolution?: Maybe<Scalars['Float']>;
+  debug?: Maybe<Scalars['Boolean']>;
 };
 
 export type CameraProperties = {
@@ -981,7 +973,7 @@ export type SetLoggerParametersMutation = (
     { __typename?: 'LoggResponse' }
     & { logs?: Maybe<(
       { __typename?: 'Logger' }
-      & Pick<Logger, 'id' | 'cellSignal' | 'satellites' | 'altitude' | 'resolution'>
+      & Pick<Logger, 'id' | 'debug'>
     )> }
   ) }
 );
@@ -1264,7 +1256,7 @@ export type GetLoggerParametersQuery = (
     { __typename?: 'LoggResponse' }
     & { logs?: Maybe<(
       { __typename?: 'Logger' }
-      & Pick<Logger, 'id' | 'cellSignal' | 'satellites' | 'altitude' | 'resolution'>
+      & Pick<Logger, 'id' | 'debug'>
     )> }
   ) }
 );
@@ -2066,10 +2058,7 @@ export const SetLoggerParametersDocument = gql`
   setLoggerParameters(parameters: $parameters) {
     logs {
       id
-      cellSignal
-      satellites
-      altitude
-      resolution
+      debug
     }
   }
 }
@@ -2768,10 +2757,7 @@ export const GetLoggerParametersDocument = gql`
   getLoggerParameters {
     logs {
       id
-      cellSignal
-      satellites
-      altitude
-      resolution
+      debug
     }
   }
 }

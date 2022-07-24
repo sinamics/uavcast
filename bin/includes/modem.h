@@ -8,5 +8,5 @@ public:
     std::string exec(const char *cmd);
     int connectWithModemManager();
     int connect();
-    std::string get_modem(modem_values *modem);
+    std::string get_modem(db_modem *modem);
 };

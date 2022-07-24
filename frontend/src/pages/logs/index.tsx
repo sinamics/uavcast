@@ -1,6 +1,7 @@
 import { Card, Container, Divider, Grid, Header } from 'semantic-ui-react';
 import LoggerDownload from './containers/logger-download';
 import PruneLogs from './containers/logger-delete';
+import DebugMode from './containers/logger-debug';
 
 const Logs = () => {
   return (
@@ -14,6 +15,8 @@ const Logs = () => {
               </Grid.Column>
             </Card.Content>
             <Card.Content>
+              <DebugMode />
+              <Divider horizontal>Download</Divider>
               <LoggerDownload />
               <Divider horizontal>Prune Files</Divider>
               <PruneLogs />

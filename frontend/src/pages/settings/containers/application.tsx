@@ -31,7 +31,7 @@ const Application = () => {
       </Grid.Column>
       <Grid.Column computer={8} mobile={16}>
         <label className='switch switch-text'>
-          <input name='telem_enable' type='checkbox' checked={DarkTheme} className='switch-input' onChange={toggleTheme} />
+          <input name='dark_mode' type='checkbox' checked={DarkTheme} className='switch-input' onChange={toggleTheme} />
           <span className={themeClass} data-on='On' data-off='Off' />
           <span className='switch-handle' />
         </label>
