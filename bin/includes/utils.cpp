@@ -256,3 +256,11 @@ std::vector<std::string> Utils::local_ip()
     if (ifAddrStruct!=NULL) freeifaddrs(ifAddrStruct);
     return ip_list;
 }
+
+std::string Utils::trim(std::string str)
+{
+    if (!str.empty() && str[str.length()-1] == '\n') {
+        str.erase(str.length()-1);
+    }
+    return str;
+}

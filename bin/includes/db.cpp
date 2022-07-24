@@ -255,9 +255,13 @@ int Database::get_camera(camera_values *camera)
         for (int col = 0; col < sqlite3_column_count(stmt); col++)
         {
             // std::cout << sqlite3_column_name(stmt, col) << '\n';
-            if (strcmp(sqlite3_column_name(stmt, col), "cameraType") == 0)
+            if (strcmp(sqlite3_column_name(stmt, col), "name") == 0)
             {
-                camera->cameraType = (char *)sqlite3_column_text(stmt, col);
+                camera->name = (char *)sqlite3_column_text(stmt, col);
+            }
+            if (strcmp(sqlite3_column_name(stmt, col), "path") == 0)
+            {
+                camera->path = (char *)sqlite3_column_text(stmt, col);
             }
             if (strcmp(sqlite3_column_name(stmt, col), "enableCamera") == 0)
             {

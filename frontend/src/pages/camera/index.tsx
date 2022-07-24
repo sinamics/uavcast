@@ -4,7 +4,7 @@ import RaspberryConsole from '../../components/CodeMirror';
 import { Camera_StdoutDocument, useCameraDataQuery, useGetDockerLogMutation } from '../../graphql/generated/dist';
 import VideoHelp from './components/help';
 import BitratePrSecond from './containers/bitratePrSecond';
-import CameraType from './containers/cameraType';
+import CameraType from './containers/cameraSelect';
 import CameraFooter from './containers/footer';
 import FramesPrSecond from './containers/framesPrSecond';
 import CameraProtocol from './containers/protocol';

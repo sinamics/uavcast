@@ -22,9 +22,6 @@ export class Caps {
 @ObjectType()
 export class AvailableCams {
   @Field(() => String)
-  device: string;
-
-  @Field(() => String)
   value: string;
 
   @Field(() => String)

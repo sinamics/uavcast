@@ -19,6 +19,7 @@
 
 int Camera::rtsp_docker_start()
 {
+    // https://github.com/mpromonet/v4l2rtspserver
     const std::string container_image = "mpromonet/v4l2rtspserver:v0.2.4";
     const std::string container_name = "rtsp_server";
     bool debugger = false;
@@ -41,7 +42,7 @@ int Camera::rtsp_docker_start()
     strcpy(char_res, str_res.c_str());
 
     rapidjson::Value resolution;
-    resolution.SetString(char_res, str_res.length()); // ok
+    resolution.SetString(char_res, str_res.length());
 
     rapidjson::Value cmd(rapidjson::kArrayType);
 
@@ -63,6 +64,7 @@ int Camera::rtsp_docker_start()
     hostConfig.AddMember("Privileged", true , allocator);
     hostConfig.AddMember("AutoRemove", true , allocator);
     hostConfig.AddMember("NetworkMode", "host" , allocator);
+
 
     // add hostconfig to doc
     document.AddMember("HostConfig", hostConfig, allocator);
@@ -96,7 +98,7 @@ void find(rapidjson::Value &v, const char* name) {
 int Camera::gst_docker_start()
 {
     // enable to see more verbose output from docker
-    bool debugger = false;
+    bool debugger = true;
 
     bool container_logs = true;
     bool container_stream = false;
@@ -125,7 +127,6 @@ int Camera::gst_docker_start()
     // TODO
     std::string pipeline_str;
 
-
     EndpointRecords endpoints = db.get_endpoints();
     std::string clients;
     // map clients
@@ -151,7 +152,7 @@ int Camera::gst_docker_start()
     char res_height[res_arr[1].length()];
     strcpy(res_height, res_arr[1].c_str());
 
-    if (camera_val.cameraType == "custom")
+    if (camera_val.path == "custom_pipeline")
     {
         char *ctm_ptr;
         char ctm_pipe[camera_val.customPipeline.length() + 1];
@@ -166,6 +167,7 @@ int Camera::gst_docker_start()
         goto docker_config;
     }
 
+
     if (clients.empty())
     {
         log.Error("no camera clients found!.. process stopped!");
@@ -173,9 +175,8 @@ int Camera::gst_docker_start()
         return -1;
     }
 
-
     cmd.PushBack("v4l2src", allocator);
-    cmd.PushBack(rapidjson::Value("device=" + camera_val.cameraType, document.GetAllocator()).Move(), allocator);
+    cmd.PushBack(rapidjson::Value("device=" + camera_val.path, document.GetAllocator()).Move(), allocator);
     // cmd.PushBack("!", allocator);
     // cmd.PushBack("rotate", allocator);
     // cmd.PushBack(rapidjson::Value("angle=" + std::to_string(camera_val.rotation * M_PI / 180 ), document.GetAllocator()).Move(), allocator);
@@ -256,8 +257,8 @@ int Camera::initialize()
         log.Info("Camera not enabled, exiting!");
         return 1;
     }
-    if(camera_val.cameraType == "custom") {
-        log.Info("custom, loading pipeline");
+    if(camera_val.path == "custom_pipeline") {
+        log.Info("custom_pipeline, loading pipeline");
         return camera.gst_docker_start();
     }
     if(camera_val.protocol == "rtsp") {

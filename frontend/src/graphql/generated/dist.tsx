@@ -302,7 +302,8 @@ export type Camera = {
   __typename?: 'Camera';
   id: Scalars['ID'];
   enableCamera: Scalars['Boolean'];
-  cameraType: Scalars['String'];
+  name: Scalars['String'];
+  path: Scalars['String'];
   protocol: Scalars['String'];
   resolution: Scalars['String'];
   customPipeline: Scalars['String'];
@@ -318,7 +319,6 @@ export type Camera = {
 
 export type AvailableCams = {
   __typename?: 'AvailableCams';
-  device: Scalars['String'];
   value: Scalars['String'];
   text: Scalars['String'];
   caps?: Maybe<Array<Caps>>;
@@ -541,10 +541,12 @@ export type LogParameters = {
 export type CameraProperties = {
   controller?: Maybe<Scalars['String']>;
   protocol?: Maybe<Scalars['String']>;
-  cameraType?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  path?: Maybe<Scalars['String']>;
   resolution?: Maybe<Scalars['String']>;
   enableCamera?: Maybe<Scalars['Boolean']>;
   customPipeline?: Maybe<Scalars['String']>;
+  customAddress?: Maybe<Scalars['String']>;
   framesPrSecond?: Maybe<Scalars['Float']>;
   bitratePrSecond?: Maybe<Scalars['Float']>;
   contrast?: Maybe<Scalars['Float']>;
@@ -793,10 +795,10 @@ export type UpdateCameraMutation = (
     { __typename?: 'CameraResponse' }
     & { database?: Maybe<(
       { __typename?: 'Camera' }
-      & Pick<Camera, 'id' | 'cameraType' | 'protocol' | 'resolution' | 'enableCamera' | 'customPipeline' | 'framesPrSecond' | 'bitratePrSecond' | 'contrast' | 'rotation' | 'brightness' | 'whiteBalance' | 'flipCamera'>
+      & Pick<Camera, 'id' | 'name' | 'path' | 'protocol' | 'resolution' | 'enableCamera' | 'customPipeline' | 'framesPrSecond' | 'bitratePrSecond' | 'contrast' | 'rotation' | 'brightness' | 'whiteBalance' | 'flipCamera'>
     )>, availableCams?: Maybe<Array<(
       { __typename?: 'AvailableCams' }
-      & Pick<AvailableCams, 'device' | 'value' | 'text'>
+      & Pick<AvailableCams, 'value' | 'text'>
       & { caps?: Maybe<Array<(
         { __typename?: 'Caps' }
         & Pick<Caps, 'value' | 'text' | 'height' | 'width' | 'format'>
@@ -814,10 +816,10 @@ export type ResetCameraDatabaseMutation = (
     { __typename?: 'CameraResponse' }
     & { database?: Maybe<(
       { __typename?: 'Camera' }
-      & Pick<Camera, 'id' | 'cameraType' | 'protocol' | 'resolution' | 'enableCamera' | 'customPipeline' | 'framesPrSecond' | 'bitratePrSecond' | 'contrast' | 'rotation' | 'brightness' | 'whiteBalance' | 'flipCamera'>
+      & Pick<Camera, 'id' | 'name' | 'path' | 'protocol' | 'resolution' | 'enableCamera' | 'customPipeline' | 'framesPrSecond' | 'bitratePrSecond' | 'contrast' | 'rotation' | 'brightness' | 'whiteBalance' | 'flipCamera'>
     )>, availableCams?: Maybe<Array<(
       { __typename?: 'AvailableCams' }
-      & Pick<AvailableCams, 'device' | 'value' | 'text'>
+      & Pick<AvailableCams, 'value' | 'text'>
       & { caps?: Maybe<Array<(
         { __typename?: 'Caps' }
         & Pick<Caps, 'value' | 'text' | 'height' | 'width' | 'format'>
@@ -1118,10 +1120,10 @@ export type CameraDataQuery = (
     { __typename?: 'CameraResponse' }
     & { database?: Maybe<(
       { __typename?: 'Camera' }
-      & Pick<Camera, 'id' | 'cameraType' | 'protocol' | 'resolution' | 'enableCamera' | 'customPipeline' | 'framesPrSecond' | 'bitratePrSecond' | 'contrast' | 'rotation' | 'brightness' | 'whiteBalance' | 'flipCamera'>
+      & Pick<Camera, 'id' | 'name' | 'path' | 'protocol' | 'resolution' | 'enableCamera' | 'customPipeline' | 'framesPrSecond' | 'bitratePrSecond' | 'contrast' | 'rotation' | 'brightness' | 'whiteBalance' | 'flipCamera'>
     )>, availableCams?: Maybe<Array<(
       { __typename?: 'AvailableCams' }
-      & Pick<AvailableCams, 'device' | 'value' | 'text'>
+      & Pick<AvailableCams, 'value' | 'text'>
       & { caps?: Maybe<Array<(
         { __typename?: 'Caps' }
         & Pick<Caps, 'value' | 'text' | 'height' | 'width' | 'format'>
@@ -1575,7 +1577,8 @@ export const UpdateCameraDocument = gql`
   updateCamera(properties: $properties) {
     database {
       id
-      cameraType
+      name
+      path
       protocol
       resolution
       enableCamera
@@ -1589,7 +1592,6 @@ export const UpdateCameraDocument = gql`
       flipCamera
     }
     availableCams {
-      device
       value
       text
       caps {
@@ -1633,7 +1635,8 @@ export const ResetCameraDatabaseDocument = gql`
   resetCameraDatabase {
     database {
       id
-      cameraType
+      name
+      path
       protocol
       resolution
       enableCamera
@@ -1647,7 +1650,6 @@ export const ResetCameraDatabaseDocument = gql`
       flipCamera
     }
     availableCams {
-      device
       value
       text
       caps {
@@ -2402,7 +2404,8 @@ export const CameraDataDocument = gql`
   cameraData {
     database {
       id
-      cameraType
+      name
+      path
       protocol
       resolution
       enableCamera
@@ -2416,7 +2419,6 @@ export const CameraDataDocument = gql`
       flipCamera
     }
     availableCams {
-      device
       value
       text
       caps {

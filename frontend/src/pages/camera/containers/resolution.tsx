@@ -29,6 +29,7 @@ const CameraResolution = () => {
           className={`icon border ${storeDataLoading ? 'border-danger' : 'border-success'}`}
           floating
           labeled
+          disabled={!resOpt?.caps}
           value={resolution}
           icon={'paper plane outline'}
           options={resOpt?.caps}

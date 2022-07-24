@@ -20,7 +20,7 @@ const DockerLog = winston.loggers.get('docker');
 export class CameraResolver {
   @Mutation(() => CameraResponse)
   async updateCamera(@Args() { properties }: CameraInput): Promise<CameraResponse> {
-    const camera = await getCameraRepository().findOne(1);
+    const camera: any = await getCameraRepository().findOne(1);
     Object.assign(camera, properties);
 
     if (camera) await getCameraRepository().save(camera);
@@ -43,8 +43,6 @@ export class CameraResolver {
     switch (camera?.protocol) {
       case 'rtsp':
       case 'udp':
-        // const cmd = ['-u', 'uavcast', '-G', `${camera?.resolution}x${camera?.framesPrSecond}`, camera?.cameraType];
-
         kernelCommandsCallback(`/app/uavcast/bin/build/uav_main -v ${playstatus}`, null, true, (out: any) => {
           DockerLog.info({ message: out.toString(), path: __filename });
           stdioutMsg = stdioutMsg.concat(out.toString());
@@ -81,7 +79,8 @@ export class CameraResolver {
       }
     });
 
-    availableCams.push({ key: 'custom', value: 'custom', text: 'Custom Pipeline', device: 'custom' });
+    availableCams.push({ id: 'custom_pipeline', value: 'custom_pipeline', text: 'Custom Pipeline' });
+    availableCams.push({ id: 'custom_path', value: '', text: 'Custom Path' });
 
     const database = await getCameraRepository().findOne(1);
 

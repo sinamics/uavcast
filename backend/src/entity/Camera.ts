@@ -18,7 +18,11 @@ export class Camera {
 
   @Field()
   @Column({ type: String, default: 'custom', nullable: false })
-  cameraType: string;
+  name: string;
+
+  @Field()
+  @Column({ type: String, default: '/dev/video0', nullable: false })
+  path: string;
 
   @Field()
   @Column({ type: String, default: 'udp', nullable: false })

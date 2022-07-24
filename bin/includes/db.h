@@ -41,7 +41,8 @@ struct vpn_values
 struct camera_values
 {
     int id;
-    std::string cameraType;
+    std::string path;
+    std::string name;
     int enableCamera;
     std::string protocol;
     std::string resolution;

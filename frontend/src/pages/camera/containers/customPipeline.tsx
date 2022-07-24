@@ -4,6 +4,7 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
 import 'codemirror/mode/javascript/javascript';
 import { useCameraDataQuery, useUpdateCameraMutation } from '../../../graphql/generated/dist';
+import { Form, Header } from 'semantic-ui-react';
 
 const CustomCommands = () => {
   const [state, setState] = useState<any>();
@@ -22,20 +23,23 @@ const CustomCommands = () => {
   if (camLoading || loading) return <div />;
 
   return (
-    <div onBlur={onSave}>
-      <CodeMirror
-        value={state}
-        onBeforeChange={(editor, data, value) => setState(value)}
-        options={{
-          lineNumbers: true,
-          autoFocus: true,
-          lineWrapping: true,
-          readOnly: false,
-          mode: 'javascript',
-          theme: 'dracula'
-        }}
-      />
-    </div>
+    <Form.Field>
+      <Header as='h5' subheader='[Advanced] Add your own gstreamer pipeline.' className='my-2' />
+      <div onBlur={onSave}>
+        <CodeMirror
+          value={state}
+          onBeforeChange={(editor, data, value) => setState(value)}
+          options={{
+            lineNumbers: true,
+            autoFocus: true,
+            lineWrapping: true,
+            readOnly: false,
+            mode: 'javascript',
+            theme: 'dracula'
+          }}
+        />
+      </div>
+    </Form.Field>
   );
 };
 

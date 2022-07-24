@@ -1,17 +1,20 @@
 import React from 'react';
 import { Dropdown, Grid, Header } from 'semantic-ui-react';
 import { useCameraDataQuery, useUpdateCameraMutation } from '../../../graphql/generated/dist';
-import CustomCommands from './customCommand';
+import CustomPipeline from './customPipeline';
+import CustomPath from './customPath';
 
-const CameraType = () => {
+const CameraSelect = () => {
   const { data: { cameraData = {} } = {}, loading: camLoading, refetch }: any = useCameraDataQuery();
   const [storeData, { loading: storeDataLoading }] = useUpdateCameraMutation();
 
   const dropdownHandler = (e: React.SyntheticEvent, data: any) => {
-    storeData({ variables: { properties: { cameraType: data.value } } });
+    const cam_obj = data?.options.filter((o: any) => o.value === data?.value)[0];
+    storeData({ variables: { properties: { name: cam_obj.text, path: cam_obj.value } } });
   };
 
-  const { cameraType } = cameraData?.database || {};
+  const { path, name } = cameraData?.database || {};
+
   return (
     <Grid doubling padded columns={2}>
       <Grid.Column>
@@ -28,17 +31,21 @@ const CameraType = () => {
           className={`icon border ${storeDataLoading ? 'border-danger' : 'border-success'}`}
           floating
           labeled
-          value={cameraType}
+          value={path}
           icon={'paper plane outline'}
           options={cameraData?.availableCams}
           placeholder='Camera Type'
         />
-        {/* Select custom pipeline */}
+        {/*
+            Select custom pipeline.
+            TODO use key identifier!
+        */}
 
-        {cameraType === 'custom' && <CustomCommands />}
+        {name === 'Custom Pipeline' && <CustomPipeline />}
+        {name === 'Custom Path' && <CustomPath />}
       </Grid.Column>
     </Grid>
   );
 };
 
-export default CameraType;
+export default CameraSelect;
