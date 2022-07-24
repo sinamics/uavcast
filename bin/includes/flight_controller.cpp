@@ -8,7 +8,7 @@
 FlightControllerRecords FlightController::get_flight_controller()
 {
     Database db;
-    fc_values fc_value;
+    db_flight_controller fc_value;
     FlightControllerRecords fc_record = db.get_flightcontroller();
 
     return {};

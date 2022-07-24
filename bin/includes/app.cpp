@@ -11,22 +11,22 @@ int App::serverport()
 {
     Utils utils;
     Database db;
-    app_values app;
-    db.get_application(&app);
+    db_app app_obj;
+    db.get_application(&app_obj);
 
-    if(app.webPort < 2 || app.webPort > 65000) {
-        std::cout << ">> Invalid port number " << app.webPort <<
+    if(app_obj.webPort < 2 || app_obj.webPort > 65000) {
+        std::cout << ">> Invalid port number " << app_obj.webPort <<
         " Database does probably not exsist! First startup?" << '\n';
         return 1;
     }
 
     //Change the port number in systemd.
     std::string sed =
-        std::string("sudo sed -ri 's/(SERVER_PORT)(=.*)/\\1=") + std::to_string(app.webPort) +
+        std::string("sudo sed -ri 's/(SERVER_PORT)(=.*)/\\1=") + std::to_string(app_obj.webPort) +
         std::string("\"/' /etc/systemd/system/uavcast-web.service");
 
     utils.exec_p(sed.c_str());
-    std::cout << ">> WebPort changed " << app.webPort << '\n';
+    std::cout << ">> WebPort changed " << app_obj.webPort << '\n';
 
     return 0;
 }

@@ -11,6 +11,9 @@ export class LogFileInput {
 @InputType()
 export class LogParameters {
   @Field({ nullable: true })
+  debug: boolean;
+
+  @Field({ nullable: true })
   cellSignal: boolean;
 
   @Field({ nullable: true })

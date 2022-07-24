@@ -89,6 +89,11 @@ export const fileDownload = (app: any) => {
         const { dailyRotateFile: docker }: any = await System.dockerLogger.queryLogs({ from, until });
         zip.file(`system-docker.log`, JSON.stringify(docker, null, 4));
 
+        // shell.exec('ifconfig > ' + paths.logFolder + '/network.log');
+        // shell.exec('cat /etc/os-release > ' + paths.logFolder + '/os-release.log');
+        // shell.exec('lsusb > ' + paths.logFolder + '/lsusb.log');
+        // shell.exec('dmesg > ' + paths.logFolder + '/dmesg.log');
+
         // Get systemctl logs
         const systemctlPath = '/var/log/journal';
         if (!fs.existsSync(systemctlPath))

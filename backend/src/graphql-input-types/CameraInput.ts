@@ -9,7 +9,13 @@ export class CameraProperties {
   protocol: string;
 
   @Field({ nullable: true })
-  cameraType: string;
+  key: string;
+
+  @Field({ nullable: true })
+  name: string;
+
+  @Field({ nullable: true })
+  path: string;
 
   @Field({ nullable: true })
   resolution: string;
@@ -19,6 +25,9 @@ export class CameraProperties {
 
   @Field({ nullable: true })
   customPipeline: string;
+
+  @Field({ nullable: true })
+  customAddress: string;
 
   @Field({ nullable: true })
   framesPrSecond: number;

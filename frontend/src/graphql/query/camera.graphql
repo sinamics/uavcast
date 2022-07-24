@@ -2,7 +2,9 @@ query cameraData {
   cameraData {
     database {
       id
-      cameraType
+      key
+      name
+      path
       protocol
       resolution
       enableCamera
@@ -16,7 +18,7 @@ query cameraData {
       flipCamera
     }
     availableCams {
-      device
+      key
       value
       text
       caps {

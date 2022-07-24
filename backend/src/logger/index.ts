@@ -7,7 +7,7 @@ import TemperatureLogger from './temperature';
 import ServerLogger from './server';
 import DockerLogger from './docker';
 
-const SystemLogger = {
+const SystemLogger: any = {
   logFolder: paths.logFolder,
   cpuLogger: null as any,
   networkLogger: null as any,
@@ -35,6 +35,7 @@ const SystemLogger = {
           }
         });
       }
+
       this.initilize();
 
       setTimeout(() => {

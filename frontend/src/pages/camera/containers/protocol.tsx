@@ -31,7 +31,6 @@ const CameraProtocol = () => {
           fluid
           button
           onChange={dropdownHandler}
-          name='cameraType'
           className={`icon border ${storeDataLoading ? 'border-danger' : 'border-success'}`}
           floating
           labeled

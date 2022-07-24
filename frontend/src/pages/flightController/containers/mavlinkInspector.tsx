@@ -28,7 +28,7 @@ const MavlinkInspector = () => {
         {message?.heartbeat?.connected ? (
           <Grid stackable padded columns={2}>
             <Grid.Column width={16} style={{ padding: 0 }}>
-              <span className='text-success'>Success. Flight controller has proper connection with RPI</span>
+              <span className='text-success'>Success. We have communication with the Flight Controller</span>
             </Grid.Column>
             <Grid.Column width={8} style={{ padding: 0 }}>
               <span className='text-muted'>Connection:</span>
@@ -65,8 +65,7 @@ const MavlinkInspector = () => {
               <p
                 className='text-danger'
                 dangerouslySetInnerHTML={{
-                  __html:
-                    controller?.connection_type === 'usb' ? definitions.error_messages.usb : definitions.error_messages.gpio
+                  __html: controller?.connection_type === 'usb' ? definitions.error_messages.usb : definitions.error_messages.gpio
                 }}
               />
             </Grid.Column>

@@ -19,16 +19,19 @@
 
 int Camera::rtsp_docker_start()
 {
+    // https://github.com/mpromonet/v4l2rtspserver
     const std::string container_image = "mpromonet/v4l2rtspserver:v0.2.4";
     const std::string container_name = "rtsp_server";
-    bool debugger = false;
 
     Logger log;
     Utils utils;
     Docker client = Docker();
     Database db;
-    camera_values camera_val;
-    db.get_camera(&camera_val);
+    db_camera db_camera_obj;
+    db.get_camera(&db_camera_obj);
+
+    db_logger db_logger_obj;
+    db.get_logger(&db_logger_obj);
 
     rapidjson::Document document;
     JSON_DOCUMENT logs;
@@ -36,12 +39,12 @@ int Camera::rtsp_docker_start()
 
     rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
 
-    std::string str_res = camera_val.resolution + "x" + std::to_string(camera_val.framesPrSecond);
+    std::string str_res = db_camera_obj.resolution + "x" + std::to_string(db_camera_obj.framesPrSecond);
     char char_res[str_res.length()+1];
     strcpy(char_res, str_res.c_str());
 
     rapidjson::Value resolution;
-    resolution.SetString(char_res, str_res.length()); // ok
+    resolution.SetString(char_res, str_res.length());
 
     rapidjson::Value cmd(rapidjson::kArrayType);
 
@@ -64,10 +67,11 @@ int Camera::rtsp_docker_start()
     hostConfig.AddMember("AutoRemove", true , allocator);
     hostConfig.AddMember("NetworkMode", "host" , allocator);
 
+
     // add hostconfig to doc
     document.AddMember("HostConfig", hostConfig, allocator);
 
-    if(client.start_container_by_name(document,container_image, debugger, container_name) == 0)
+    if(client.start_container_by_name(document,container_image, db_logger_obj.debug, container_name) == 0)
     {
         std::vector<std::string> ip_lists;
         log.Info("get stream by using the following rtsp url:\n");
@@ -96,8 +100,6 @@ void find(rapidjson::Value &v, const char* name) {
 int Camera::gst_docker_start()
 {
     // enable to see more verbose output from docker
-    bool debugger = false;
-
     bool container_logs = true;
     bool container_stream = false;
     bool container_o_stdin = false;
@@ -111,8 +113,11 @@ int Camera::gst_docker_start()
     Utils utils;
     Docker client = Docker();
     Database db;
-    camera_values camera_val;
-    db.get_camera(&camera_val);
+    db_logger db_logger_obj;
+    db.get_logger(&db_logger_obj);
+
+    db_camera db_camera_obj;
+    db.get_camera(&db_camera_obj);
 
     rapidjson::Document document;
     JSON_DOCUMENT logs;
@@ -124,7 +129,6 @@ int Camera::gst_docker_start()
 
     // TODO
     std::string pipeline_str;
-
 
     EndpointRecords endpoints = db.get_endpoints();
     std::string clients;
@@ -143,7 +147,7 @@ int Camera::gst_docker_start()
     }
 
     char delimiter = 'x';
-    std::vector<std::string> res_arr = utils.split(camera_val.resolution, delimiter);
+    std::vector<std::string> res_arr = utils.split(db_camera_obj.resolution, delimiter);
 
     char res_width[res_arr[0].length()];
     strcpy(res_width, res_arr[0].c_str());
@@ -151,11 +155,11 @@ int Camera::gst_docker_start()
     char res_height[res_arr[1].length()];
     strcpy(res_height, res_arr[1].c_str());
 
-    if (camera_val.cameraType == "custom")
+    if (db_camera_obj.path == "custom_pipeline")
     {
         char *ctm_ptr;
-        char ctm_pipe[camera_val.customPipeline.length() + 1];
-        strcpy(ctm_pipe, camera_val.customPipeline.c_str());
+        char ctm_pipe[db_camera_obj.customPipeline.length() + 1];
+        strcpy(ctm_pipe, db_camera_obj.customPipeline.c_str());
         ctm_ptr = std::strtok(ctm_pipe, " ");
 
         while (ctm_ptr != NULL)
@@ -166,6 +170,7 @@ int Camera::gst_docker_start()
         goto docker_config;
     }
 
+
     if (clients.empty())
     {
         log.Error("no camera clients found!.. process stopped!");
@@ -173,21 +178,20 @@ int Camera::gst_docker_start()
         return -1;
     }
 
-
     cmd.PushBack("v4l2src", allocator);
-    cmd.PushBack(rapidjson::Value("device=" + camera_val.cameraType, document.GetAllocator()).Move(), allocator);
+    cmd.PushBack(rapidjson::Value("device=" + db_camera_obj.path, document.GetAllocator()).Move(), allocator);
     // cmd.PushBack("!", allocator);
     // cmd.PushBack("rotate", allocator);
-    // cmd.PushBack(rapidjson::Value("angle=" + std::to_string(camera_val.rotation * M_PI / 180 ), document.GetAllocator()).Move(), allocator);
+    // cmd.PushBack(rapidjson::Value("angle=" + std::to_string(db_camera_obj.rotation * M_PI / 180 ), document.GetAllocator()).Move(), allocator);
     cmd.PushBack("!", allocator);
     cmd.PushBack("videobalance", allocator);
-    cmd.PushBack(rapidjson::Value("contrast=" + std::to_string(camera_val.contrast), document.GetAllocator()).Move(), allocator);
-    cmd.PushBack(rapidjson::Value("brightness=" + std::to_string(camera_val.brightness), document.GetAllocator()).Move(), allocator);
+    cmd.PushBack(rapidjson::Value("contrast=" + std::to_string(db_camera_obj.contrast), document.GetAllocator()).Move(), allocator);
+    cmd.PushBack(rapidjson::Value("brightness=" + std::to_string(db_camera_obj.brightness), document.GetAllocator()).Move(), allocator);
     cmd.PushBack("!", allocator);
     cmd.PushBack("videoflip", allocator);
-    cmd.PushBack(rapidjson::Value("method=" + camera_val.flipCamera, document.GetAllocator()).Move(), allocator);
+    cmd.PushBack(rapidjson::Value("method=" + db_camera_obj.flipCamera, document.GetAllocator()).Move(), allocator);
     cmd.PushBack("!", allocator);
-    cmd.PushBack(rapidjson::Value("video/x-raw,framerate=" + std::to_string(camera_val.framesPrSecond) + "/1,width=" + res_arr[0] + ",height=" + res_arr[1], document.GetAllocator()).Move(), allocator);
+    cmd.PushBack(rapidjson::Value("video/x-raw,framerate=" + std::to_string(db_camera_obj.framesPrSecond) + "/1,width=" + res_arr[0] + ",height=" + res_arr[1], document.GetAllocator()).Move(), allocator);
     cmd.PushBack("!", allocator);
     cmd.PushBack("videoflip", allocator);
     cmd.PushBack("video-direction=identity", allocator);
@@ -202,7 +206,7 @@ int Camera::gst_docker_start()
     cmd.PushBack("!", allocator);
     cmd.PushBack("x264enc", allocator);
     cmd.PushBack("tune=zerolatency", allocator);
-    // cmd.PushBack(rapidjson::Value("bitrate=" + std::to_string(camera_val.bitratePrSecond / 1000), document.GetAllocator()).Move(), allocator);
+    // cmd.PushBack(rapidjson::Value("bitrate=" + std::to_string(db_camera_obj.bitratePrSecond / 1000), document.GetAllocator()).Move(), allocator);
     cmd.PushBack("speed-preset=superfast", allocator);
     cmd.PushBack("!", allocator);
     cmd.PushBack("rtph264pay", allocator);
@@ -239,7 +243,7 @@ int Camera::gst_docker_start()
     // add hostconfig to doc
     document.AddMember("HostConfig", hostConfig, allocator);
 
-    client.start_container_by_name(document, container_image, debugger, container_name, container_logs, container_stream,container_o_stdin, container_o_stdout, container_o_stderr);
+    client.start_container_by_name(document, container_image, db_logger_obj.debug, container_name, container_logs, container_stream,container_o_stdin, container_o_stdout, container_o_stderr);
 
     return 0;
 }
@@ -249,22 +253,22 @@ int Camera::initialize()
     Logger log;
     Camera camera;
     Database db;
-    camera_values camera_val;
-    db.get_camera(&camera_val);
+    db_camera db_camera_obj;
+    db.get_camera(&db_camera_obj);
 
-    if(!camera_val.enableCamera) {
+    if(!db_camera_obj.enableCamera) {
         log.Info("Camera not enabled, exiting!");
         return 1;
     }
-    if(camera_val.cameraType == "custom") {
-        log.Info("custom, loading pipeline");
+    if(db_camera_obj.path == "custom_pipeline") {
+        log.Info("custom_pipeline, loading pipeline");
         return camera.gst_docker_start();
     }
-    if(camera_val.protocol == "rtsp") {
+    if(db_camera_obj.protocol == "rtsp") {
         log.Info("rtsp, starting v4l2rtspserver");
         return camera.rtsp_docker_start();
     }
-    if(camera_val.protocol == "udp") {
+    if(db_camera_obj.protocol == "udp") {
         log.Info("udp, starting gstreamer");
         return camera.gst_docker_start();
     }
@@ -272,9 +276,11 @@ int Camera::initialize()
 }
 int Camera::teardown()
 {
-    bool debugger = true;
     Docker client = Docker();
     Logger log;
+    Database db;
+    db_logger db_logger_obj;
+    db.get_logger(&db_logger_obj);
 
     JSON_DOCUMENT all_ct = client.list_containers(true);
     rapidjson::Value &v = all_ct;
@@ -290,7 +296,7 @@ int Camera::teardown()
                     std::string msg = gstname +" running, sending stop signal...";
                     log.Info(msg.c_str());
 
-                    client.stop_container_by_name(debugger, gstname);
+                    client.stop_container_by_name(db_logger_obj.debug, gstname);
                     return 0;
                 }
                  if(v["data"][i]["Names"][0] == "/rtsp_server"){
@@ -298,7 +304,7 @@ int Camera::teardown()
                     std::string msg = rtspname +" running, sending stop signal...";
                     log.Info(msg.c_str());
 
-                    client.stop_container_by_name(debugger, rtspname);
+                    client.stop_container_by_name(db_logger_obj.debug, rtspname);
                     return 0;
                 }
             }

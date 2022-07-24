@@ -24,8 +24,8 @@ const ModemHelp = () => {
                 <Label size='mini' pointing='right'>
                   GPIO
                 </Label>
-                Its very important that both RPI and FC shares the same electrical ground if you have connected your FC to RPI
-                GPIO, serial communication depends on that.
+                Its very important that this device and your Flight Controller shares the same electrical ground if you have
+                connected your FC to GPIO, serial communication depends on that.
                 {/* </p> */}
               </List.Description>
             </List.Content>
@@ -39,8 +39,8 @@ const ModemHelp = () => {
                 <Label size='mini' pointing='right'>
                   USB
                 </Label>
-                If you experience issues using USB cable, make sure you have removed all other USB devices from RPI. Some USB
-                devices could cause conflicts.
+                If you experience issues using USB cable, make sure you have removed all other USB devices. Some USB`s could cause
+                conflicts.
                 {/* </p> */}
               </List.Description>
             </List.Content>

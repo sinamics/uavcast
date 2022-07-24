@@ -145,9 +145,24 @@ const UlogViewer = () => {
             <Header as='h4' content='Parameters' />
             {saveParamLoading && <Spinner size='tiny' />}
             <div className='d-flex flex-column'>
-              <Checkbox checked={cellSignal} name='cellSignal' onChange={logParamHandler} label={<label>Cell Signal</label>} />
-              <Checkbox checked={satellites} name='satellites' onChange={logParamHandler} label={<label>Satellites</label>} />
-              <Checkbox checked={altitude} name='altitude' onChange={logParamHandler} label={<label>Altitude</label>} />
+              <Checkbox
+                checked={cellSignal}
+                name='cellSignal'
+                onChange={logParamHandler}
+                label={<label className='themeText'>Cell Signal</label>}
+              />
+              <Checkbox
+                checked={satellites}
+                name='satellites'
+                onChange={logParamHandler}
+                label={<label className='themeText'>Satellites</label>}
+              />
+              <Checkbox
+                checked={altitude}
+                name='altitude'
+                onChange={logParamHandler}
+                label={<label className='themeText'>Altitude</label>}
+              />
             </div>
           </Grid.Column>
           <Grid.Column computer={4}>
@@ -156,10 +171,13 @@ const UlogViewer = () => {
               name='resolution'
               onChange={logDropDownHandler}
               placeholder='Resolution'
+              className={`icon border border-success`}
+              icon={'paper plane outline'}
               value={resolution}
               loading={saveParamLoading}
+              labeled
               fluid
-              selection
+              button
               options={[
                 { key: '1', text: '1 Hz', value: 1.0 },
                 { key: '2', text: '1.5 Hz', value: 1.5 },

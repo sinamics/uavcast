@@ -17,4 +17,5 @@ public:
     bool file_exsist(const std::string &name);
     std::vector<std::string> split(const std::string str, char delim);
     std::vector<std::string> local_ip();
+    std::string trim(std::string str);
 };

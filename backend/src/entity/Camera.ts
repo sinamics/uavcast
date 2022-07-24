@@ -16,9 +16,17 @@ export class Camera {
   @Column({ type: Boolean, default: false, nullable: false })
   enableCamera: boolean;
 
+  @Field({ nullable: true })
+  @Column({ type: String, default: '', nullable: true })
+  key: string;
+
   @Field()
   @Column({ type: String, default: 'custom', nullable: false })
-  cameraType: string;
+  name: string;
+
+  @Field()
+  @Column({ type: String, default: '/dev/video0', nullable: false })
+  path: string;
 
   @Field()
   @Column({ type: String, default: 'udp', nullable: false })

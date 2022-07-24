@@ -8,20 +8,20 @@ int openvpn()
 {
     Database db;
     Utils utils;
-    
-    vpn_values vpn_val;
-    db.get_vpn(&vpn_val);
+
+    db_vpn db_vpn_obj;
+    db.get_vpn(&db_vpn_obj);
     std::string vpn_connect_str;
         // std::cout << vpn_val.enableVpn << '\n';
 
-    if (vpn_val.serviceProvider == "openvpn")
-    {   
-       
+    if (db_vpn_obj.serviceProvider == "openvpn")
+    {
+
         std::cout << ">> generates configuration files.." << '\n';
-        // Generate password file 
+        // Generate password file
         std::ofstream OpenVpnPassFile("/app/uavcast/etc/login.txt");
-        OpenVpnPassFile << vpn_val.username << "\n";
-        OpenVpnPassFile << vpn_val.password;
+        OpenVpnPassFile << db_vpn_obj.username << "\n";
+        OpenVpnPassFile << db_vpn_obj.password;
         OpenVpnPassFile.close();
 
         vpn_connect_str =

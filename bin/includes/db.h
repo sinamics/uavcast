@@ -4,20 +4,20 @@
 #include <iostream>
 #include "sqlite3.h"
 
-struct global_values
+struct db_global
 {
     int id;
     int useVpn;
     int useModem;
 };
-struct app_values
+struct db_app
 {
     int hasBeenUpdated;
     int remoteVersionFetched;
     int webPort;
 };
 
-struct modem_values
+struct db_modem
 {
     int id;
     int enableModem;
@@ -29,7 +29,7 @@ struct modem_values
     std::string username;
     std::string password;
 };
-struct vpn_values
+struct db_vpn
 {
     int id;
     int enableVpn;
@@ -38,10 +38,11 @@ struct vpn_values
     std::string password;
 };
 
-struct camera_values
+struct db_camera
 {
     int id;
-    std::string cameraType;
+    std::string path;
+    std::string name;
     int enableCamera;
     std::string protocol;
     std::string resolution;
@@ -56,7 +57,7 @@ struct camera_values
     std::string format;
 };
 
-struct fc_values
+struct db_flight_controller
 {
     std::string controller;
     std::string protocol;
@@ -67,7 +68,7 @@ struct fc_values
     int binFlightLog;
 };
 
-struct endpoint_values
+struct db_endpoint
 {
     int telemEnable;
     int moduleActive;
@@ -78,9 +79,15 @@ struct endpoint_values
     int videoEnable;
 };
 
-using EndpointRecords = std::vector<endpoint_values>;
-using FlightControllerRecords = std::vector<fc_values>;
-using VpnRecords = std::vector<vpn_values>;
+struct db_logger
+{
+    int debug;
+};
+
+
+using EndpointRecords = std::vector<db_endpoint>;
+using FlightControllerRecords = std::vector<db_flight_controller>;
+using VpnRecords = std::vector<db_vpn>;
 class Database
 {
 private:
@@ -88,12 +95,14 @@ private:
     int close_db();
 
 public:
-    int get_application(app_values *app);
-    int get_global(global_values *global);
+    int get_application(db_app *app);
+    int get_global(db_global *global);
     // VpnRecords get_vpn();
-    int get_modem(modem_values *modem);
-    int get_vpn(vpn_values *vpn);
-    int get_camera(camera_values *camera);
+    int get_modem(db_modem *modem);
+    int get_vpn(db_vpn *vpn);
+    int get_camera(db_camera *camera);
     EndpointRecords get_endpoints();
     FlightControllerRecords get_flightcontroller();
+    int get_logger(db_logger *log);
+
 };

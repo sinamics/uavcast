@@ -11,6 +11,7 @@ mutation setLoggerParameters($parameters: LogParameters!) {
   setLoggerParameters(parameters: $parameters) {
     logs {
       id
+      debug
       cellSignal
       satellites
       altitude

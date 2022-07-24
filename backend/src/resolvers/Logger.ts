@@ -38,18 +38,20 @@ export class Logviewer {
   //enabling logging
   @Mutation(() => LoggResponse)
   async setLoggerParameters(@Args() { parameters }: LogParametersInput) {
-    AppLogger.setActiveLogger(parameters);
+    // AppLogger.setActiveLogger(parameters);
     await getLoggerRepository().update(1, { ...parameters });
     return { logs: { ...(await getLoggerRepository().findOne(1)) } };
   }
 
   @Mutation(() => Boolean)
   async removeLogfile(@Args() { filename }: LogFileInput) {
-    return AppLogger.deleteFile(filename);
+    AppLogger.deleteFile(filename);
   }
   @Mutation(() => Boolean)
   async removeAllLogfiles() {
-    return AppLogger.deleteAllFiles();
+    return AppLogger.deleteAllFiles()
+      .then(() => true)
+      .catch(() => false);
   }
 
   //
@@ -114,8 +116,11 @@ export class Logviewer {
   //
   @Mutation(() => Boolean)
   async pruneLogFiles(@Args() { service }: PruneLogsInput) {
-    SystemLogger.pruneLogFiles(service)
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err));
+    const System = SystemLogger.getLogger();
+    return (
+      System.pruneLogFiles(service)
+        // eslint-disable-next-line no-console
+        .catch((err: any) => console.log(err))
+    );
   }
 }

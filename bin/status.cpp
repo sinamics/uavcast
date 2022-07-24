@@ -92,15 +92,15 @@ int main()
     }
 
     // Get modem interface and check if online
-    modem_values modem_val;
-    db.get_modem(&modem_val);
+    db_modem db_modem_obj;
+    db.get_modem(&db_modem_obj);
 
-    string pingCmd = "timeout 0.2 ping 8.8.8.8 -q -c1 -w 1 -I " + modem_val.modemInterface + " > /dev/null 2>&1";
+    string pingCmd = "timeout 0.2 ping 8.8.8.8 -q -c1 -w 1 -I " + db_modem_obj.modemInterface + " > /dev/null 2>&1";
     const char *pingC = pingCmd.c_str();
-    // std::cout << modem_val.enableModem << std::endl;
+    // std::cout << db_modem_obj.enableModem << std::endl;
 
-    // if (modem_val.enableModem.empty() == 0 && std::stoi(modem_val.enableModem))
-    if (modem_val.enableModem)
+    // if (db_modem_obj.enableModem.empty() == 0 && std::stoi(db_modem_obj.enableModem))
+    if (db_modem_obj.enableModem)
     {
         if (system(pingC) == 0)
         {
@@ -108,22 +108,22 @@ int main()
         }
     }
 
-    // Get vpn vlaues
-    vpn_values vpn_val;
-    db.get_vpn(&vpn_val);
-    // log.Info(std::to_string(vpn_val.enableVpn).c_str());
+    // Get vpn db values
+    db_vpn db_vpn_obj;
+    db.get_vpn(&db_vpn_obj);
+    // log.Info(std::to_string(db_vpn_obj.enableVpn).c_str());
 
-    // if (vpn_val.enableVpn)
+    // if (db_vpn_obj.enableVpn)
     // {
 
-        if(vpn_val.serviceProvider == "zerotier"){
+        if(db_vpn_obj.serviceProvider == "zerotier"){
             string vpn_active = utils.exec("sudo zerotier-cli listnetworks");
             if (utils.isWordPresent(vpn_active, "OK"))
             {
                 status["vpn"] = true;
             }
         }
-        if(vpn_val.serviceProvider == "openvpn"){
+        if(db_vpn_obj.serviceProvider == "openvpn"){
             string vpn_active = utils.exec("sudo systemctl is-active uavcast-vpn");
             if (utils.isWordPresent(vpn_active, "active"))
             {
