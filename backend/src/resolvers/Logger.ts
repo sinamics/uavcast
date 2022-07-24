@@ -114,8 +114,10 @@ export class Logviewer {
   //
   @Mutation(() => Boolean)
   async pruneLogFiles(@Args() { service }: PruneLogsInput) {
-    SystemLogger.pruneLogFiles(service)
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err));
+    return (
+      SystemLogger.pruneLogFiles(service)
+        // eslint-disable-next-line no-console
+        .catch((err) => console.log(err))
+    );
   }
 }
