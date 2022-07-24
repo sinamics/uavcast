@@ -1,7 +1,7 @@
 import { useSubscription } from '@apollo/client';
 import { Card, Container, Form, Grid, Header } from 'semantic-ui-react';
 import RaspberryConsole from '../../components/CodeMirror';
-import { StdoutDocument, useModemDataQuery } from '../../graphql/generated/dist';
+import { StatusDocument, StdoutDocument, useModemDataQuery } from '../../graphql/generated/dist';
 import StickOptions from './containers/stick.options';
 import ModemType from './containers/type';
 import ModemInformation from './containers/information';
@@ -11,8 +11,10 @@ import StickFooter from './containers/stick.footer';
 import { CellSignals } from '../../components/cellSignals';
 import EnableModem from './containers/enable.modem';
 import ModemHelp from './components/help';
+import { GreenLed, RedLed } from '../../components/led';
 
 const ModemController = () => {
+  const { data: { status } = {} } = useSubscription(StatusDocument);
   const { data: { stdout = { message: '', errors: {} } } = {} } = useSubscription(StdoutDocument);
   const { data: { modemData = { message: '' } } = {}, loading: modemLoading }: any = useModemDataQuery();
 
@@ -28,9 +30,14 @@ const ModemController = () => {
               {/* Header, enable modem */}
 
               <Card.Content className='cardHeader'>
-                <Grid.Column width={8}>
-                  <Header as='h4' content='Modem' subheader='modem configuration' />
-                </Grid.Column>
+                <Grid centered columns={2}>
+                  <Grid.Column width={5}>
+                    <Header as='h4' content='Modem' subheader='modem configuration' />
+                  </Grid.Column>
+                  <Grid.Column floated='right' verticalAlign='middle' width={1}>
+                    {status?.modem ? <GreenLed /> : <RedLed />}
+                  </Grid.Column>
+                </Grid>
                 {/* <Grid.Column width={1}>{status.modem ? <GreenLed /> : <RedLed />}</Grid.Column> */}
               </Card.Content>
               <Card.Content>
