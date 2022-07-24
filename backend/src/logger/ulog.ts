@@ -129,7 +129,7 @@ const Ulog = {
   deleteAllFiles: function () {
     return new Promise((resolve, reject) => {
       fs.readdir(this.logFolder, (err, files) => {
-        if (err) throw err;
+        if (err) return reject(err);
 
         for (const file of files) {
           fs.unlink(path.join(this.logFolder, file), (err) => {

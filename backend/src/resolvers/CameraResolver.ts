@@ -13,8 +13,6 @@ import { kernelCommandsCallback } from '../utils/kernelCommands';
 
 // status file
 const cameraDeviceFile = path.join(paths.pythonFolder, 'devices.py');
-const ServerLog = winston.loggers.get('server');
-const DockerLog = winston.loggers.get('docker');
 
 @Resolver()
 export class CameraResolver {
@@ -34,6 +32,7 @@ export class CameraResolver {
     @PubSub('CAMERA_KERNEL_MESSAGE') publish: Publisher<any>,
     @Args() { properties }: CameraActionInput
   ): Promise<any> {
+    const DockerLog = winston.loggers.get('docker');
     const camera = await getCameraRepository().findOne(1);
     if (!('playStream' in properties)) return { playStream: false };
 
@@ -57,6 +56,7 @@ export class CameraResolver {
   @Query(() => CameraResponse)
   // @UseMiddleware(isAuth)
   async cameraData(): Promise<any> {
+    const ServerLog = winston.loggers.get('server');
     const availableCams: object[] = await new Promise((resolve, reject) => {
       try {
         const child = spawn('sudo python3', [cameraDeviceFile], { shell: true });

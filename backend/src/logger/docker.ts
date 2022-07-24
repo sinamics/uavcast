@@ -29,8 +29,10 @@ class DockerLogger {
     if (winston.loggers.has(this.name)) {
       winston.loggers.close(this.name);
     }
+
     return winston.loggers.add(this.name, {
       // levels: myCustomLevels.levels,
+      transports: [this.createTransport()],
       format: winston.format.combine(
         winston.format.timestamp({
           format: 'YYYY-MM-DD HH:mm:ss'
@@ -41,9 +43,7 @@ class DockerLogger {
         winston.format.printf((info: any) => `${info.timestamp} ${info.level} [${info.label}]: ${info.message}`),
         winston.format.json(),
         winston.format.prettyPrint()
-      ),
-      defaultMeta: { service: 'uavcast' },
-      transports: [this.createTransport()]
+      )
     });
   }
   addConsole() {

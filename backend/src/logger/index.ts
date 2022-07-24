@@ -35,6 +35,7 @@ const SystemLogger: any = {
           }
         });
       }
+
       this.initilize();
 
       setTimeout(() => {
