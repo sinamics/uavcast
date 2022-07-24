@@ -9,6 +9,9 @@ export class CameraProperties {
   protocol: string;
 
   @Field({ nullable: true })
+  key: string;
+
+  @Field({ nullable: true })
   name: string;
 
   @Field({ nullable: true })

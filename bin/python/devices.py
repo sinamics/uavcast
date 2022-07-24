@@ -53,7 +53,7 @@ for device in devices:
                     form = structure.get_name().split('/')[1]
                     caps.append({'value': "{0}x{1}".format(width, height), 'text': "{0}x{1} ({2})".format(width, height, form), 'height': int(height), 'width': int(width), 'format': structure.get_name()})
 
-    retDevices.append({'value': path, 'text': name, 'caps': caps})
+    retDevices.append({'value': path, 'value': path, 'text': name, 'caps': caps})
 
 
 print(json.dumps(retDevices))

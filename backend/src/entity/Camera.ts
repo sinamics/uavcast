@@ -16,6 +16,10 @@ export class Camera {
   @Column({ type: Boolean, default: false, nullable: false })
   enableCamera: boolean;
 
+  @Field({ nullable: true })
+  @Column({ type: String, default: '', nullable: true })
+  key: string;
+
   @Field()
   @Column({ type: String, default: 'custom', nullable: false })
   name: string;

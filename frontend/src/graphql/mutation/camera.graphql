@@ -2,6 +2,7 @@ mutation updateCamera($properties: CameraProperties!) {
   updateCamera(properties: $properties) {
     database {
       id
+      key
       name
       path
       protocol
@@ -17,6 +18,7 @@ mutation updateCamera($properties: CameraProperties!) {
       flipCamera
     }
     availableCams {
+      key
       value
       text
       caps {
@@ -35,6 +37,7 @@ mutation resetCameraDatabase {
     database {
       id
       name
+      key
       path
       protocol
       resolution
@@ -49,6 +52,7 @@ mutation resetCameraDatabase {
       flipCamera
     }
     availableCams {
+      key
       value
       text
       caps {

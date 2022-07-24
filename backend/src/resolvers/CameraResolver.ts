@@ -79,14 +79,13 @@ export class CameraResolver {
       }
     });
 
-    availableCams.push({ id: 'custom_pipeline', value: 'custom_pipeline', text: 'Custom Pipeline' });
-    availableCams.push({ id: 'custom_path', value: '', text: 'Custom Path' });
+    availableCams.push({ key: 'custom_pipeline', value: 'custom_pipeline', text: 'Custom Pipeline' });
+    availableCams.push({ key: 'custom_path', value: '', text: 'Custom Path' });
 
     const database = await getCameraRepository().findOne(1);
 
     // Lets create a new row if db not exsist
     if (!database) return { database: await getCameraRepository().save(new Camera()), availableCams };
-
     //return data
     return { database, availableCams };
   }

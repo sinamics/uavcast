@@ -10,10 +10,10 @@ const CameraSelect = () => {
 
   const dropdownHandler = (e: React.SyntheticEvent, data: any) => {
     const cam_obj = data?.options.filter((o: any) => o.value === data?.value)[0];
-    storeData({ variables: { properties: { name: cam_obj.text, path: cam_obj.value } } });
+    storeData({ variables: { properties: { name: cam_obj.text, path: cam_obj.value, key: cam_obj.key } } });
   };
 
-  const { path, name } = cameraData?.database || {};
+  const { path, key } = cameraData?.database || {};
 
   return (
     <Grid doubling padded columns={2}>
@@ -37,12 +37,11 @@ const CameraSelect = () => {
           placeholder='Camera Type'
         />
         {/*
-            Select custom pipeline.
-            TODO use key identifier!
+            Select custom pipeline / path
         */}
 
-        {name === 'Custom Pipeline' && <CustomPipeline />}
-        {name === 'Custom Path' && <CustomPath />}
+        {key === 'custom_pipeline' && <CustomPipeline />}
+        {key === 'custom_path' && <CustomPath />}
       </Grid.Column>
     </Grid>
   );

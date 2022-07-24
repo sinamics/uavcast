@@ -2,6 +2,7 @@ query cameraData {
   cameraData {
     database {
       id
+      key
       name
       path
       protocol
@@ -17,6 +18,7 @@ query cameraData {
       flipCamera
     }
     availableCams {
+      key
       value
       text
       caps {
