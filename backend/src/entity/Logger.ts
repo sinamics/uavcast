@@ -15,6 +15,30 @@ export class Logger {
   @Field()
   @Column({ type: Boolean, default: false, nullable: false })
   debug: boolean;
+
+  @Field()
+  @Column({ type: Number, default: 1.0, nullable: false })
+  resolution: number;
+
+  @Field()
+  @Column({ type: Date, default: false, nullable: false })
+  datetime: Date = new Date();
+
+  @Field()
+  @Column({ type: Boolean, default: true, nullable: false })
+  logtemperature: boolean;
+
+  @Field()
+  @Column({ type: Boolean, default: true, nullable: false })
+  cellSignal: boolean;
+
+  @Field()
+  @Column({ type: Boolean, default: true, nullable: false })
+  satellites: boolean;
+
+  @Field()
+  @Column({ type: Boolean, default: true, nullable: false })
+  altitude: boolean;
 }
 export const getLoggerRepository = () => {
   return getRepository<Logger>(Logger);

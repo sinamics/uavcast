@@ -247,6 +247,12 @@ export type Logger = {
   __typename?: 'Logger';
   id: Scalars['ID'];
   debug: Scalars['Boolean'];
+  resolution: Scalars['Float'];
+  datetime: Scalars['DateTime'];
+  logtemperature: Scalars['Boolean'];
+  cellSignal: Scalars['Boolean'];
+  satellites: Scalars['Boolean'];
+  altitude: Scalars['Boolean'];
 };
 
 export type LogProperties = {
@@ -530,6 +536,10 @@ export type FcProperties = {
 
 export type LogParameters = {
   debug?: Maybe<Scalars['Boolean']>;
+  cellSignal?: Maybe<Scalars['Boolean']>;
+  satellites?: Maybe<Scalars['Boolean']>;
+  altitude?: Maybe<Scalars['Boolean']>;
+  resolution?: Maybe<Scalars['Float']>;
 };
 
 export type CameraProperties = {
@@ -973,7 +983,7 @@ export type SetLoggerParametersMutation = (
     { __typename?: 'LoggResponse' }
     & { logs?: Maybe<(
       { __typename?: 'Logger' }
-      & Pick<Logger, 'id' | 'debug'>
+      & Pick<Logger, 'id' | 'debug' | 'cellSignal' | 'satellites' | 'altitude' | 'resolution'>
     )> }
   ) }
 );
@@ -1256,7 +1266,7 @@ export type GetLoggerParametersQuery = (
     { __typename?: 'LoggResponse' }
     & { logs?: Maybe<(
       { __typename?: 'Logger' }
-      & Pick<Logger, 'id' | 'debug'>
+      & Pick<Logger, 'id' | 'debug' | 'cellSignal' | 'satellites' | 'altitude' | 'resolution'>
     )> }
   ) }
 );
@@ -2059,6 +2069,10 @@ export const SetLoggerParametersDocument = gql`
     logs {
       id
       debug
+      cellSignal
+      satellites
+      altitude
+      resolution
     }
   }
 }
@@ -2758,6 +2772,10 @@ export const GetLoggerParametersDocument = gql`
     logs {
       id
       debug
+      cellSignal
+      satellites
+      altitude
+      resolution
     }
   }
 }

@@ -64,6 +64,10 @@ query getLoggerParameters {
     logs {
       id
       debug
+      cellSignal
+      satellites
+      altitude
+      resolution
     }
   }
 }
