@@ -36,8 +36,8 @@ const SimulateStartup = () => {
           <Card.Header className='themeText'>Simulate uavcast startup</Card.Header>
           <Card.Meta className='themeSubText'>simualate</Card.Meta>
           <Card.Description>
-            Test the startup sequence of enabled items. When Autostart is enabled, RPI will run this command automatically during
-            bootup.
+            Test the startup sequence of enabled items. When Autostart is enabled, it will run this command automatically during
+            startup.
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
