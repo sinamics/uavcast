@@ -20,11 +20,11 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   map: MapResponse;
+  getUavcastInformation: VersionsRespons;
   zerotierNetworks: ZerotierNetworkResponse;
   vpnData: VpnResponse;
   modemData: ModemResponse;
   nic: NicResponse;
-  getUavcastInformation: VersionsRespons;
   getSupervisorInformation: VersionsRespons;
   getAvailableVersions: VerctlRespons;
   getApplication: ApplicationResponse;
@@ -76,6 +76,34 @@ export type MapResponse = {
   mavCockpitDisable: Scalars['Boolean'];
 };
 
+export type VersionsRespons = {
+  __typename?: 'VersionsRespons';
+  message?: Maybe<Versions>;
+  errors?: Maybe<Array<FieldError>>;
+};
+
+export type Versions = {
+  __typename?: 'Versions';
+  supervisor?: Maybe<VersionInformation>;
+  uavcast?: Maybe<VersionInformation>;
+};
+
+export type VersionInformation = {
+  __typename?: 'VersionInformation';
+  repo: Scalars['String'];
+  isRunning: Scalars['Boolean'];
+  remoteVersion?: Maybe<Scalars['String']>;
+  localVersion?: Maybe<Scalars['String']>;
+  hasLatest?: Maybe<Scalars['Boolean']>;
+  newVersionExsist?: Maybe<Scalars['Boolean']>;
+};
+
+export type FieldError = {
+  __typename?: 'FieldError';
+  path?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
+};
+
 export type ZerotierNetworkResponse = {
   __typename?: 'ZerotierNetworkResponse';
   networks?: Maybe<Array<ZerotierNetworkProperties>>;
@@ -90,12 +118,6 @@ export type ZerotierNetworkProperties = {
   portDeviceName: Scalars['String'];
   status: Scalars['String'];
   type: Scalars['String'];
-};
-
-export type FieldError = {
-  __typename?: 'FieldError';
-  path?: Maybe<Scalars['String']>;
-  message?: Maybe<Scalars['String']>;
 };
 
 export type VpnResponse = {
@@ -134,28 +156,6 @@ export type Modem = {
 export type NicResponse = {
   __typename?: 'NicResponse';
   interfaces?: Maybe<Array<Scalars['String']>>;
-};
-
-export type VersionsRespons = {
-  __typename?: 'VersionsRespons';
-  message?: Maybe<Versions>;
-  errors?: Maybe<Array<FieldError>>;
-};
-
-export type Versions = {
-  __typename?: 'Versions';
-  supervisor?: Maybe<VersionInformation>;
-  uavcast?: Maybe<VersionInformation>;
-};
-
-export type VersionInformation = {
-  __typename?: 'VersionInformation';
-  repo: Scalars['String'];
-  isRunning: Scalars['Boolean'];
-  remoteVersion?: Maybe<Scalars['String']>;
-  localVersion?: Maybe<Scalars['String']>;
-  hasLatest?: Maybe<Scalars['Boolean']>;
-  newVersionExsist?: Maybe<Scalars['Boolean']>;
 };
 
 export type VerctlRespons = {
@@ -341,7 +341,6 @@ export type Caps = {
 export type Mutation = {
   __typename?: 'Mutation';
   sendMavCommand: Scalars['Boolean'];
-  startStopUavcast: Scalars['String'];
   storeVpnValues: VpnResponse;
   uploadConfigFile: Scalars['Boolean'];
   kernelMessage: KernelResponse;
