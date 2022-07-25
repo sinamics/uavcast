@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Menu, Segment } from 'semantic-ui-react';
 import DockerLog from './containers/dockerLog';
-import ServerLog from './containers/serverLog';
+import ServerLog from './containers/systemLog';
 
 import UlogViewer from './containers/ulog';
 

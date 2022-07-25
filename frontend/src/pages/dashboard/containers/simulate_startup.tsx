@@ -70,7 +70,7 @@ const SimulateStartup = () => {
           {/* <Image floated='right' size='mini' src='/images/avatar/large/molly.png' /> */}
           <Card.Header className='themeText'>Enable Autorun</Card.Header>
           <Card.Meta className='themeSubText'>Startup</Card.Meta>
-          <Card.Description>Enable if you want UAVcast to start automatically when raspberry boots up.</Card.Description>
+          <Card.Description>Enable if you want UAVcast to start automatically during startup</Card.Description>
         </Card.Content>
         <Card.Content extra>
           <div className='ui two buttons'>

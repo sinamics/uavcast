@@ -2,7 +2,7 @@
 import { useSubscription } from '@apollo/client';
 import { Card, Container, Form, Grid, Header } from 'semantic-ui-react';
 import RaspberryConsole from '../../components/CodeMirror';
-import { StdoutDocument, useVpnDataQuery } from '../../graphql/generated/dist';
+import { StatusDocument, StdoutDocument, useVpnDataQuery } from '../../graphql/generated/dist';
 import ZerotierId from './containers/zerotierId';
 import VpnServiceProvider from './containers/vpnServiceProvider';
 import OpenVpnFooter from './containers/openvpn.footer';
@@ -10,8 +10,10 @@ import ZerotierFooter from './containers/zerotier.footer';
 import VpnHelp from './components/help';
 import ZerotierTable from './containers/zerotierTable';
 import OpenVpn from './containers/openvpn.input';
+import { GreenLed, RedLed } from '../../components/led';
 
 const VpnController = (): any => {
+  const { data: { status } = {} } = useSubscription(StatusDocument);
   const { data: { stdout = { message: '', errors: {} } } = {} } = useSubscription(StdoutDocument);
   const { data: { vpnData = { data: '' } } = {}, loading: modemLoading }: any = useVpnDataQuery();
 
@@ -27,9 +29,14 @@ const VpnController = (): any => {
             <Card fluid color='green' className='theme'>
               {/* Header, enable modem */}
               <Card.Content className='cardHeader'>
-                <Grid.Column width={8}>
-                  <Header as='h4' content='Virtual Private Network' subheader='This will enable Virtual Private Network' />
-                </Grid.Column>
+                <Grid centered columns={2}>
+                  <Grid.Column width={5}>
+                    <Header as='h4' content='Virtual Private Network' subheader='This will enable Virtual Private Network' />
+                  </Grid.Column>
+                  <Grid.Column floated='right' verticalAlign='middle' width={1}>
+                    {status?.vpn ? <GreenLed /> : <RedLed />}
+                  </Grid.Column>
+                </Grid>
               </Card.Content>
               <Card.Content>
                 {/* <Card.Content> */}

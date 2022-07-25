@@ -1,7 +1,7 @@
 import { useSubscription } from '@apollo/client';
 import { Card, Container, Grid, Header } from 'semantic-ui-react';
 import RaspberryConsole from '../../components/CodeMirror';
-import { Camera_StdoutDocument, useCameraDataQuery, useGetDockerLogMutation } from '../../graphql/generated/dist';
+import { Camera_StdoutDocument, StatusDocument, useCameraDataQuery, useGetDockerLogMutation } from '../../graphql/generated/dist';
 import VideoHelp from './components/help';
 import BitratePrSecond from './containers/bitratePrSecond';
 import CameraType from './containers/cameraSelect';
@@ -14,10 +14,12 @@ import CameraContrast from './containers/contrast';
 import CameraFlip from './containers/flip';
 import CameraBrightness from './containers/brightness';
 import { useEffect, useState } from 'react';
+import { GreenLed, RedLed } from '../../components/led';
 
 const Camera = () => {
   const [logMsg, setLogMsg] = useState('');
 
+  const { data: { status } = {} } = useSubscription(StatusDocument);
   const { data: { camera_stdout = { message: '', errors: {} } } = {} } = useSubscription(Camera_StdoutDocument);
 
   const [getDockerLogs, { data: { getDockerLog = {} } = {} }]: any = useGetDockerLogMutation({
@@ -45,9 +47,14 @@ const Camera = () => {
         <Grid.Column computer={13} mobile={16}>
           <Card fluid className='theme'>
             <Card.Content className='cardHeader'>
-              <Grid.Column width={8}>
-                <Header as='h4' content='Camera' subheader='gstreamer configuration' />
-              </Grid.Column>
+              <Grid centered columns={2}>
+                <Grid.Column width={5}>
+                  <Header as='h4' content='Camera' subheader='gstreamer configuration' />
+                </Grid.Column>
+                <Grid.Column floated='right' verticalAlign='middle' width={1}>
+                  {status?.video ? <GreenLed /> : <RedLed />}
+                </Grid.Column>
+              </Grid>
             </Card.Content>
 
             <Card.Content>

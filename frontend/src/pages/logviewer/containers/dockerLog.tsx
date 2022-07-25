@@ -19,12 +19,15 @@ const DockerLog = () => {
   return (
     <div className='themeBg themeText'>
       {data?.getDockerLog.file?.map((log: any, idx: number) => {
+        // check if first word is error or failed
+        const errorWords = ['failed', 'error'];
+        const isError = new RegExp(errorWords.join('|')).test(log?.message.toLowerCase());
         return (
-          <div style={{ fontSize: '16px' }} key={idx}>
-            <Label color='blue' horizontal>
+          <div key={idx} style={{ fontSize: '16px' }}>
+            <Label color={`${isError ? 'red' : 'green'}`} horizontal>
               {log.timestamp}
             </Label>
-            {`${log.message}`}
+            <span style={{ background: `${isError ? '#a1131366' : ''}` }}>{`${log.message}`}</span>
           </div>
         );
       })}

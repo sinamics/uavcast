@@ -87,7 +87,7 @@ const UlogViewer = () => {
       <Grid.Column computer={3} mobile={16}>
         <Grid padded columns={2}>
           <Grid.Column computer={12}>
-            <Header as='h3' content='Logfiles' subheader='All available logfiles listed bellow' />
+            <Header as='h3' content='Logfiles' subheader='Logfile will be generated when FC is armed.' />
           </Grid.Column>
           <Grid.Column computer={4}>
             <Icon style={{ cursor: 'pointer' }} className='float-right themeText' name='refresh' onClick={() => reFetchFiles()} />
@@ -135,11 +135,7 @@ const UlogViewer = () => {
             {loadingChartData ? <Loader active inline='centered' /> : <LogChart logFileData={logFileData} />}
           </Grid.Column>
           <Grid.Column floated='right' computer={16}>
-            <Header
-              as='h3'
-              content='Information'
-              subheader='New logfile is generated for each time your Flight Controller has Armed status.'
-            />
+            <Header as='h3' content='Settings' subheader='Set your preferences for the logfile' />
           </Grid.Column>
           <Grid.Column computer={4}>
             <Header as='h4' content='Parameters' />

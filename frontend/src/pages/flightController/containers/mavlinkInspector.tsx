@@ -18,8 +18,8 @@ const MavlinkInspector = () => {
         <Header
           as='h4'
           content='Mavlink Inspector'
-          subheader='Check if raspberry Pi receives mavlink messages from your FlightController.
-          This is usefull when troubleshooting. UAVcast will check if valid HEARTBEAT message is
+          subheader='Check if data is received from the FlightController.
+          This is usefull when troubleshooting. Uavcast will check if valid HEARTBEAT message is
           received on the selected connection method above.
           Its recommended to run this test after a reboot'
         />
