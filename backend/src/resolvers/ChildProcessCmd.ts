@@ -6,10 +6,11 @@ import { childProcessCmd } from '../utils/childProcessCmd';
 @Resolver()
 export class KernelResolver {
   @Mutation(() => KernelResponse)
-  async childProcessCmd(@PubSub('KERNEL_MESSAGE') publish: Publisher<any>, @Args() { cmd, shell = true, path }: KernelInput) {
+  async childProcessCmd(@PubSub('KERNEL_MESSAGE') publish: Publisher<any>, @Args() { cmd, path: cwd }: KernelInput) {
     await publish({ message: 'waiting response from kernel...\n' });
+
     try {
-      const response = await childProcessCmd(cmd, path);
+      const response = await childProcessCmd({ cmd, options: { cwd } });
       await publish({ message: response.toString('utf8') });
     } catch (error) {
       await publish({ errors: [{ message: error.toString('utf8'), path: 'kernelMessage' }] });

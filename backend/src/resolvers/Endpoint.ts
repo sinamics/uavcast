@@ -35,12 +35,12 @@ export class EndpointResolver {
 
     if ('videoEnable' in endpoint) {
       if (endpoint.videoEnable) {
-        childProcessCmd('/app/uavcast/bin/build/uav_main -v start').catch((err) =>
+        childProcessCmd({ cmd: '/app/uavcast/bin/build/uav_main -v start' }).catch((err) =>
           DockerLog.error({ message: err, data: '/app/uavcast/bin/build/uav_main -v start', path: __filename })
         );
       }
       if (!endpoint.videoEnable) {
-        childProcessCmd('/app/uavcast/bin/build/uav_main -v stop').catch((err) =>
+        childProcessCmd({ cmd: '/app/uavcast/bin/build/uav_main -v stop' }).catch((err) =>
           DockerLog.error({ message: err, data: '/app/uavcast/bin/build/uav_main -v stop', path: __filename })
         );
       }

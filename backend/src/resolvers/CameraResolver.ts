@@ -41,7 +41,7 @@ export class CameraResolver {
     switch (camera?.protocol) {
       case 'rtsp':
       case 'udp':
-        childProcessCmdCallback(`/app/uavcast/bin/build/uav_main -v ${playstatus}`, null, true, (out: any) => {
+        childProcessCmdCallback({ cmd: `/app/uavcast/bin/build/uav_main -v ${playstatus}`, stdout: true }, (out: any) => {
           DockerLog.info({ message: out.toString(), path: __filename });
           stdioutMsg = stdioutMsg.concat(out.toString());
           publish({ message: stdioutMsg });
@@ -56,8 +56,10 @@ export class CameraResolver {
   // @UseMiddleware(isAuth)
   async cameraData(): Promise<any> {
     let availableCams: object[] = [];
+
+    // spawn command
     try {
-      const cmd: object[] = await childProcessCmd('sudo python3', null, [cameraDeviceFile]);
+      const cmd: object[] = await childProcessCmd({ cmd: 'sudo python3', args: [cameraDeviceFile] });
       availableCams = JSON.parse(cmd.toString());
     } catch (error) {
       // eslint-disable-next-line no-console

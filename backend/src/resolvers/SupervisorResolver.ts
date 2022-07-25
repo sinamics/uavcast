@@ -16,7 +16,11 @@ export class Supervisor {
   @Query(() => VersionsRespons)
   async getUavcastInformation(): Promise<any> {
     try {
-      const uavcast = await childProcessCmd(verctl_bin, paths.binFolder, ['-uavcastinformation']);
+      const uavcast = await childProcessCmd({
+        cmd: verctl_bin,
+        options: { cwd: paths.binFolder },
+        args: ['-uavcastinformation']
+      });
       return { message: { uavcast: JSON.parse(uavcast.toString()) } };
     } catch (error) {
       return { errors: [{ message: error.error }] };
@@ -25,7 +29,11 @@ export class Supervisor {
   @Query(() => VersionsRespons)
   async getSupervisorInformation(): Promise<any> {
     try {
-      const supervisor = await childProcessCmd(verctl_bin, paths.binFolder, ['-supervisorinformation']);
+      const supervisor = await childProcessCmd({
+        cmd: verctl_bin,
+        args: ['-supervisorinformation'],
+        options: { cwd: paths.binFolder }
+      });
       return { message: { supervisor: JSON.parse(supervisor.toString()) } };
     } catch (error) {
       return { errors: [{ message: error.error }] };
@@ -33,7 +41,7 @@ export class Supervisor {
   }
   @Query(() => VerctlRespons)
   async getAvailableVersions(@Args() { application }: getApplicationVersionInput): Promise<string> {
-    const availVer = await childProcessCmd(verctl_bin, paths.binFolder, [`-${application}`]);
+    const availVer = await childProcessCmd({ cmd: verctl_bin, args: [`-${application}`], options: { cwd: paths.binFolder } });
     return JSON.parse(availVer.toString());
   }
 
