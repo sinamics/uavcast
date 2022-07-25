@@ -270,6 +270,8 @@ export type WinstonProperties = {
   __typename?: 'WinstonProperties';
   timestamp: Scalars['String'];
   message?: Maybe<Scalars['String']>;
+  data?: Maybe<Scalars['String']>;
+  level?: Maybe<Scalars['String']>;
 };
 
 export type NetworkLoggDataResponse = {
@@ -999,7 +1001,7 @@ export type GetDockerLogMutation = (
     { __typename?: 'WinstonResponse' }
     & { file?: Maybe<Array<(
       { __typename?: 'WinstonProperties' }
-      & Pick<WinstonProperties, 'message' | 'timestamp'>
+      & Pick<WinstonProperties, 'timestamp' | 'message' | 'data' | 'level'>
     )>> }
   ) }
 );
@@ -1236,7 +1238,7 @@ export type GetServerLogQuery = (
     { __typename?: 'WinstonResponse' }
     & { file?: Maybe<Array<(
       { __typename?: 'WinstonProperties' }
-      & Pick<WinstonProperties, 'timestamp' | 'message'>
+      & Pick<WinstonProperties, 'timestamp' | 'message' | 'data' | 'level'>
     )>> }
   ) }
 );
@@ -2106,8 +2108,10 @@ export const GetDockerLogDocument = gql`
     mutation getDockerLog($properties: LogProperties!) {
   getDockerLog(properties: $properties) {
     file {
-      message
       timestamp
+      message
+      data
+      level
     }
   }
 }
@@ -2700,6 +2704,8 @@ export const GetServerLogDocument = gql`
     file {
       timestamp
       message
+      data
+      level
     }
   }
 }

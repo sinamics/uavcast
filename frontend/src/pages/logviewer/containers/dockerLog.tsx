@@ -25,12 +25,16 @@ const DockerLog = () => {
           // check if first word is error or failed
           const errorWords = ['failed', 'error'];
           const isError = new RegExp(errorWords.join('|')).test(log?.message.toLowerCase());
+          // const isError = new RegExp(errorWords.join('|')).test(log?.level?.toLowerCase()) || false;
           return (
             <div key={idx} style={{ fontSize: '16px' }}>
-              <Label color={`${isError ? 'red' : 'green'}`} horizontal>
-                {log.timestamp}
+              <Label style={{ background: `${isError ? '#ff00008c' : '#21ba4570'}` }} horizontal>
+                {`${log.timestamp}`}
               </Label>
-              <span style={{ background: `${isError ? '#a1131366' : ''}` }}>{`${log.message}`}</span>
+              <Label style={{ background: `${isError ? '#ff00008c' : '#21ba4570'}` }} horizontal>
+                {`[${log.level?.toUpperCase()}]`}
+              </Label>
+              <span style={{ background: `${isError ? '#a1131366' : ''}` }}>{`${log.message} : ${log.data}`}</span>
             </div>
           );
         })}

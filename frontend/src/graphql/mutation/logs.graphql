@@ -23,8 +23,10 @@ mutation setLoggerParameters($parameters: LogParameters!) {
 mutation getDockerLog($properties: LogProperties!) {
   getDockerLog(properties: $properties) {
     file {
-      message
       timestamp
+      message
+      data
+      level
     }
   }
 }

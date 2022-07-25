@@ -90,6 +90,12 @@ export class WinstonProperties {
 
   @Field(() => String, { nullable: true })
   message: string;
+
+  @Field(() => String, { nullable: true })
+  data: string;
+
+  @Field(() => String, { nullable: true })
+  level: string;
 }
 @ObjectType()
 export class WinstonResponse {
