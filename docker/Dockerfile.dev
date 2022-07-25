@@ -18,7 +18,7 @@ COPY ["init/mavlink-router.service", \
       "init/uavcast-web.service", \
       "init/uavcast.service", "/etc/systemd/system/"]
 
-RUN mkdir -p /app/uavcast/data && chown -R uavcast /app/uavcast/data
+RUN mkdir -p /app/uavcast/data && chown -R uavcast /app/uavcast
 
 # Create mavlink directory
 RUN mkdir -p /etc/mavlink-router
