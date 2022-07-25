@@ -41,6 +41,7 @@ export class BackupRestoreResolver {
               () => {
                 fs.unlinkSync(restoreFileName);
                 fs.unlinkSync(bckDbName);
+                ServerLog.info({ message: `Successfully performed backup of SQL database.`, data: filename, path: __filename });
               }
             );
           });
