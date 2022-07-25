@@ -34,7 +34,9 @@ const SystemLog = () => {
               <Label style={{ background: `${isError ? '#ff00008c' : '#21ba4570'}` }} horizontal>
                 {`[${log.level?.toUpperCase()}]`}
               </Label>
-              <span style={{ background: `${isError ? '#a1131366' : ''}` }}>{`${log.message} : ${log.data}`}</span>
+              <span style={{ background: `${isError ? '#a1131366' : ''}` }}>{`${log.message} ${
+                log.data !== null ? ` ${log.data}` : ''
+              }`}</span>
             </div>
           );
         })}

@@ -1,26 +1,19 @@
 import { Root, Args, Subscription, Resolver, PubSub, Mutation, Publisher } from 'type-graphql';
-import { spawn } from 'child_process';
 import { KernelInput } from '../graphql-input-types/KernelInput';
 import { KernelResponse } from '../graphql-response-types/KernelResponse';
-import winston from 'winston';
-
-const ServerLog = winston.loggers.get('server');
+import { childProcessCmd } from '../utils/childProcessCmd';
 
 @Resolver()
 export class KernelResolver {
   @Mutation(() => KernelResponse)
-  async kernelMessage(@PubSub('KERNEL_MESSAGE') publish: Publisher<any>, @Args() { cmd, shell = true, path }: KernelInput) {
+  async childProcessCmd(@PubSub('KERNEL_MESSAGE') publish: Publisher<any>, @Args() { cmd, shell = true, path }: KernelInput) {
     await publish({ message: 'waiting response from kernel...\n' });
-    const child = spawn(cmd, { shell, cwd: path });
-    child.stdout.on('data', async (data) => {
-      ServerLog.info({ message: data.toString('utf8'), data: cmd, path: __filename });
-      await publish({ message: data.toString('utf8') });
-    });
-    child.stderr.on('data', async (error) => {
-      ServerLog.error({ message: error.toString('utf8'), data: cmd, path: __filename });
+    try {
+      const response = await childProcessCmd(cmd, path);
+      await publish({ message: response.toString('utf8') });
+    } catch (error) {
       await publish({ errors: [{ message: error.toString('utf8'), path: 'kernelMessage' }] });
-    });
-
+    }
     return true;
   }
 

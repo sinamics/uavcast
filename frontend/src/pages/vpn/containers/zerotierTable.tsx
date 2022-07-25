@@ -1,10 +1,10 @@
 import classnames from 'classnames';
 import { Grid, Header, Label, Table } from 'semantic-ui-react';
-import { useZerotierNetworksQuery, useKernelMessageMutation, ZerotierNetworksDocument } from '../../../graphql/generated/dist';
+import { useZerotierNetworksQuery, useChildProcessCmdMutation, ZerotierNetworksDocument } from '../../../graphql/generated/dist';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const ZerotierTable = () => {
-  const [kernelCommand] = useKernelMessageMutation();
+  const [kernelCommand] = useChildProcessCmdMutation();
   const { data: { zerotierNetworks: { networks = [] } = {} } = {} }: any = useZerotierNetworksQuery({
     pollInterval: 5000
   });

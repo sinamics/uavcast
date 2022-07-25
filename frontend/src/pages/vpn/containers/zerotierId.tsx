@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Grid, Header, Icon, Input } from 'semantic-ui-react';
-import { useKernelMessageMutation } from '../../../graphql/generated/dist';
+import { useChildProcessCmdMutation } from '../../../graphql/generated/dist';
 
 const ZerotierId = () => {
   const [networkId, setNetworkId] = useState<string>('');
-  const [kernelCommand] = useKernelMessageMutation();
+  const [kernelCommand] = useChildProcessCmdMutation();
 
   const inputHandler = (e: React.SyntheticEvent, data: any) => {
     setNetworkId(data.value);

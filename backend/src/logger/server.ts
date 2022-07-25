@@ -68,7 +68,7 @@ class ServerLogger {
               if (info.level.replace(/\u001b\[.*?m/g, '') === 'error') {
                 return `${info.level}: ${info.message} FILE:${info.path}`;
               }
-              return `${info.level}: ${info.message}`;
+              return `${info.level}: ${info.message} ${info.data !== undefined ? info.data : ''}`;
             })
           ),
           //@ts-ignore

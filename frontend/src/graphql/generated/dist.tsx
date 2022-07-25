@@ -20,11 +20,11 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   map: MapResponse;
-  getUavcastInformation: VersionsRespons;
   zerotierNetworks: ZerotierNetworkResponse;
   vpnData: VpnResponse;
   modemData: ModemResponse;
   nic: NicResponse;
+  getUavcastInformation: VersionsRespons;
   getSupervisorInformation: VersionsRespons;
   getAvailableVersions: VerctlRespons;
   getApplication: ApplicationResponse;
@@ -76,34 +76,6 @@ export type MapResponse = {
   mavCockpitDisable: Scalars['Boolean'];
 };
 
-export type VersionsRespons = {
-  __typename?: 'VersionsRespons';
-  message?: Maybe<Versions>;
-  errors?: Maybe<Array<FieldError>>;
-};
-
-export type Versions = {
-  __typename?: 'Versions';
-  supervisor?: Maybe<VersionInformation>;
-  uavcast?: Maybe<VersionInformation>;
-};
-
-export type VersionInformation = {
-  __typename?: 'VersionInformation';
-  repo: Scalars['String'];
-  isRunning: Scalars['Boolean'];
-  remoteVersion?: Maybe<Scalars['String']>;
-  localVersion?: Maybe<Scalars['String']>;
-  hasLatest?: Maybe<Scalars['Boolean']>;
-  newVersionExsist?: Maybe<Scalars['Boolean']>;
-};
-
-export type FieldError = {
-  __typename?: 'FieldError';
-  path?: Maybe<Scalars['String']>;
-  message?: Maybe<Scalars['String']>;
-};
-
 export type ZerotierNetworkResponse = {
   __typename?: 'ZerotierNetworkResponse';
   networks?: Maybe<Array<ZerotierNetworkProperties>>;
@@ -118,6 +90,12 @@ export type ZerotierNetworkProperties = {
   portDeviceName: Scalars['String'];
   status: Scalars['String'];
   type: Scalars['String'];
+};
+
+export type FieldError = {
+  __typename?: 'FieldError';
+  path?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
 };
 
 export type VpnResponse = {
@@ -156,6 +134,28 @@ export type Modem = {
 export type NicResponse = {
   __typename?: 'NicResponse';
   interfaces?: Maybe<Array<Scalars['String']>>;
+};
+
+export type VersionsRespons = {
+  __typename?: 'VersionsRespons';
+  message?: Maybe<Versions>;
+  errors?: Maybe<Array<FieldError>>;
+};
+
+export type Versions = {
+  __typename?: 'Versions';
+  supervisor?: Maybe<VersionInformation>;
+  uavcast?: Maybe<VersionInformation>;
+};
+
+export type VersionInformation = {
+  __typename?: 'VersionInformation';
+  repo: Scalars['String'];
+  isRunning: Scalars['Boolean'];
+  remoteVersion?: Maybe<Scalars['String']>;
+  localVersion?: Maybe<Scalars['String']>;
+  hasLatest?: Maybe<Scalars['Boolean']>;
+  newVersionExsist?: Maybe<Scalars['Boolean']>;
 };
 
 export type VerctlRespons = {
@@ -343,7 +343,7 @@ export type Mutation = {
   sendMavCommand: Scalars['Boolean'];
   storeVpnValues: VpnResponse;
   uploadConfigFile: Scalars['Boolean'];
-  kernelMessage: KernelResponse;
+  childProcessCmd: KernelResponse;
   storeModemValues: ModemResponse;
   updateUavcastContainer: SupervisorRespons;
   updateSupervisorContainer: SupervisorRespons;
@@ -382,7 +382,7 @@ export type MutationUploadConfigFileArgs = {
 };
 
 
-export type MutationKernelMessageArgs = {
+export type MutationChildProcessCmdArgs = {
   cmd: Scalars['String'];
   shell?: Maybe<Scalars['Boolean']>;
   path: Scalars['String'];
@@ -926,16 +926,16 @@ export type ResetFlightControllerDatabaseMutation = (
   ) }
 );
 
-export type KernelMessageMutationVariables = Exact<{
+export type ChildProcessCmdMutationVariables = Exact<{
   cmd: Scalars['String'];
   path: Scalars['String'];
   shell?: Maybe<Scalars['Boolean']>;
 }>;
 
 
-export type KernelMessageMutation = (
+export type ChildProcessCmdMutation = (
   { __typename?: 'Mutation' }
-  & { kernelMessage: (
+  & { childProcessCmd: (
     { __typename?: 'KernelResponse' }
     & Pick<KernelResponse, 'message'>
     & { errors?: Maybe<Array<(
@@ -1937,9 +1937,9 @@ export function useResetFlightControllerDatabaseMutation(baseOptions?: Apollo.Mu
 export type ResetFlightControllerDatabaseMutationHookResult = ReturnType<typeof useResetFlightControllerDatabaseMutation>;
 export type ResetFlightControllerDatabaseMutationResult = Apollo.MutationResult<ResetFlightControllerDatabaseMutation>;
 export type ResetFlightControllerDatabaseMutationOptions = Apollo.BaseMutationOptions<ResetFlightControllerDatabaseMutation, ResetFlightControllerDatabaseMutationVariables>;
-export const KernelMessageDocument = gql`
-    mutation kernelMessage($cmd: String!, $path: String!, $shell: Boolean) {
-  kernelMessage(cmd: $cmd, path: $path, shell: $shell) {
+export const ChildProcessCmdDocument = gql`
+    mutation childProcessCmd($cmd: String!, $path: String!, $shell: Boolean) {
+  childProcessCmd(cmd: $cmd, path: $path, shell: $shell) {
     message
     errors {
       path
@@ -1948,20 +1948,20 @@ export const KernelMessageDocument = gql`
   }
 }
     `;
-export type KernelMessageMutationFn = Apollo.MutationFunction<KernelMessageMutation, KernelMessageMutationVariables>;
+export type ChildProcessCmdMutationFn = Apollo.MutationFunction<ChildProcessCmdMutation, ChildProcessCmdMutationVariables>;
 
 /**
- * __useKernelMessageMutation__
+ * __useChildProcessCmdMutation__
  *
- * To run a mutation, you first call `useKernelMessageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useKernelMessageMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useChildProcessCmdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChildProcessCmdMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [kernelMessageMutation, { data, loading, error }] = useKernelMessageMutation({
+ * const [childProcessCmdMutation, { data, loading, error }] = useChildProcessCmdMutation({
  *   variables: {
  *      cmd: // value for 'cmd'
  *      path: // value for 'path'
@@ -1969,12 +1969,12 @@ export type KernelMessageMutationFn = Apollo.MutationFunction<KernelMessageMutat
  *   },
  * });
  */
-export function useKernelMessageMutation(baseOptions?: Apollo.MutationHookOptions<KernelMessageMutation, KernelMessageMutationVariables>) {
-        return Apollo.useMutation<KernelMessageMutation, KernelMessageMutationVariables>(KernelMessageDocument, baseOptions);
+export function useChildProcessCmdMutation(baseOptions?: Apollo.MutationHookOptions<ChildProcessCmdMutation, ChildProcessCmdMutationVariables>) {
+        return Apollo.useMutation<ChildProcessCmdMutation, ChildProcessCmdMutationVariables>(ChildProcessCmdDocument, baseOptions);
       }
-export type KernelMessageMutationHookResult = ReturnType<typeof useKernelMessageMutation>;
-export type KernelMessageMutationResult = Apollo.MutationResult<KernelMessageMutation>;
-export type KernelMessageMutationOptions = Apollo.BaseMutationOptions<KernelMessageMutation, KernelMessageMutationVariables>;
+export type ChildProcessCmdMutationHookResult = ReturnType<typeof useChildProcessCmdMutation>;
+export type ChildProcessCmdMutationResult = Apollo.MutationResult<ChildProcessCmdMutation>;
+export type ChildProcessCmdMutationOptions = Apollo.BaseMutationOptions<ChildProcessCmdMutation, ChildProcessCmdMutationVariables>;
 export const RemoveLogfileDocument = gql`
     mutation removeLogfile($filename: String!) {
   removeLogfile(filename: $filename)

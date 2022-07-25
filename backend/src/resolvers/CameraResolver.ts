@@ -2,14 +2,13 @@ import { CameraActionResponse, CameraResponse } from '../graphql-response-types/
 import { Args, Query, Mutation, Resolver, Subscription, Root, PubSub, Publisher } from 'type-graphql';
 import { Camera, getCameraRepository } from '../entity/Camera';
 import { CameraActionInput, CameraInput } from '../graphql-input-types/CameraInput';
-import { spawn } from 'child_process';
 import { paths } from '../config/paths';
 import { runSeeder } from 'typeorm-seeding';
 import { CreateCamera } from '../seeds/camera.seed';
 import winston from 'winston';
 import path from 'path';
 import { KernelResponse } from '../graphql-response-types/KernelResponse';
-import { childProcessCmdCallback } from '../utils/childProcessCmd';
+import { childProcessCmd, childProcessCmdCallback } from '../utils/childProcessCmd';
 
 // status file
 const cameraDeviceFile = path.join(paths.pythonFolder, 'devices.py');
@@ -56,28 +55,14 @@ export class CameraResolver {
   @Query(() => CameraResponse)
   // @UseMiddleware(isAuth)
   async cameraData(): Promise<any> {
-    const ServerLog = winston.loggers.get('server');
-    const availableCams: object[] = await new Promise((resolve, reject) => {
-      try {
-        const child = spawn('sudo python3', [cameraDeviceFile], { shell: true });
-        child.stdout.on('data', (data) => {
-          if (data) {
-            resolve(JSON.parse(data.toString('utf8')));
-          }
-          return reject([]);
-        });
-        child.stderr.on('data', async (data) => {
-          ServerLog.error({ message: data.toString('utf8'), path: __filename });
-          // reject(data.toString('utf8'));
-        });
-        child.on('exit', () => {
-          reject([]);
-          return child.kill();
-        });
-      } catch (ex) {
-        ServerLog.error({ message: ex.message, path: __filename });
-      }
-    });
+    let availableCams: object[] = [];
+    try {
+      const cmd: object[] = await childProcessCmd('sudo python3', null, [cameraDeviceFile]);
+      availableCams = JSON.parse(cmd.toString());
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error.toString());
+    }
 
     availableCams.push({ key: 'custom_pipeline', value: 'custom_pipeline', text: 'Custom Pipeline' });
     availableCams.push({ key: 'custom_path', value: '', text: 'Custom Path' });
