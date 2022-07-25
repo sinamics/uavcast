@@ -6,13 +6,13 @@ const ServerLog = winston.loggers.get('server');
 
 export const kernelCommands = (cmd: any, dir: any = path.join(process.cwd(), '..'), args: any = []): Promise<any> => {
   return new Promise((resolve, reject) => {
-    ServerLog.info({ message: 'kernel command sent', data: cmd, path: __filename });
+    ServerLog.info({ message: `subprocess command initiated`, data: JSON.stringify(cmd, null, 2), path: __filename });
     const child = spawn(cmd, args, { cwd: dir, shell: true });
     child.stdout.on('data', async (data) => {
       resolve(data);
     });
     child.stderr.on('data', async (error) => {
-      ServerLog.error({ message: error, data: cmd, path: __filename });
+      ServerLog.error({ message: error.toString(), data: cmd, path: __filename });
       reject(error);
     });
     child.on('close', async () => {
@@ -26,7 +26,7 @@ export const kernelCommandsCallback = (
   stdout = true,
   callback?: (arg: any) => void
 ) => {
-  ServerLog.info({ message: 'kernel-callback command sent', data: cmd, path: __filename });
+  ServerLog.info({ message: `subprocess callback command initiated`, data: JSON.stringify(cmd, null, 2), path: __filename });
   const child = spawn(cmd, { cwd: dir, shell: true });
   if (stdout) {
     child.stdout.on('data', async (data: any) => {
