@@ -50,7 +50,7 @@
         },
         "autostart": {
           "title": "Enable Autostart",
-          "information": "Enable if you want UAVcast to start automatically during startup",
+          "information": "Enable if you want UAVcast to start automatically when raspberry boots up.",
           "enable": "Enable Auto",
           "disable": "Disable Auto"
         }
