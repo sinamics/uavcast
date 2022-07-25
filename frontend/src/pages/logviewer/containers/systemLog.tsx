@@ -2,7 +2,7 @@ import React from 'react';
 import { Label } from 'semantic-ui-react';
 import { useGetServerLogQuery } from '../../../graphql/generated/dist';
 
-const ServerLog = () => {
+const SystemLog = () => {
   //get server logs
   const {
     data: { getServerLog = { file: [] } } = {},
@@ -32,4 +32,4 @@ const ServerLog = () => {
   );
 };
 
-export default ServerLog;
+export default SystemLog;
