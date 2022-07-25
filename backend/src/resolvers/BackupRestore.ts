@@ -2,7 +2,7 @@ import { Arg, Mutation, Resolver } from 'type-graphql';
 import { GraphQLUpload } from 'graphql-upload';
 import { Upload } from '../graphql-types/Upload';
 import fs from 'fs';
-import { kernelCommandsCallback } from '../utils/kernelCommands';
+import { childProcessCmdCallback } from '../utils/childProcessCmd';
 import winston from 'winston';
 import root from 'app-root-path';
 import path from 'path';
@@ -33,8 +33,8 @@ export class BackupRestoreResolver {
       createReadStream()
         .pipe(fs.createWriteStream(path.join('/../../../../', restoreFileName)))
         .on('finish', async () => {
-          await kernelCommandsCallback(`tar -xvf ${restoreFileName}`, sqlFolder, false, async () => {
-            await kernelCommandsCallback(
+          await childProcessCmdCallback(`tar -xvf ${restoreFileName}`, sqlFolder, false, async () => {
+            await childProcessCmdCallback(
               `sqlite3 ${sqlFolder}/uavcast.db ".restore 'backup_uavcast.db'"`,
               sqlFolder,
               false,

@@ -4,7 +4,7 @@ import winston from 'winston';
 
 const ServerLog = winston.loggers.get('server');
 
-export const kernelCommands = (cmd: any, dir: any = path.join(process.cwd(), '..'), args: any = []): Promise<any> => {
+export const childProcessCmd = (cmd: any, dir: any = path.join(process.cwd(), '..'), args: any = []): Promise<any> => {
   return new Promise((resolve, reject) => {
     ServerLog.info({ message: `subprocess command initiated`, data: JSON.stringify(cmd, null, 2), path: __filename });
     const child = spawn(cmd, args, { cwd: dir, shell: true });
@@ -20,7 +20,7 @@ export const kernelCommands = (cmd: any, dir: any = path.join(process.cwd(), '..
     });
   });
 };
-export const kernelCommandsCallback = (
+export const childProcessCmdCallback = (
   cmd: any,
   dir: any = path.join(process.cwd(), '..'),
   stdout = true,

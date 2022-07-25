@@ -6,7 +6,7 @@ import { socket } from '../utils/supervisor';
 import { getApplicationVersionInput, SupervisorInput } from '../graphql-input-types/SupervisorInput';
 import { getApplicationRepository } from '../entity/Application';
 import winston from 'winston';
-import { kernelCommands } from '../utils/kernelCommands';
+import { childProcessCmd } from '../utils/childProcessCmd';
 
 const ServerLog = winston.loggers.get('server');
 const verctl_bin = path.join(paths.binFolder, `verctl`);
@@ -16,7 +16,7 @@ export class Supervisor {
   @Query(() => VersionsRespons)
   async getUavcastInformation(): Promise<any> {
     try {
-      const uavcast = await kernelCommands(verctl_bin, paths.binFolder, ['-uavcastinformation']);
+      const uavcast = await childProcessCmd(verctl_bin, paths.binFolder, ['-uavcastinformation']);
       return { message: { uavcast: JSON.parse(uavcast.toString()) } };
     } catch (error) {
       return { errors: [{ message: error.error }] };
@@ -25,7 +25,7 @@ export class Supervisor {
   @Query(() => VersionsRespons)
   async getSupervisorInformation(): Promise<any> {
     try {
-      const supervisor = await kernelCommands(verctl_bin, paths.binFolder, ['-supervisorinformation']);
+      const supervisor = await childProcessCmd(verctl_bin, paths.binFolder, ['-supervisorinformation']);
       return { message: { supervisor: JSON.parse(supervisor.toString()) } };
     } catch (error) {
       return { errors: [{ message: error.error }] };
@@ -33,7 +33,7 @@ export class Supervisor {
   }
   @Query(() => VerctlRespons)
   async getAvailableVersions(@Args() { application }: getApplicationVersionInput): Promise<string> {
-    const availVer = await kernelCommands(verctl_bin, paths.binFolder, [`-${application}`]);
+    const availVer = await childProcessCmd(verctl_bin, paths.binFolder, [`-${application}`]);
     return JSON.parse(availVer.toString());
   }
 

@@ -3,7 +3,7 @@ import { Endpoint, getEndpointRepository } from '../entity/Endpoint';
 import { EndpointResponse, UpdateEndpointResponse } from '../graphql-response-types/Endpoint';
 import { RemoveEndpointInput, UpdateEndpointInput } from '../graphql-input-types/Endpoint';
 import { ApolloError } from 'apollo-server-express';
-import { kernelCommands } from '../utils/kernelCommands';
+import { childProcessCmd } from '../utils/childProcessCmd';
 import winston from 'winston';
 
 const DockerLog = winston.loggers.get('docker');
@@ -35,12 +35,12 @@ export class EndpointResolver {
 
     if ('videoEnable' in endpoint) {
       if (endpoint.videoEnable) {
-        kernelCommands('/app/uavcast/bin/build/uav_main -v start').catch((err) =>
+        childProcessCmd('/app/uavcast/bin/build/uav_main -v start').catch((err) =>
           DockerLog.error({ message: err, data: '/app/uavcast/bin/build/uav_main -v start', path: __filename })
         );
       }
       if (!endpoint.videoEnable) {
-        kernelCommands('/app/uavcast/bin/build/uav_main -v stop').catch((err) =>
+        childProcessCmd('/app/uavcast/bin/build/uav_main -v stop').catch((err) =>
           DockerLog.error({ message: err, data: '/app/uavcast/bin/build/uav_main -v stop', path: __filename })
         );
       }

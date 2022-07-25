@@ -9,7 +9,7 @@ import { CreateCamera } from '../seeds/camera.seed';
 import winston from 'winston';
 import path from 'path';
 import { KernelResponse } from '../graphql-response-types/KernelResponse';
-import { kernelCommandsCallback } from '../utils/kernelCommands';
+import { childProcessCmdCallback } from '../utils/childProcessCmd';
 
 // status file
 const cameraDeviceFile = path.join(paths.pythonFolder, 'devices.py');
@@ -42,7 +42,7 @@ export class CameraResolver {
     switch (camera?.protocol) {
       case 'rtsp':
       case 'udp':
-        kernelCommandsCallback(`/app/uavcast/bin/build/uav_main -v ${playstatus}`, null, true, (out: any) => {
+        childProcessCmdCallback(`/app/uavcast/bin/build/uav_main -v ${playstatus}`, null, true, (out: any) => {
           DockerLog.info({ message: out.toString(), path: __filename });
           stdioutMsg = stdioutMsg.concat(out.toString());
           publish({ message: stdioutMsg });

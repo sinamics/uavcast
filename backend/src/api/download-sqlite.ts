@@ -1,5 +1,5 @@
 import express from 'express';
-import { kernelCommands, kernelCommandsCallback } from '../utils/kernelCommands';
+import { childProcessCmd, childProcessCmdCallback } from '../utils/childProcessCmd';
 import winston from 'winston';
 import fs from 'fs';
 import root from 'app-root-path';
@@ -19,7 +19,7 @@ export const backupDatabase = (app: any) => {
     const dbPath = path.join(sqlFolder, 'backup_uavcast.db');
     const tarPath = path.join(sqlFolder, 'backup_uavcast.tar.gz');
 
-    await kernelCommands(`sqlite3 ${sqlFolder}/uavcast.db ".backup '${dbPath}'"`).catch((err: any) => {
+    await childProcessCmd(`sqlite3 ${sqlFolder}/uavcast.db ".backup '${dbPath}'"`).catch((err: any) => {
       ServerLog.error({
         message: 'An error occured when sending kernel commands',
         data: `error response: ${err}`,
@@ -27,7 +27,7 @@ export const backupDatabase = (app: any) => {
       });
     });
 
-    kernelCommandsCallback(`tar -czvf ${tarName} ${bkName}`, sqlFolder, false, (res: number) => {
+    childProcessCmdCallback(`tar -czvf ${tarName} ${bkName}`, sqlFolder, false, (res: number) => {
       if (res !== 0) {
         ServerLog.error({
           message: 'Could not generate tar file!, try again or report this error',
