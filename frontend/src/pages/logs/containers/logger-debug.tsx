@@ -23,7 +23,12 @@ const LoggerDebug = () => {
     <>
       <Grid stackable padded columns={2}>
         <Grid.Column width={11}>
-          <Header content='Debug' subheader='Set debug mode, usefull when troublehooting' />
+          <Header
+            content='Debug'
+            // add debug text here
+            subheader='This will add more verbose output in the console for each page.
+                      Usefull whe troubleshooting an issue.'
+          />
         </Grid.Column>
         <Grid.Column width={5}>
           <label className='switch switch-text'>

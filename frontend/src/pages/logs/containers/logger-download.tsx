@@ -10,7 +10,8 @@ const LoggerDownload = () => {
       {modal && <DownloadLogModal close={() => setModal(!modal)} />}
       <Grid stackable padded columns={2}>
         <Grid.Column width={11}>
-          <Header content='Download' subheader='Fetch server logs' />
+          {/* download logfiles text */}
+          <Header content='Download' subheader='Get system and statistic logfiles' />
         </Grid.Column>
         <Grid.Column width={5}>
           <Button icon onClick={() => setModal(!modal)} size='mini' positive>
