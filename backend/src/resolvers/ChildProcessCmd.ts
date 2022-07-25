@@ -1,20 +1,22 @@
 import { Root, Args, Subscription, Resolver, PubSub, Mutation, Publisher } from 'type-graphql';
 import { KernelInput } from '../graphql-input-types/KernelInput';
 import { KernelResponse } from '../graphql-response-types/KernelResponse';
-import { childProcessCmd } from '../utils/childProcessCmd';
+import { childProcessCmdCallback } from '../utils/childProcessCmd';
 
 @Resolver()
 export class KernelResolver {
   @Mutation(() => KernelResponse)
   async childProcessCmd(@PubSub('KERNEL_MESSAGE') publish: Publisher<any>, @Args() { cmd, path: cwd }: KernelInput) {
-    await publish({ message: 'waiting response from kernel...\n' });
+    await publish({ message: 'waiting for response...\n' });
 
-    try {
-      const response = await childProcessCmd({ cmd, options: { cwd } });
-      await publish({ message: response.toString('utf8') });
-    } catch (error) {
-      await publish({ errors: [{ message: error.toString('utf8'), path: 'kernelMessage' }] });
-    }
+    childProcessCmdCallback({ cmd, options: { cwd } }, async ({ error, response, code }) => {
+      if (error) {
+        return await publish({ errors: [{ message: error.toString('utf8'), path: 'kernelMessage' }] });
+      }
+
+      await publish({ message: response.toString('utf8'), data: `Return code ${code}` });
+    });
+
     return true;
   }
 

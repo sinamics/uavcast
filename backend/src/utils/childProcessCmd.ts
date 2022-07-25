@@ -18,10 +18,11 @@ export const childProcessCmd = ({ cmd, args = [], options }: ChildProcessI): Pro
     // spawn commands
     const child = spawn(cmd, args, { cwd: path.join(process.cwd(), '..'), shell: true, ...options });
     child.stdout.on('data', async (data: any) => {
+      ServerLog.info({ message: data.toString(), data: `(command: ${cmd} ${args})`, path: __filename });
       resolve(data);
     });
     child.stderr.on('data', async (error: any) => {
-      ServerLog.error({ message: error.toString(), data: cmd, path: __filename });
+      ServerLog.error({ message: error.toString(), data: `(command: ${cmd} ${args})`, path: __filename });
       reject(error);
     });
     child.on('close', async () => {
@@ -41,19 +42,19 @@ export const childProcessCmdCallback = (
   { cmd, args, stdout = true, options }: ChildProcessClbI,
   callback?: (arg: any) => void
 ) => {
-  ServerLog.info({ message: `sub-process-clb:: `, data: JSON.stringify(cmd, null, 2), path: __filename });
+  ServerLog.info({ message: `sub-process-clb:: `, data: `${cmd} ${args}`, path: __filename });
   const child = spawn(cmd, args, { cwd: path.join(process.cwd(), '..'), shell: true, ...options });
   if (stdout) {
     child.stdout.on('data', async (data: any) => {
-      typeof callback === 'function' && callback(data);
+      typeof callback === 'function' && callback({ response: data, error: null });
     });
   } else {
-    // child.stderr.on('data', async (error) => {
-    //   ServerLog.error({ message: error.toString(), data: cmd, path: __filename });
-    //   typeof callback === 'function' && callback(error);
-    // });
+    child.stderr.on('data', async (error) => {
+      ServerLog.error({ message: error.toString(), data: cmd, path: __filename });
+      typeof callback === 'function' && callback({ response: null, error });
+    });
     child.on('close', async (code: any) => {
-      typeof callback === 'function' && callback(code);
+      typeof callback === 'function' && callback({ code });
     });
   }
 };

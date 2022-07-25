@@ -106,8 +106,10 @@ int Mavlink::ardupilot(FlightControllerRecords fc_record)
 
     for (auto i = 0u; i < endpoints.size(); i++)
     {
-        if (endpoints[i].telemEnable == 0)
+        if (endpoints[i].telemEnable == 0){
+            log.Info("No clients has Telemetry enabled!");
             continue;
+        }
 
         MavConfigFile << "[UdpEndpoint " + endpoints[i].endpointIPaddress << "]\n";
         MavConfigFile << "  Mode=Normal"
@@ -125,15 +127,21 @@ int Mavlink::ardupilot(FlightControllerRecords fc_record)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     mavlink_active = utils.exec("sudo systemctl is-active mavlink-router");
+
     if (utils.isWordPresent(mavlink_active, "active"))
     {
-        log.Info("Mavlink has started!");
+        log.Info("Mavlink started successfully!");
 
         return 0;
     }
-    std::cout << mavlink_active << '\n';
-    return 0;
 
+    if (mavlink_active.find("failed") != std::string::npos) {
+        log.Error(mavlink_active.c_str());
+    } else {
+        log.Info(mavlink_active.c_str());
+    }
+
+    return 0;
 }
 int Mavlink::navio(FlightControllerRecords fc_record)
 {

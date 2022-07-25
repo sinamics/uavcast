@@ -32,7 +32,7 @@ const DockerLog = () => {
                 {`${log.timestamp}`}
               </Label>
               <Label style={{ background: `${isError ? '#ff00008c' : '#21ba4570'}` }} horizontal>
-                {`[${log.level?.toUpperCase()}]`}
+                {`[${isError ? 'ERROR' : log.level?.toUpperCase()}]`}
               </Label>
               <span style={{ background: `${isError ? '#a1131366' : ''}` }}>{`${log.message} : ${log.data}`}</span>
             </div>

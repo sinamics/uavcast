@@ -24,15 +24,15 @@ const SystemLog = () => {
         {getServerLog.file?.map((log: any, idx: number) => {
           // check if first word is error or failed
           const errorWords = ['failed', 'error'];
-          const isError = new RegExp(errorWords.join('|')).test(log?.level?.toLowerCase()) || false;
-
+          // const isError = new RegExp(errorWords.join('|')).test(log?.level?.toLowerCase()) || false;
+          const isError = new RegExp(errorWords.join('|')).test(log?.message.toLowerCase()) || false;
           return (
             <div key={idx} style={{ fontSize: '16px' }}>
               <Label style={{ background: `${isError ? '#ff00008c' : '#21ba4570'}` }} horizontal>
                 {`${log.timestamp}`}
               </Label>
               <Label style={{ background: `${isError ? '#ff00008c' : '#21ba4570'}` }} horizontal>
-                {`[${log.level?.toUpperCase()}]`}
+                {`[${isError ? 'ERROR' : log.level?.toUpperCase()}]`}
               </Label>
               <span style={{ background: `${isError ? '#a1131366' : ''}` }}>{`${log.message} ${
                 log.data !== null ? ` ${log.data}` : ''
