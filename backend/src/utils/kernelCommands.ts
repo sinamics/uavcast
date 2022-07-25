@@ -4,10 +4,10 @@ import winston from 'winston';
 
 const ServerLog = winston.loggers.get('server');
 
-export const kernelCommands = (cmd: any, dir: any = path.join(process.cwd(), '..')): Promise<any> => {
+export const kernelCommands = (cmd: any, dir: any = path.join(process.cwd(), '..'), args: any = []): Promise<any> => {
   return new Promise((resolve, reject) => {
     ServerLog.info({ message: 'kernel command sent', data: cmd, path: __filename });
-    const child = spawn(cmd, { cwd: dir, shell: true });
+    const child = spawn(cmd, args, { cwd: dir, shell: true });
     child.stdout.on('data', async (data) => {
       resolve(data);
     });

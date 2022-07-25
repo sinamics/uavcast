@@ -1,4 +1,3 @@
-import { spawn } from 'child_process';
 import path from 'path';
 import { SupervisorRespons, VerctlRespons, VersionsRespons } from '../graphql-response-types/Supervisor';
 import { Args, Mutation, Query, Resolver, Root, Subscription } from 'type-graphql';
@@ -7,38 +6,18 @@ import { socket } from '../utils/supervisor';
 import { getApplicationVersionInput, SupervisorInput } from '../graphql-input-types/SupervisorInput';
 import { getApplicationRepository } from '../entity/Application';
 import winston from 'winston';
+import { kernelCommands } from '../utils/kernelCommands';
 
 const ServerLog = winston.loggers.get('server');
-
-const getver: any = (application: string) => {
-  const verctl_bin = path.join(paths.binFolder, `verctl`);
-
-  return new Promise((resolve, reject) => {
-    const child = spawn(verctl_bin, [`-${application}`]);
-    child.stdout.on('data', async (data) => {
-      // console.log('child', JSON.parse(data.toString()));
-      resolve(JSON.parse(data.toString()));
-    });
-    child.stderr.on('data', async (error) => {
-      // console.log('child', JSON.parse(error.toString()));
-      ServerLog.error({ message: error.toString(), data: verctl_bin, path: __filename });
-      reject({ error: error.toString() });
-    });
-    child.on('exit', function (exitCode) {
-      if (exitCode === 0) {
-        reject('Error');
-      }
-    });
-  });
-};
+const verctl_bin = path.join(paths.binFolder, `verctl`);
 
 @Resolver()
 export class Supervisor {
   @Query(() => VersionsRespons)
   async getUavcastInformation(): Promise<any> {
     try {
-      const uavcast = await getver('uavcastinformation');
-      return { message: { uavcast } };
+      const uavcast = await kernelCommands(verctl_bin, paths.binFolder, ['-uavcastinformation']);
+      return { message: { uavcast: JSON.parse(uavcast.toString()) } };
     } catch (error) {
       return { errors: [{ message: error.error }] };
     }
@@ -46,15 +25,16 @@ export class Supervisor {
   @Query(() => VersionsRespons)
   async getSupervisorInformation(): Promise<any> {
     try {
-      const supervisor = await getver('supervisorinformation');
-      return { message: { supervisor } };
+      const supervisor = await kernelCommands(verctl_bin, paths.binFolder, ['-supervisorinformation']);
+      return { message: { supervisor: JSON.parse(supervisor.toString()) } };
     } catch (error) {
       return { errors: [{ message: error.error }] };
     }
   }
   @Query(() => VerctlRespons)
   async getAvailableVersions(@Args() { application }: getApplicationVersionInput): Promise<string> {
-    return await getver(application);
+    const availVer = await kernelCommands(verctl_bin, paths.binFolder, [`-${application}`]);
+    return JSON.parse(availVer.toString());
   }
 
   @Mutation(() => SupervisorRespons)
