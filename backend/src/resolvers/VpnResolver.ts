@@ -33,7 +33,7 @@ export class VpnResolver {
   @Query(() => ZerotierNetworkResponse)
   async zerotierNetworks(): Promise<any> {
     try {
-      const listnetworks = await childProcessCmd({ cmd: 'sudo zerotier-cli -j listnetworks', sensitiv: true });
+      const listnetworks = await childProcessCmd({ cmd: 'sudo zerotier-cli -j listnetworks', logg: false });
       const networks = JSON.parse(listnetworks.toString('utf8'));
 
       // const peers = await childProcessCmd({ cmd: 'sudo zerotier-cli -j peers' });
