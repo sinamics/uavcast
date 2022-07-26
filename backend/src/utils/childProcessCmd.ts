@@ -8,12 +8,18 @@ interface ChildProcessI {
   cmd: string;
   args?: any[];
   options?: any;
+  sensitiv?: boolean;
 }
 
-export const childProcessCmd = ({ cmd, args = [], options }: ChildProcessI): Promise<any> => {
+export const childProcessCmd = ({ cmd, args = [], sensitiv = false, options }: ChildProcessI): Promise<any> => {
   return new Promise((resolve, reject) => {
-    // log activity
-    ServerLog.info({ message: `sub-process:: `, data: `${cmd} ${args}`, path: __filename });
+    if (sensitiv) {
+      // log activity
+      ServerLog.info({ message: `sub-process:: `, data: `Sensitiv information, logging skipped!`, path: __filename });
+    } else {
+      // log activity
+      ServerLog.info({ message: `sub-process:: `, data: `${cmd} ${args}`, path: __filename });
+    }
 
     // spawn commands
     const child = spawn(cmd, args, { cwd: path.join(process.cwd(), '..'), shell: true, ...options });
@@ -36,13 +42,20 @@ interface ChildProcessClbI {
   args?: any[];
   options?: any;
   stdout?: any;
+  sensitiv?: boolean;
 }
 
 export const childProcessCmdCallback = (
-  { cmd, args, stdout = true, options }: ChildProcessClbI,
+  { cmd, args, stdout = true, sensitiv = false, options }: ChildProcessClbI,
   callback?: (arg: any) => void
 ) => {
-  ServerLog.info({ message: `sub-process-clb:: `, data: `${cmd} ${args}`, path: __filename });
+  if (sensitiv) {
+    // log activity
+    ServerLog.info({ message: `sub-process-clb:: `, data: `Sensitiv information, logging skipped!`, path: __filename });
+  } else {
+    // log activity
+    ServerLog.info({ message: `sub-process-clb:: `, data: `${cmd} ${args}`, path: __filename });
+  }
   const child = spawn(cmd, args, { cwd: path.join(process.cwd(), '..'), shell: true, ...options });
   if (stdout) {
     child.stdout.on('data', async (data: any) => {

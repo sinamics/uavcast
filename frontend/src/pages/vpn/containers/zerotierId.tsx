@@ -27,7 +27,7 @@ const ZerotierId = () => {
                 fluid
                 onClick={() =>
                   kernelCommand({
-                    variables: { cmd: 'sudo zerotier-cli join ' + networkId, path: '/' }
+                    variables: { cmd: 'sudo zerotier-cli join ' + networkId, path: '/', sensitiv: true }
                   }).then(() => setNetworkId(''))
                 }
                 positive

@@ -1,5 +1,5 @@
-mutation childProcessCmd($cmd: String!, $path: String!, $shell: Boolean) {
-  childProcessCmd(cmd: $cmd, path: $path, shell: $shell) {
+mutation childProcessCmd($cmd: String!, $path: String!, $shell: Boolean, $sensitiv: Boolean) {
+  childProcessCmd(cmd: $cmd, path: $path, shell: $shell, sensitiv: $sensitiv) {
     message
     errors {
       path
