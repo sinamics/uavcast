@@ -24,11 +24,23 @@ export const childProcessCmd = ({ cmd, args = [], sensitiv = false, options }: C
     // spawn commands
     const child = spawn(cmd, args, { cwd: path.join(process.cwd(), '..'), shell: true, ...options });
     child.stdout.on('data', async (data: any) => {
-      ServerLog.info({ message: data.toString(), data: `(command: ${cmd} ${args})`, path: __filename });
+      if (sensitiv) {
+        // log activity
+        ServerLog.info({ message: data.toString(), data: `Sensitiv information, logging skipped!`, path: __filename });
+      } else {
+        // log activity
+        ServerLog.info({ message: data.toString(), data: `(command: ${cmd} ${args})`, path: __filename });
+      }
       resolve(data);
     });
     child.stderr.on('data', async (error: any) => {
-      ServerLog.error({ message: error.toString(), data: `(command: ${cmd} ${args})`, path: __filename });
+      if (sensitiv) {
+        // log activity
+        ServerLog.error({ message: error.toString(), data: `Sensitiv information, logging skipped!`, path: __filename });
+      } else {
+        // log activity
+        ServerLog.error({ message: error.toString(), data: `(command: ${cmd} ${args})`, path: __filename });
+      }
       reject(error);
     });
     child.on('close', async () => {
@@ -63,7 +75,13 @@ export const childProcessCmdCallback = (
     });
   } else {
     child.stderr.on('data', async (error) => {
-      ServerLog.error({ message: error.toString(), data: cmd, path: __filename });
+      if (sensitiv) {
+        // log activity
+        ServerLog.error({ message: error.toString(), data: `Sensitiv information, logging skipped!`, path: __filename });
+      } else {
+        // log activity
+        ServerLog.error({ message: error.toString(), data: `(command: ${cmd} ${args})`, path: __filename });
+      }
       typeof callback === 'function' && callback({ response: null, error });
     });
     child.on('close', async (code: any) => {
