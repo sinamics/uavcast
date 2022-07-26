@@ -2,8 +2,6 @@ import path from 'path';
 import { spawn } from 'child_process';
 import winston from 'winston';
 
-const ServerLog = winston.loggers.get('server');
-
 interface ChildProcessI {
   cmd: string;
   args?: any[];
@@ -12,6 +10,7 @@ interface ChildProcessI {
 }
 
 export const childProcessCmd = ({ cmd, args = [], sensitiv = false, options }: ChildProcessI): Promise<any> => {
+  const ServerLog = winston.loggers.get('server');
   return new Promise((resolve, reject) => {
     if (sensitiv) {
       // log activity
@@ -61,6 +60,8 @@ export const childProcessCmdCallback = (
   { cmd, args, stdout = true, sensitiv = false, options }: ChildProcessClbI,
   callback?: (arg: any) => void
 ) => {
+  const ServerLog = winston.loggers.get('server');
+
   if (sensitiv) {
     // log activity
     ServerLog.info({ message: `sub-process-clb:: `, data: `Sensitiv information, logging skipped!`, path: __filename });
