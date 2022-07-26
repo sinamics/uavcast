@@ -6,6 +6,7 @@ import { useZerotierNetworksQuery, useChildProcessCmdMutation, ZerotierNetworksD
 const ZerotierTable = () => {
   const [kernelCommand] = useChildProcessCmdMutation();
   const { data: { zerotierNetworks: { networks = [] } = {} } = {} }: any = useZerotierNetworksQuery({
+    fetchPolicy: 'network-only',
     pollInterval: 5000
   });
   return (
