@@ -41,11 +41,17 @@ export class CameraResolver {
     switch (camera?.protocol) {
       case 'rtsp':
       case 'udp':
-        childProcessCmdCallback({ cmd: `/app/uavcast/bin/build/uav_main -v ${playstatus}`, stdout: true }, (out: any) => {
-          DockerLog.info({ message: out.toString(), path: __filename });
-          stdioutMsg = stdioutMsg.concat(out.toString());
-          publish({ message: stdioutMsg });
-        });
+        childProcessCmdCallback(
+          { cmd: `/app/uavcast/bin/build/uav_main -v ${playstatus}`, stdout: true },
+          ({ error, response }) => {
+            if (error) {
+              return DockerLog.error({ message: response.toString(), path: __filename });
+            }
+            DockerLog.info({ message: response.toString(), path: __filename });
+            stdioutMsg = stdioutMsg.concat(response.toString());
+            return publish({ message: stdioutMsg });
+          }
+        );
         return true;
 
       default:
