@@ -9,7 +9,7 @@ const ZerotierFooter = () => {
       <Button
         onClick={() =>
           kernelCommand({
-            variables: { cmd: 'sudo zerotier-cli info', path: '/', sensitiv: true }
+            variables: { cmd: 'sudo zerotier-cli info', path: '/', logg: false }
           })
         }
       >
@@ -18,7 +18,7 @@ const ZerotierFooter = () => {
       <Button
         onClick={() =>
           kernelCommand({
-            variables: { cmd: 'sudo zerotier-cli info -j', path: '/', sensitiv: true }
+            variables: { cmd: 'sudo zerotier-cli info -j', path: '/', logg: false }
           })
         }
       >
@@ -28,7 +28,7 @@ const ZerotierFooter = () => {
       <Button
         onClick={() =>
           kernelCommand({
-            variables: { cmd: 'sudo zerotier-cli peers', path: '/', sensitiv: true }
+            variables: { cmd: 'sudo zerotier-cli peers', path: '/', logg: false }
           })
         }
       >

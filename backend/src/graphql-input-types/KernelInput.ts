@@ -13,5 +13,5 @@ export class KernelInput {
   path?: string;
 
   @Field({ nullable: true })
-  sensitiv?: boolean;
+  logg?: boolean;
 }

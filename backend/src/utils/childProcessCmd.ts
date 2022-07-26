@@ -6,40 +6,28 @@ interface ChildProcessI {
   cmd: string;
   args?: any[];
   options?: any;
-  sensitiv?: boolean;
+  logg?: boolean;
 }
 
-export const childProcessCmd = ({ cmd, args = [], sensitiv = false, options }: ChildProcessI): Promise<any> => {
+export const childProcessCmd = ({ cmd, args = [], logg = true, options }: ChildProcessI): Promise<any> => {
   const ServerLog = winston.loggers.get('server');
   return new Promise((resolve, reject) => {
-    if (sensitiv) {
-      // log activity
-      ServerLog.info({ message: `sub-process:: `, data: `Sensitiv information, logging skipped!`, path: __filename });
-    } else {
-      // log activity
-      ServerLog.info({ message: `sub-process:: `, data: `${cmd} ${args}`, path: __filename });
-    }
+    // log activity
+    logg && ServerLog.info({ message: `sub-process:: `, data: `${cmd} ${args}`, path: __filename });
 
     // spawn commands
     const child = spawn(cmd, args, { cwd: path.join(process.cwd(), '..'), shell: true, ...options });
     child.stdout.on('data', async (data: any) => {
-      if (sensitiv) {
-        // log activity
-        ServerLog.info({ message: data.toString(), data: `Sensitiv information, logging skipped!`, path: __filename });
-      } else {
-        // log activity
-        ServerLog.info({ message: data.toString(), data: `(command: ${cmd} ${args})`, path: __filename });
-      }
+      // log activity
+      logg && ServerLog.info({ message: data.toString(), data: `(${cmd} ${args !== undefined ? args : ''})`, path: __filename });
+
       resolve(data);
     });
     child.stderr.on('data', async (error: any) => {
-      if (sensitiv) {
-        // log activity
-        ServerLog.error({ message: error.toString(), data: `Sensitiv information, logging skipped!`, path: __filename });
-      } else {
-        // log activity
-        ServerLog.error({ message: error.toString(), data: `(command: ${cmd} ${args})`, path: __filename });
-      }
+      // log activity
+      logg &&
+        ServerLog.error({ message: error.toString(), data: `(${cmd} ${args !== undefined ? args : ''})`, path: __filename });
+
       reject(error);
     });
     child.on('close', async () => {
@@ -53,36 +41,31 @@ interface ChildProcessClbI {
   args?: any[];
   options?: any;
   stdout?: any;
-  sensitiv?: boolean;
+  logg?: boolean;
 }
 
 export const childProcessCmdCallback = (
-  { cmd, args, stdout = true, sensitiv = false, options }: ChildProcessClbI,
+  { cmd, args, stdout = true, logg = true, options }: ChildProcessClbI,
   callback?: (arg: any) => void
 ) => {
   const ServerLog = winston.loggers.get('server');
 
-  if (sensitiv) {
-    // log activity
-    ServerLog.info({ message: `sub-process-clb:: `, data: `Sensitiv information, logging skipped!`, path: __filename });
-  } else {
-    // log activity
-    ServerLog.info({ message: `sub-process-clb:: `, data: `${cmd} ${args}`, path: __filename });
-  }
+  // log activity
+  logg && ServerLog.info({ message: `sub-process-clb:: `, data: `${cmd} ${args}`, path: __filename });
+
   const child = spawn(cmd, args, { cwd: path.join(process.cwd(), '..'), shell: true, ...options });
   if (stdout) {
     child.stdout.on('data', async (data: any) => {
+      // log activity
+      logg && ServerLog.info({ message: data.toString(), data: `(${cmd} ${args !== undefined ? args : ''})`, path: __filename });
       typeof callback === 'function' && callback({ response: data, error: null });
     });
   } else {
     child.stderr.on('data', async (error) => {
-      if (sensitiv) {
-        // log activity
-        ServerLog.error({ message: error.toString(), data: `Sensitiv information, logging skipped!`, path: __filename });
-      } else {
-        // log activity
-        ServerLog.error({ message: error.toString(), data: `(command: ${cmd} ${args})`, path: __filename });
-      }
+      // log activity
+      logg &&
+        ServerLog.error({ message: error.toString(), data: `(${cmd} ${args !== undefined ? args : ''})`, path: __filename });
+
       typeof callback === 'function' && callback({ response: null, error });
     });
     child.on('close', async (code: any) => {

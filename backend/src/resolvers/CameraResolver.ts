@@ -45,8 +45,9 @@ export class CameraResolver {
           { cmd: `/app/uavcast/bin/build/uav_main -v ${playstatus}`, stdout: true },
           ({ error, response }) => {
             if (error) {
-              return DockerLog.error({ message: response.toString(), path: __filename });
+              return DockerLog.error({ message: error.toString(), path: __filename });
             }
+
             DockerLog.info({ message: response.toString(), path: __filename });
             stdioutMsg = stdioutMsg.concat(response.toString());
             return publish({ message: stdioutMsg });

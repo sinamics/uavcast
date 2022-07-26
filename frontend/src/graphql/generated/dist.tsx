@@ -386,7 +386,7 @@ export type MutationChildProcessCmdArgs = {
   cmd: Scalars['String'];
   shell?: Maybe<Scalars['Boolean']>;
   path: Scalars['String'];
-  sensitiv?: Maybe<Scalars['Boolean']>;
+  logg?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -931,7 +931,7 @@ export type ChildProcessCmdMutationVariables = Exact<{
   cmd: Scalars['String'];
   path: Scalars['String'];
   shell?: Maybe<Scalars['Boolean']>;
-  sensitiv?: Maybe<Scalars['Boolean']>;
+  logg?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -1940,8 +1940,8 @@ export type ResetFlightControllerDatabaseMutationHookResult = ReturnType<typeof 
 export type ResetFlightControllerDatabaseMutationResult = Apollo.MutationResult<ResetFlightControllerDatabaseMutation>;
 export type ResetFlightControllerDatabaseMutationOptions = Apollo.BaseMutationOptions<ResetFlightControllerDatabaseMutation, ResetFlightControllerDatabaseMutationVariables>;
 export const ChildProcessCmdDocument = gql`
-    mutation childProcessCmd($cmd: String!, $path: String!, $shell: Boolean, $sensitiv: Boolean) {
-  childProcessCmd(cmd: $cmd, path: $path, shell: $shell, sensitiv: $sensitiv) {
+    mutation childProcessCmd($cmd: String!, $path: String!, $shell: Boolean, $logg: Boolean) {
+  childProcessCmd(cmd: $cmd, path: $path, shell: $shell, logg: $logg) {
     message
     errors {
       path
@@ -1968,7 +1968,7 @@ export type ChildProcessCmdMutationFn = Apollo.MutationFunction<ChildProcessCmdM
  *      cmd: // value for 'cmd'
  *      path: // value for 'path'
  *      shell: // value for 'shell'
- *      sensitiv: // value for 'sensitiv'
+ *      logg: // value for 'logg'
  *   },
  * });
  */
