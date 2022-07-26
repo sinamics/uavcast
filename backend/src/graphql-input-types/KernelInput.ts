@@ -11,4 +11,7 @@ export class KernelInput {
 
   @Field()
   path?: string;
+
+  @Field({ nullable: true })
+  sensitiv?: boolean;
 }

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Grid, Header, Input, Label } from 'semantic-ui-react';
-import { useGetApplicationQuery, useKernelMessageMutation, useUpdateApplicationMutation } from '../../../graphql/generated/dist';
+import {
+  useGetApplicationQuery,
+  useChildProcessCmdMutation,
+  useUpdateApplicationMutation
+} from '../../../graphql/generated/dist';
 
 const WebPortInput = () => {
   const [port, setPort] = useState(Number);
@@ -9,7 +13,7 @@ const WebPortInput = () => {
   const { data: { getApplication = {} } = {}, loading }: any = useGetApplicationQuery({
     fetchPolicy: 'network-only'
   });
-  const [kernel] = useKernelMessageMutation();
+  const [kernel] = useChildProcessCmdMutation();
 
   const [storeData, { error: updateError }] = useUpdateApplicationMutation({
     errorPolicy: 'all'

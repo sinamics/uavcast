@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Card, Grid, Icon } from 'semantic-ui-react';
-import { useKernelMessageMutation, useSendMavCommandMutation } from '../../../graphql/generated/dist';
+import { useChildProcessCmdMutation, useSendMavCommandMutation } from '../../../graphql/generated/dist';
 
 const RightSidebar = ({ message = {} }: any = {}) => {
-  const [kernelCommand, { loading }] = useKernelMessageMutation();
+  const [kernelCommand, { loading }] = useChildProcessCmdMutation();
   const [sendCommand] = useSendMavCommandMutation();
   const { heartbeat }: any = message;
 

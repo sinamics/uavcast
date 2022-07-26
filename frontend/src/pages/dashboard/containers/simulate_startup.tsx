@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSubscription } from '@apollo/client';
 import { Button, Card, Icon } from 'semantic-ui-react';
-import { StatusDocument, useKernelMessageMutation } from '../../../graphql/generated/dist';
+import { StatusDocument, useChildProcessCmdMutation } from '../../../graphql/generated/dist';
 
 interface IStatus {
   uavcast_systemd_active?: boolean;
@@ -12,7 +12,7 @@ const SimulateStartup = () => {
   const [loading, setLoading] = useState<IStatus>();
 
   const { data: { status } = {} } = useSubscription(StatusDocument);
-  const [kernelCommand] = useKernelMessageMutation();
+  const [kernelCommand] = useChildProcessCmdMutation();
 
   useEffect(() => {
     setLoading({});

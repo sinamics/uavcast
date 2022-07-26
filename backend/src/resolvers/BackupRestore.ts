@@ -2,7 +2,7 @@ import { Arg, Mutation, Resolver } from 'type-graphql';
 import { GraphQLUpload } from 'graphql-upload';
 import { Upload } from '../graphql-types/Upload';
 import fs from 'fs';
-import { kernelCommandsCallback } from '../utils/kernelCommands';
+import { childProcessCmdCallback } from '../utils/childProcessCmd';
 import winston from 'winston';
 import root from 'app-root-path';
 import path from 'path';
@@ -33,18 +33,19 @@ export class BackupRestoreResolver {
       createReadStream()
         .pipe(fs.createWriteStream(path.join('/../../../../', restoreFileName)))
         .on('finish', async () => {
-          await kernelCommandsCallback(`tar -xvf ${restoreFileName}`, sqlFolder, false, async () => {
-            await kernelCommandsCallback(
-              `sqlite3 ${sqlFolder}/uavcast.db ".restore 'backup_uavcast.db'"`,
-              sqlFolder,
-              false,
-              () => {
-                fs.unlinkSync(restoreFileName);
-                fs.unlinkSync(bckDbName);
-                ServerLog.info({ message: `Successfully performed backup of SQL database.`, data: filename, path: __filename });
-              }
-            );
-          });
+          await childProcessCmdCallback(
+            { cmd: `tar -xvf ${restoreFileName}`, stdout: false, options: { cwd: sqlFolder } },
+            async () => {
+              await childProcessCmdCallback(
+                { cmd: `sqlite3 ${sqlFolder}/uavcast.db ".restore 'backup_uavcast.db'"`, options: { cwd: sqlFolder } },
+                () => {
+                  fs.unlinkSync(restoreFileName);
+                  fs.unlinkSync(bckDbName);
+                  ServerLog.info({ message: `Successfully performed backup of SQL database.`, data: filename, path: __filename });
+                }
+              );
+            }
+          );
 
           resolve(true);
         })

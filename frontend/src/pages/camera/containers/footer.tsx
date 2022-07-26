@@ -1,12 +1,7 @@
 import { Button, Grid, Icon } from 'semantic-ui-react';
-import {
-  useCameraActionsMutation,
-  // useKernelMessageMutation,
-  useResetCameraDatabaseMutation
-} from '../../../graphql/generated/dist';
+import { useCameraActionsMutation, useResetCameraDatabaseMutation } from '../../../graphql/generated/dist';
 
 const CameraFooter = ({ getDockerLogs }: any) => {
-  // const [kernelCommand] = useKernelMessageMutation();
   const [clearData] = useResetCameraDatabaseMutation();
   const [cameraAction, { loading }] = useCameraActionsMutation({
     errorPolicy: 'all'

@@ -1,8 +1,8 @@
 import { Button } from 'semantic-ui-react';
-import { useKernelMessageMutation } from '../../../graphql/generated/dist';
+import { useChildProcessCmdMutation } from '../../../graphql/generated/dist';
 
 const ZerotierFooter = () => {
-  const [kernelCommand] = useKernelMessageMutation();
+  const [kernelCommand] = useChildProcessCmdMutation();
 
   return (
     <Button.Group size='mini'>

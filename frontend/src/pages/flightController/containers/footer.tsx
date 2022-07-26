@@ -1,8 +1,8 @@
 import { Button, Grid, Icon } from 'semantic-ui-react';
-import { useKernelMessageMutation, useResetFlightControllerDatabaseMutation } from '../../../graphql/generated/dist';
+import { useChildProcessCmdMutation, useResetFlightControllerDatabaseMutation } from '../../../graphql/generated/dist';
 
 const FcFooter = () => {
-  const [kernelCommand] = useKernelMessageMutation();
+  const [kernelCommand] = useChildProcessCmdMutation();
   const [clearData] = useResetFlightControllerDatabaseMutation();
 
   return (

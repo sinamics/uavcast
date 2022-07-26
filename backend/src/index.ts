@@ -9,9 +9,8 @@ import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { MapResovler } from './resolvers/MapResovler';
 import { MavlinkResolver } from './resolvers/MavlinkResolver';
-import { UAVcastResovler } from './resolvers/UavcastResolver';
 import { VpnResolver } from './resolvers/VpnResolver';
-import { KernelResolver } from './resolvers/KernelResolver';
+import { KernelResolver } from './resolvers/ChildProcessCmd';
 import compression from 'compression';
 import dotv from 'dotenv';
 import cors from 'cors';
@@ -90,7 +89,6 @@ const server = async () => {
     schema: await buildSchema({
       resolvers: [
         MapResovler,
-        UAVcastResovler,
         VpnResolver,
         KernelResolver,
         MavlinkResolver,

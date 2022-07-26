@@ -270,6 +270,8 @@ export type WinstonProperties = {
   __typename?: 'WinstonProperties';
   timestamp: Scalars['String'];
   message?: Maybe<Scalars['String']>;
+  data?: Maybe<Scalars['String']>;
+  level?: Maybe<Scalars['String']>;
 };
 
 export type NetworkLoggDataResponse = {
@@ -339,10 +341,9 @@ export type Caps = {
 export type Mutation = {
   __typename?: 'Mutation';
   sendMavCommand: Scalars['Boolean'];
-  startStopUavcast: Scalars['String'];
   storeVpnValues: VpnResponse;
   uploadConfigFile: Scalars['Boolean'];
-  kernelMessage: KernelResponse;
+  childProcessCmd: KernelResponse;
   storeModemValues: ModemResponse;
   updateUavcastContainer: SupervisorRespons;
   updateSupervisorContainer: SupervisorRespons;
@@ -381,10 +382,11 @@ export type MutationUploadConfigFileArgs = {
 };
 
 
-export type MutationKernelMessageArgs = {
+export type MutationChildProcessCmdArgs = {
   cmd: Scalars['String'];
   shell?: Maybe<Scalars['Boolean']>;
   path: Scalars['String'];
+  sensitiv?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -925,16 +927,17 @@ export type ResetFlightControllerDatabaseMutation = (
   ) }
 );
 
-export type KernelMessageMutationVariables = Exact<{
+export type ChildProcessCmdMutationVariables = Exact<{
   cmd: Scalars['String'];
   path: Scalars['String'];
   shell?: Maybe<Scalars['Boolean']>;
+  sensitiv?: Maybe<Scalars['Boolean']>;
 }>;
 
 
-export type KernelMessageMutation = (
+export type ChildProcessCmdMutation = (
   { __typename?: 'Mutation' }
-  & { kernelMessage: (
+  & { childProcessCmd: (
     { __typename?: 'KernelResponse' }
     & Pick<KernelResponse, 'message'>
     & { errors?: Maybe<Array<(
@@ -999,7 +1002,7 @@ export type GetDockerLogMutation = (
     { __typename?: 'WinstonResponse' }
     & { file?: Maybe<Array<(
       { __typename?: 'WinstonProperties' }
-      & Pick<WinstonProperties, 'message' | 'timestamp'>
+      & Pick<WinstonProperties, 'timestamp' | 'message' | 'data' | 'level'>
     )>> }
   ) }
 );
@@ -1236,7 +1239,7 @@ export type GetServerLogQuery = (
     { __typename?: 'WinstonResponse' }
     & { file?: Maybe<Array<(
       { __typename?: 'WinstonProperties' }
-      & Pick<WinstonProperties, 'timestamp' | 'message'>
+      & Pick<WinstonProperties, 'timestamp' | 'message' | 'data' | 'level'>
     )>> }
   ) }
 );
@@ -1936,9 +1939,9 @@ export function useResetFlightControllerDatabaseMutation(baseOptions?: Apollo.Mu
 export type ResetFlightControllerDatabaseMutationHookResult = ReturnType<typeof useResetFlightControllerDatabaseMutation>;
 export type ResetFlightControllerDatabaseMutationResult = Apollo.MutationResult<ResetFlightControllerDatabaseMutation>;
 export type ResetFlightControllerDatabaseMutationOptions = Apollo.BaseMutationOptions<ResetFlightControllerDatabaseMutation, ResetFlightControllerDatabaseMutationVariables>;
-export const KernelMessageDocument = gql`
-    mutation kernelMessage($cmd: String!, $path: String!, $shell: Boolean) {
-  kernelMessage(cmd: $cmd, path: $path, shell: $shell) {
+export const ChildProcessCmdDocument = gql`
+    mutation childProcessCmd($cmd: String!, $path: String!, $shell: Boolean, $sensitiv: Boolean) {
+  childProcessCmd(cmd: $cmd, path: $path, shell: $shell, sensitiv: $sensitiv) {
     message
     errors {
       path
@@ -1947,33 +1950,34 @@ export const KernelMessageDocument = gql`
   }
 }
     `;
-export type KernelMessageMutationFn = Apollo.MutationFunction<KernelMessageMutation, KernelMessageMutationVariables>;
+export type ChildProcessCmdMutationFn = Apollo.MutationFunction<ChildProcessCmdMutation, ChildProcessCmdMutationVariables>;
 
 /**
- * __useKernelMessageMutation__
+ * __useChildProcessCmdMutation__
  *
- * To run a mutation, you first call `useKernelMessageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useKernelMessageMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useChildProcessCmdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChildProcessCmdMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [kernelMessageMutation, { data, loading, error }] = useKernelMessageMutation({
+ * const [childProcessCmdMutation, { data, loading, error }] = useChildProcessCmdMutation({
  *   variables: {
  *      cmd: // value for 'cmd'
  *      path: // value for 'path'
  *      shell: // value for 'shell'
+ *      sensitiv: // value for 'sensitiv'
  *   },
  * });
  */
-export function useKernelMessageMutation(baseOptions?: Apollo.MutationHookOptions<KernelMessageMutation, KernelMessageMutationVariables>) {
-        return Apollo.useMutation<KernelMessageMutation, KernelMessageMutationVariables>(KernelMessageDocument, baseOptions);
+export function useChildProcessCmdMutation(baseOptions?: Apollo.MutationHookOptions<ChildProcessCmdMutation, ChildProcessCmdMutationVariables>) {
+        return Apollo.useMutation<ChildProcessCmdMutation, ChildProcessCmdMutationVariables>(ChildProcessCmdDocument, baseOptions);
       }
-export type KernelMessageMutationHookResult = ReturnType<typeof useKernelMessageMutation>;
-export type KernelMessageMutationResult = Apollo.MutationResult<KernelMessageMutation>;
-export type KernelMessageMutationOptions = Apollo.BaseMutationOptions<KernelMessageMutation, KernelMessageMutationVariables>;
+export type ChildProcessCmdMutationHookResult = ReturnType<typeof useChildProcessCmdMutation>;
+export type ChildProcessCmdMutationResult = Apollo.MutationResult<ChildProcessCmdMutation>;
+export type ChildProcessCmdMutationOptions = Apollo.BaseMutationOptions<ChildProcessCmdMutation, ChildProcessCmdMutationVariables>;
 export const RemoveLogfileDocument = gql`
     mutation removeLogfile($filename: String!) {
   removeLogfile(filename: $filename)
@@ -2106,8 +2110,10 @@ export const GetDockerLogDocument = gql`
     mutation getDockerLog($properties: LogProperties!) {
   getDockerLog(properties: $properties) {
     file {
-      message
       timestamp
+      message
+      data
+      level
     }
   }
 }
@@ -2700,6 +2706,8 @@ export const GetServerLogDocument = gql`
     file {
       timestamp
       message
+      data
+      level
     }
   }
 }

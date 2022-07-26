@@ -48,6 +48,8 @@ query getServerLog($properties: LogProperties!) {
     file {
       timestamp
       message
+      data
+      level
     }
   }
 }
