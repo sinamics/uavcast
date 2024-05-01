@@ -5,7 +5,7 @@
   "devDependencies": {
     "@types/app-root-path": "^1.2.4",
     "@types/archiver": "^5.1.1",
-    "@types/async": "^3.2.12",
+    "@types/async": "^3.2.24",
     "@types/bcryptjs": "^2.4.2",
     "@types/bluebird": "^3.5.36",
     "@types/compression": "^1.7.0",
@@ -31,7 +31,7 @@
     "@types/winston": "^2.4.4",
     "apollo-server-express": "^2.9.9",
     "app-root-path": "^3.0.0",
-    "async": "^3.2.3",
+    "async": "^3.2.5",
     "bluebird": "^3.7.2",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
