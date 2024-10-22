@@ -73,7 +73,7 @@ jobs:
             $-buildx-${{ matrix.architecture }}-
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
         with:
           install: true
           version: latest
