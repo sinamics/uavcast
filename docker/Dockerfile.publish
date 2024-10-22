@@ -12,13 +12,13 @@ WORKDIR /gcc
 COPY ["bin", "./"]
 
 RUN apt-get update && apt-get install -y \
-                   libcppunit-dev \
-                   libjsoncpp-dev \
-                   libv4l-dev \
-                   libgstreamer1.0-dev \
-                   libcurl4-nss-dev \
-                   sqlite3 \
-                   libsqlite3-dev
+      libcppunit-dev \
+      libjsoncpp-dev \
+      libv4l-dev \
+      libgstreamer1.0-dev \
+      libcurl4-nss-dev \
+      sqlite3 \
+      libsqlite3-dev
 RUN mkdir -p build
 RUN make clean && make
 
@@ -44,7 +44,7 @@ COPY ["backend/package.json", \
 
 COPY ["backend/src", "./src"]
 
-RUN npm install
+RUN npm ci
 RUN npm run build
 
 ###
@@ -60,15 +60,15 @@ RUN apt-get update && apt-get install -y build-essential cmake python
 
 # install app dependencies
 COPY [  "frontend/package.json", \
-        "backend/package-lock.json", \
-        "frontend/.eslintignore", \
-        "frontend/codegen.yml", \
-        "frontend/tsconfig.json", "./"]
+      "backend/package-lock.json", \
+      "frontend/.eslintignore", \
+      "frontend/codegen.yml", \
+      "frontend/tsconfig.json", "./"]
 
 COPY ["frontend/src", "./src"]
 COPY ["frontend/public", "./public"]
 
-RUN npm install
+RUN npm ci
 RUN npm run build
 
 
@@ -95,16 +95,16 @@ COPY --from=backend /backend/node_modules ./backend/node_modules
 COPY --from=backend /backend/ormconfig.js ./backend
 
 RUN apt-get update && apt-get install -y \
-                   libcppunit-dev \
-                   libjsoncpp-dev \
-                   libcurl4-nss-dev \
-                   sqlite3 \
-                   libsqlite3-dev
+      libcppunit-dev \
+      libjsoncpp-dev \
+      libcurl4-nss-dev \
+      sqlite3 \
+      libsqlite3-dev
 
 #tools
 RUN apt-get install -y net-tools \
-                       usbutils \
-                       less
+      usbutils \
+      less
 
 # systemctl3
 COPY init/systemctl3.py /bin/systemctl
@@ -122,10 +122,10 @@ COPY ["etc", "./etc"]
 COPY ["docker", "./docker"]
 
 RUN chmod +x -R ./docker/bin \
-                ./bin \
-                /bin/systemctl \
-                /bin/systemctl3.py \
-                /bin/journalctl
+      ./bin \
+      /bin/systemctl \
+      /bin/systemctl3.py \
+      /bin/journalctl
 
 RUN sudo touch /var/run/docker.sock
 RUN sudo chmod 666 /var/run/docker.sock
@@ -140,7 +140,7 @@ COPY ["init/mavlink-router.service", \
       "init/uavcast-vpn.service", \
       "init/uavcast-web.service", \
       "init/uavcast.service", "/etc/systemd/system/"]
-      # "init/uavcast-camera.service", \
+# "init/uavcast-camera.service", \
 
 #gives uavcast user permissions to access /var/run/docker.sock
 RUN sudo usermod -a -G docker root
