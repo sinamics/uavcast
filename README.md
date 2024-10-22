@@ -4,7 +4,7 @@
 [![Release](https://img.shields.io/github/v/release/sinamics/uavcast.svg)](https://github.com/sinamics/uavcast/releases/latest)
 [![Docker Pulls](https://img.shields.io/docker/pulls/sinamics/uavcast.svg)](https://hub.docker.com/r/sinamics/uavcast/)
 
-# uavcast - companion software for remote :helicopter: :boat: :red_car:
+# uavcast-community edition - companion software for remote :helicopter: :boat: :red_car:
 
 uavcast-community edition is an application that provides an easy method for streaming mavlink (telemetry) data and video over a LTE/4G or WiFi network.
 
@@ -14,7 +14,7 @@ uavcast-community edition is an application that provides an easy method for str
 
 ## :whale: Installation
 
-Install latest uavcast version on Rasperry PI, Jetson, or any <kbd>arm/v7</kbd> <kbd>arm64</kbd> <kbd>amd64</kbd> device:
+Install latest uavcast-community edition on Rasperry PI, Jetson, or any <kbd>arm/v7</kbd> <kbd>arm64</kbd> <kbd>amd64</kbd> device:
 
 - `curl -s http://install.uavmatrix.com/next/ | sudo bash`
 
@@ -48,7 +48,7 @@ https://docs.uavmatrix.com/5.x/
 
 ### :computer: Open the repo with Visual Studio Code
 
-Upon opening, you should be prompted to open the project in a **remote container**. This will build a container on top of the base uavcast container with all the development dependencies installed. This ensures everyone uses a consistent development environment without the need to install any dependencies on your host machine.
+Upon opening, you should be prompted to open the project in a **remote container**. This will build a container on top of the base uavcast-community container with all the development dependencies installed. This ensures everyone uses a consistent development environment without the need to install any dependencies on your host machine.
 
 If vscode does not start the remote container automatically, use hotkeys: <kbd>Ctrl</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> and select <kbd>Remote-Container: Rebuild and Reopen container</kbd>
 
@@ -57,7 +57,7 @@ After starting the container for the first time, it will install some additional
 
 <br />
 
-### Run uavcast from the command line
+### Run uavcast-community from the command line
 
 VSCode will start the docker compose file for you and open a terminal window connected to `/app/uavcast` folder.
 
@@ -67,8 +67,8 @@ VSCode will start the docker compose file for you and open a terminal window con
 
 ### Supervisor
 
-Uavcast uses a supervisor container to manage the application update ect. Supervisor is not needed for development.
-To run the supervisor, type `cd supervisor && npm install && npm start` from the uavcast project root.
+Uavcast-community uses a supervisor container to manage the application update ect. Supervisor is not needed for development.
+To run the supervisor, type `cd supervisor && npm install && npm start` from the uavcast-community project root.
 
 ### Teardown
 
@@ -108,6 +108,6 @@ docker run --restart unless-stopped --name uavcast -d \
 
 ### Copyright and License
 
-uavcast is provided under the [the 3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause).  
+Uavcast-community is provided under the [the 3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause).  
 All license notes are listed in our documentation.
 [https://docs.uavmatrix.com/5.x/libraries/](https://docs.uavmatrix.com/5.x/libraries/)
