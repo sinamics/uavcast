@@ -6,7 +6,7 @@
 
 # uavcast - companion software for remote :helicopter: :boat: :red_car:
 
-uavcast is an application that provides an easy method for streaming mavlink (telemetry) data and video over a LTE/4G or WiFi network.
+uavcast-community edition is an application that provides an easy method for streaming mavlink (telemetry) data and video over a LTE/4G or WiFi network.
 
 :warning: This project is still in development and does not have a stabel version yet. Feel free to make improvements and provide a PR.
 
