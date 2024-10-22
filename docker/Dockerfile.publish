@@ -27,7 +27,7 @@ RUN make clean && make
 #  !Backend
 #
 ###
-FROM --platform=$TARGETPLATFORM node:14.18.3-buster-slim as backend
+FROM --platform=$TARGETPLATFORM node:14.4.0-buster-slim as backend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /backend
@@ -52,7 +52,7 @@ RUN npm run build
 #  !Frontend
 #
 ###
-FROM --platform=$TARGETPLATFORM node:14.18.3-buster-slim as frontend
+FROM --platform=$TARGETPLATFORM node:14.4.0-buster-slim as frontend
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 WORKDIR /frontend
